@@ -2,294 +2,3250 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>도시 테스트</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<title>PUBLIC CITY TWIN</title>
 
 <style>
+*{
+    box-sizing:border-box;
+}
+
 html,body{
     margin:0;
     width:100%;
     height:100%;
     overflow:hidden;
-    background:#9bb3c7;
+    background:#b8c9d5;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Noto Sans KR",
+        sans-serif;
 }
 
 canvas{
-    display:block;
+    position:fixed;
+    inset:0;
     width:100%;
     height:100%;
+    touch-action:none;
 }
 
-#status{
+/* =========================
+   UI
+========================= */
+
+.panel{
     position:fixed;
-    top:20px;
-    left:20px;
-    padding:12px 16px;
-    background:white;
-    border-radius:10px;
-    font-family:sans-serif;
-    font-weight:bold;
     z-index:10;
+    color:white;
+    background:rgba(12,21,32,.91);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:16px;
+    backdrop-filter:blur(12px);
+    box-shadow:0 12px 35px rgba(0,0,0,.25);
+}
+
+#header{
+    top:12px;
+    left:12px;
+    right:12px;
+    padding:13px 16px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.title{
+    font-size:17px;
+    font-weight:900;
+}
+
+.subtitle{
+    margin-top:3px;
+    font-size:10px;
+    color:#aab8c8;
+}
+
+#year{
+    font-size:12px;
+    font-weight:800;
+    color:#7ec5ff;
+}
+
+#controls{
+    top:82px;
+    left:12px;
+    width:270px;
+    max-height:calc(100% - 96px);
+    overflow:auto;
+    padding:14px;
+}
+
+.section{
+    margin-bottom:18px;
+}
+
+.section-title{
+    font-size:10px;
+    font-weight:900;
+    color:#aab8c8;
+    margin-bottom:9px;
+}
+
+.control{
+    margin-bottom:12px;
+}
+
+.control-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:11px;
+    margin-bottom:4px;
+}
+
+.control-row b{
+    color:#61b4ff;
+}
+
+input[type=range]{
+    width:100%;
+    accent-color:#3d9ae8;
+}
+
+button{
+    width:100%;
+    min-height:40px;
+    margin:4px 0;
+
+    border:0;
+    border-radius:10px;
+
+    background:#233952;
+    color:white;
+
+    font-weight:800;
+}
+
+button.primary{
+    background:#267fc6;
+}
+
+button.green{
+    background:#197452;
+}
+
+button.gold{
+    background:#8a601e;
+}
+
+/* =========================
+   metrics
+========================= */
+
+#metrics{
+    right:12px;
+    bottom:12px;
+    width:260px;
+    padding:13px;
+}
+
+.metric-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+}
+
+.metric{
+    background:rgba(255,255,255,.055);
+    border-radius:10px;
+    padding:9px;
+}
+
+.metric-label{
+    color:#91a0b0;
+    font-size:9px;
+}
+
+.metric-value{
+    margin-top:3px;
+    font-size:16px;
+    font-weight:900;
+}
+
+/* =========================
+   information
+========================= */
+
+#info{
+    display:none;
+
+    right:12px;
+    top:82px;
+
+    width:260px;
+    padding:14px;
+}
+
+#info-title{
+    font-size:16px;
+    font-weight:900;
+}
+
+#info-type{
+    margin-top:3px;
+    color:#61b4ff;
+    font-size:10px;
+}
+
+#info-description{
+    margin-top:9px;
+    color:#bdc8d5;
+    font-size:10px;
+    line-height:1.6;
+}
+
+/* =========================
+   mode
+========================= */
+
+#mode{
+    left:50%;
+    bottom:12px;
+
+    transform:translateX(-50%);
+
+    width:220px;
+
+    padding:6px;
+
+    display:flex;
+    gap:5px;
+}
+
+#mode button{
+    margin:0;
+}
+
+/* =========================
+   joystick
+========================= */
+
+#joystick{
+    display:none;
+
+    position:fixed;
+
+    left:18px;
+    bottom:20px;
+
+    width:120px;
+    height:120px;
+
+    border-radius:50%;
+
+    background:rgba(0,0,0,.18);
+    border:2px solid rgba(255,255,255,.25);
+
+    z-index:20;
+}
+
+#stick{
+    position:absolute;
+
+    left:34px;
+    top:34px;
+
+    width:48px;
+    height:48px;
+
+    border-radius:50%;
+
+    background:rgba(65,160,230,.8);
+}
+
+/* =========================
+   toast
+========================= */
+
+#toast{
+    display:none;
+
+    position:fixed;
+    z-index:30;
+
+    left:50%;
+    top:72px;
+
+    transform:translateX(-50%);
+
+    padding:10px 15px;
+
+    border-radius:10px;
+
+    background:rgba(10,25,40,.94);
+
+    color:white;
+
+    font-size:11px;
+    font-weight:700;
+}
+
+@media(max-width:700px){
+
+    #controls{
+        width:225px;
+    }
+
+    #metrics{
+        width:210px;
+    }
+
+    .title{
+        font-size:14px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<div id="status">도시 렌더링 테스트</div>
+<canvas id="cityCanvas"></canvas>
 
-<canvas id="canvas"></canvas>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<div id="header" class="panel">
+
+    <div>
+
+        <div class="title">
+            PUBLIC CITY TWIN
+        </div>
+
+        <div class="subtitle">
+            2차 공공기관 이전 · 기능·산업 중심 디지털 트윈
+        </div>
+
+    </div>
+
+    <div id="year">
+        0년차
+    </div>
+
+</div>
+
+
+<!-- =========================
+     CONTROLS
+========================= -->
+
+<div id="controls" class="panel">
+
+    <div class="section">
+
+        <div class="section-title">
+            도시 정책 변수
+        </div>
+
+
+        <div class="control">
+
+            <div class="control-row">
+                <span>공공기관 집적도</span>
+                <b id="value1">70</b>
+            </div>
+
+            <input
+                id="slider1"
+                type="range"
+                min="0"
+                max="100"
+                value="70"
+            >
+
+        </div>
+
+
+        <div class="control">
+
+            <div class="control-row">
+                <span>산업 연계성</span>
+                <b id="value2">65</b>
+            </div>
+
+            <input
+                id="slider2"
+                type="range"
+                min="0"
+                max="100"
+                value="65"
+            >
+
+        </div>
+
+
+        <div class="control">
+
+            <div class="control-row">
+                <span>대학·연구 역량</span>
+                <b id="value3">55</b>
+            </div>
+
+            <input
+                id="slider3"
+                type="range"
+                min="0"
+                max="100"
+                value="55"
+            >
+
+        </div>
+
+
+        <div class="control">
+
+            <div class="control-row">
+                <span>정주 환경</span>
+                <b id="value4">60</b>
+            </div>
+
+            <input
+                id="slider4"
+                type="range"
+                min="0"
+                max="100"
+                value="60"
+            >
+
+        </div>
+
+
+        <div class="control">
+
+            <div class="control-row">
+                <span>교통 접근성</span>
+                <b id="value5">60</b>
+            </div>
+
+            <input
+                id="slider5"
+                type="range"
+                min="0"
+                max="100"
+                value="60"
+            >
+
+        </div>
+
+
+        <div class="control">
+
+            <div class="control-row">
+                <span>초기 기업 기반</span>
+                <b id="value6">35</b>
+            </div>
+
+            <input
+                id="slider6"
+                type="range"
+                min="0"
+                max="100"
+                value="35"
+            >
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            도시 전략
+        </div>
+
+        <button
+            class="primary"
+            onclick="applyPreset(
+                75,70,65,75,70,50
+            )"
+        >
+            균형형 도시
+        </button>
+
+
+        <button
+            onclick="applyPreset(
+                80,95,75,55,65,80
+            )"
+        >
+            산업 클러스터형
+        </button>
+
+
+        <button
+            onclick="applyPreset(
+                65,55,60,95,75,40
+            )"
+        >
+            정주 우선형
+        </button>
+
+
+        <button
+            onclick="applyPreset(
+                70,65,60,70,98,45
+            )"
+        >
+            교통 거점형
+        </button>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            시뮬레이션
+        </div>
+
+        <button
+            class="green"
+            onclick="runSimulation()"
+        >
+            ▶ 20년 시뮬레이션
+        </button>
+
+
+        <button
+            class="gold"
+            onclick="resetSimulation()"
+        >
+            ↻ 초기화
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     INFO
+========================= -->
+
+<div id="info" class="panel">
+
+    <div id="info-title"></div>
+
+    <div id="info-type"></div>
+
+    <div id="info-description"></div>
+
+</div>
+
+
+<!-- =========================
+     METRICS
+========================= -->
+
+<div id="metrics" class="panel">
+
+    <div class="section-title">
+        도시 성과 지표
+    </div>
+
+    <div class="metric-grid">
+
+        <div class="metric">
+            <div class="metric-label">
+                정주인구
+            </div>
+
+            <div
+                class="metric-value"
+                id="population"
+            >
+                52.0만
+            </div>
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-label">
+                연계기업
+            </div>
+
+            <div
+                class="metric-value"
+                id="companies"
+            >
+                350
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-label">
+                일자리
+            </div>
+
+            <div
+                class="metric-value"
+                id="jobs"
+            >
+                12.4만
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-label">
+                상권 활성도
+            </div>
+
+            <div
+                class="metric-value"
+                id="commercial"
+            >
+                63%
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-label">
+                산학협력
+            </div>
+
+            <div
+                class="metric-value"
+                id="cooperation"
+            >
+                48%
+            </div>
+
+        </div>
+
+
+        <div class="metric">
+
+            <div class="metric-label">
+                정착률
+            </div>
+
+            <div
+                class="metric-value"
+                id="settlement"
+            >
+                61%
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     VIEW MODE
+========================= -->
+
+<div id="mode" class="panel">
+
+    <button onclick="cityView()">
+        도시 보기
+    </button>
+
+    <button onclick="walkView()">
+        도시 진입
+    </button>
+
+</div>
+
+
+<!-- =========================
+     JOYSTICK
+========================= -->
+
+<div id="joystick">
+
+    <div id="stick"></div>
+
+</div>
+
+
+<div id="toast"></div>
+
 
 <script>
 
-const canvas=document.getElementById("canvas");
-const ctx=canvas.getContext("2d");
-
-function resize(){
-
-    canvas.width=window.innerWidth;
-    canvas.height=window.innerHeight;
-
-}
-
-resize();
-
-window.addEventListener("resize",resize);
+/* ============================================================
+   PUBLIC CITY TWIN
+   독립형 Canvas 3D 엔진
+   외부 라이브러리 없음
+============================================================ */
 
 
-/* 배경 */
+/* ============================================================
+   CANVAS
+============================================================ */
 
-function draw(){
+const canvas =
+    document.getElementById(
+        "cityCanvas"
+    );
 
-    const w=canvas.width;
-    const h=canvas.height;
+const ctx =
+    canvas.getContext("2d");
 
-    ctx.clearRect(0,0,w,h);
+let WIDTH = window.innerWidth;
+let HEIGHT = window.innerHeight;
 
-    /* 하늘 */
-
-    ctx.fillStyle="#9bb3c7";
-    ctx.fillRect(0,0,w,h*0.55);
-
-    /* 땅 */
-
-    ctx.fillStyle="#78936f";
-    ctx.fillRect(0,h*0.55,w,h*0.45);
+let DPR =
+    Math.min(
+        window.devicePixelRatio || 1,
+        2
+    );
 
 
-    /* 도로 */
+function resizeCanvas(){
 
-    ctx.fillStyle="#303943";
+    WIDTH = window.innerWidth;
+    HEIGHT = window.innerHeight;
 
-    ctx.fillRect(
+    DPR =
+        Math.min(
+            window.devicePixelRatio || 1,
+            2
+        );
+
+    canvas.width =
+        WIDTH * DPR;
+
+    canvas.height =
+        HEIGHT * DPR;
+
+    canvas.style.width =
+        WIDTH + "px";
+
+    canvas.style.height =
+        HEIGHT + "px";
+
+    ctx.setTransform(
+        DPR,
         0,
-        h*0.68,
-        w,
-        100
+        0,
+        DPR,
+        0,
+        0
     );
-
-    ctx.fillRect(
-        w*0.43,
-        h*0.55,
-        180,
-        h*0.45
-    );
-
-
-    /* 중앙 공공기관 */
-
-    drawBuilding(
-        w*0.48,
-        h*0.38,
-        180,
-        230,
-        "#326da6"
-    );
-
-
-    /* 왼쪽 연구기관 */
-
-    drawBuilding(
-        w*0.23,
-        h*0.48,
-        120,
-        150,
-        "#586f9b"
-    );
-
-
-    /* 오른쪽 기업 */
-
-    drawBuilding(
-        w*0.72,
-        h*0.48,
-        130,
-        170,
-        "#777d83"
-    );
-
-
-    /* 주거 */
-
-    drawBuilding(
-        w*0.12,
-        h*0.65,
-        90,
-        120,
-        "#71808e"
-    );
-
-    drawBuilding(
-        w*0.85,
-        h*0.65,
-        90,
-        135,
-        "#71808e"
-    );
-
-
-    /* 대학 */
-
-    drawBuilding(
-        w*0.27,
-        h*0.72,
-        150,
-        95,
-        "#765a9d"
-    );
-
-
-    /* 나무 */
-
-    drawTree(
-        w*0.38,
-        h*0.67
-    );
-
-    drawTree(
-        w*0.62,
-        h*0.67
-    );
-
-
-    document.getElementById("status").innerText=
-        "✓ 도시 렌더링 정상";
-
-    requestAnimationFrame(draw);
 }
 
 
-/* 건물 */
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
 
-function drawBuilding(
+resizeCanvas();
+
+
+/* ============================================================
+   도시 데이터
+============================================================ */
+
+const buildings = [];
+
+const parks = [];
+
+const trees = [];
+
+const cars = [];
+
+
+/*
+   건물 객체
+
+   이 데이터 구조는 향후
+   상생지수 계산과 멀티플레이어
+   데이터에도 사용할 수 있도록
+   독립적으로 구성한다.
+*/
+
+function createBuilding(
     x,
-    y,
+    z,
     width,
+    depth,
     height,
-    color
+    type,
+    name
 ){
 
-    /* 그림자 */
+    buildings.push({
 
-    ctx.fillStyle="rgba(0,0,0,.18)";
+        id:
+            "building_" +
+            buildings.length,
 
-    ctx.fillRect(
-        x-width/2+15,
-        y-height,
+        x,
+        z,
+
         width,
-        height
+        depth,
+        height,
+
+        type,
+        name,
+
+        /*
+           향후 확장 데이터
+        */
+
+        population:
+            0,
+
+        jobs:
+            0,
+
+        firms:
+            0,
+
+        cooperation:
+            0
+    });
+}
+
+
+/* ============================================================
+   도시 생성
+============================================================ */
+
+function generateCity(){
+
+    buildings.length = 0;
+    parks.length = 0;
+    trees.length = 0;
+    cars.length = 0;
+
+
+    /* --------------------------------------------------------
+       중앙 공공기관
+    -------------------------------------------------------- */
+
+    createBuilding(
+        0,
+        0,
+        34,
+        25,
+        64,
+        "public",
+        "통합 공공기관 본청"
     );
 
 
-    /* 건물 */
-
-    ctx.fillStyle=color;
-
-    ctx.fillRect(
-        x-width/2,
-        y-height,
-        width,
-        height
+    createBuilding(
+        -44,
+        0,
+        24,
+        19,
+        46,
+        "public",
+        "지역정책기관"
     );
 
 
-    /* 지붕 */
-
-    ctx.fillStyle=lighten(color);
-
-    ctx.fillRect(
-        x-width/2,
-        y-height,
-        width,
-        12
+    createBuilding(
+        44,
+        0,
+        24,
+        19,
+        42,
+        "public",
+        "지역산업지원기관"
     );
 
 
-    /* 창문 */
+    createBuilding(
+        0,
+        -44,
+        28,
+        21,
+        50,
+        "research",
+        "공공정책 연구센터"
+    );
 
-    ctx.fillStyle="rgba(220,235,245,.65)";
+
+    /* --------------------------------------------------------
+       대학
+    -------------------------------------------------------- */
+
+    createBuilding(
+        -70,
+        -60,
+        48,
+        29,
+        25,
+        "university",
+        "지역혁신대학"
+    );
+
+
+    createBuilding(
+        -70,
+        -29,
+        26,
+        18,
+        35,
+        "university",
+        "산학협력관"
+    );
+
+
+    /* --------------------------------------------------------
+       산업 클러스터
+    -------------------------------------------------------- */
 
     for(
-        let yy=y-height+30;
-        yy<y-15;
-        yy+=28
+        let i = 0;
+        i < 18;
+        i++
     ){
 
-        for(
-            let xx=x-width/2+15;
-            xx<x+width/2-10;
-            xx+=25
+        createBuilding(
+
+            55 +
+            (i % 6) * 18,
+
+            -76 +
+            Math.floor(i / 6) * 28,
+
+            14,
+            11,
+
+            18 +
+            (i % 4) * 5,
+
+            "industry",
+
+            "연계기업 " +
+            (i + 1)
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       상업지구
+    -------------------------------------------------------- */
+
+    for(
+        let i = 0;
+        i < 15;
+        i++
+    ){
+
+        createBuilding(
+
+            -90 +
+            (i % 5) * 22,
+
+            45 +
+            Math.floor(i / 5) * 22,
+
+            14,
+            12,
+
+            19 +
+            (i % 3) * 7,
+
+            "commercial",
+
+            "상업시설 " +
+            (i + 1)
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       주거
+    -------------------------------------------------------- */
+
+    for(
+        let i = 0;
+        i < 36;
+        i++
+    ){
+
+        const x =
+            -105 +
+            (i % 9) * 26;
+
+        const z =
+            -8 +
+            Math.floor(i / 9) * 27;
+
+
+        if(
+            Math.abs(x) < 28 &&
+            Math.abs(z) < 28
         ){
-
-            ctx.fillRect(
-                xx,
-                yy,
-                12,
-                10
-            );
-
+            continue;
         }
+
+
+        createBuilding(
+
+            x,
+            z,
+
+            12,
+            11,
+
+            25 +
+            (i % 5) * 6,
+
+            "residential",
+
+            "주거단지 " +
+            (i + 1)
+        );
+    }
+
+
+    /* --------------------------------------------------------
+       공원
+    -------------------------------------------------------- */
+
+    parks.push({
+
+        x:-45,
+        z:48,
+        width:36,
+        depth:28
+
+    });
+
+
+    parks.push({
+
+        x:50,
+        z:-47,
+        width:35,
+        depth:29
+
+    });
+
+
+    parks.push({
+
+        x:66,
+        z:65,
+        width:38,
+        depth:30
+
+    });
+
+
+    /* --------------------------------------------------------
+       나무
+    -------------------------------------------------------- */
+
+    parks.forEach(
+        park => {
+
+            for(
+                let i = 0;
+                i < 18;
+                i++
+            ){
+
+                trees.push({
+
+                    x:
+                        park.x +
+                        (Math.random()-.5)
+                        * park.width,
+
+                    z:
+                        park.z +
+                        (Math.random()-.5)
+                        * park.depth,
+
+                    height:
+                        4 +
+                        Math.random() * 3
+                });
+            }
+        }
+    );
+
+
+    /* --------------------------------------------------------
+       자동차
+    -------------------------------------------------------- */
+
+    for(
+        let i = 0;
+        i < 25;
+        i++
+    ){
+
+        cars.push({
+
+            x:
+                -130 +
+                Math.random() * 260,
+
+            z:
+                (
+                    Math.floor(
+                        Math.random()*7
+                    ) - 3
+                ) * 32,
+
+            speed:
+                .2 +
+                Math.random()*.35,
+
+            vertical:false
+
+        });
+    }
+
+
+    for(
+        let i = 0;
+        i < 15;
+        i++
+    ){
+
+        cars.push({
+
+            x:
+                (
+                    Math.floor(
+                        Math.random()*7
+                    ) - 3
+                ) * 32,
+
+            z:
+                -130 +
+                Math.random()*260,
+
+            speed:
+                .2 +
+                Math.random()*.35,
+
+            vertical:true
+
+        });
     }
 }
 
 
-/* 나무 */
+generateCity();
 
-function drawTree(x,y){
 
-    ctx.fillStyle="#68472d";
+/* ============================================================
+   카메라
+============================================================ */
 
-    ctx.fillRect(
-        x-5,
-        y,
-        10,
-        35
+let camera = {
+
+    x:0,
+
+    y:175,
+
+    z:210,
+
+    rotation:.55,
+
+    zoom:1.08
+};
+
+
+let currentMode =
+    "city";
+
+
+/* ============================================================
+   3D → 화면 좌표
+============================================================ */
+
+function project(
+    x,
+    y,
+    z
+){
+
+    const dx =
+        x - camera.x;
+
+    const dz =
+        z - camera.z;
+
+
+    const cos =
+        Math.cos(
+            camera.rotation
+        );
+
+    const sin =
+        Math.sin(
+            camera.rotation
+        );
+
+
+    const rotatedX =
+        dx*cos -
+        dz*sin;
+
+
+    const rotatedZ =
+        dx*sin +
+        dz*cos;
+
+
+    /*
+       원근
+    */
+
+    const scale =
+        1 /
+        (
+            1 +
+            rotatedZ * .0027
+        );
+
+
+    return {
+
+        x:
+            WIDTH/2 +
+            rotatedX *
+            camera.zoom *
+            scale,
+
+        y:
+            HEIGHT*.57 +
+            (
+                rotatedZ*.29 -
+                y*.92
+            ) *
+            camera.zoom *
+            scale,
+
+        scale
+    };
+}
+
+
+/* ============================================================
+   건물 색상
+============================================================ */
+
+const buildingColors = {
+
+    public:
+        "#316fa8",
+
+    research:
+        "#527da5",
+
+    university:
+        "#75599c",
+
+    industry:
+        "#777f84",
+
+    commercial:
+        "#b07342",
+
+    residential:
+        "#70818f"
+};
+
+
+/* ============================================================
+   색상 밝기
+============================================================ */
+
+function shade(
+    hex,
+    amount
+){
+
+    const n =
+        parseInt(
+            hex.slice(1),
+            16
+        );
+
+
+    let r =
+        (n >> 16) & 255;
+
+    let g =
+        (n >> 8) & 255;
+
+    let b =
+        n & 255;
+
+
+    r =
+        Math.max(
+            0,
+            Math.min(
+                255,
+                r + 255*amount
+            )
+        );
+
+    g =
+        Math.max(
+            0,
+            Math.min(
+                255,
+                g + 255*amount
+            )
+        );
+
+    b =
+        Math.max(
+            0,
+            Math.min(
+                255,
+                b + 255*amount
+            )
+        );
+
+
+    return (
+        "rgb(" +
+        Math.round(r) +
+        "," +
+        Math.round(g) +
+        "," +
+        Math.round(b) +
+        ")"
     );
+}
+
+
+/* ============================================================
+   다각형
+============================================================ */
+
+function polygon(
+    points,
+    color
+){
 
     ctx.beginPath();
 
-    ctx.arc(
-        x,
-        y,
-        25,
-        0,
-        Math.PI*2
+    ctx.moveTo(
+        points[0].x,
+        points[0].y
     );
 
-    ctx.fillStyle="#2f7040";
+
+    for(
+        let i = 1;
+        i < points.length;
+        i++
+    ){
+
+        ctx.lineTo(
+            points[i].x,
+            points[i].y
+        );
+    }
+
+
+    ctx.closePath();
+
+    ctx.fillStyle =
+        color;
+
     ctx.fill();
 }
 
 
-/* 색 밝게 */
+/* ============================================================
+   건물 렌더링
+============================================================ */
 
-function lighten(color){
+function drawBuilding(
+    building
+){
 
-    return "#5d92bd";
+    const x =
+        building.x;
+
+    const z =
+        building.z;
+
+    const w =
+        building.width;
+
+    const d =
+        building.depth;
+
+    const h =
+        building.height;
+
+
+    /*
+       바닥
+    */
+
+    const bottom = [
+
+        project(
+            x-w/2,
+            0,
+            z-d/2
+        ),
+
+        project(
+            x+w/2,
+            0,
+            z-d/2
+        ),
+
+        project(
+            x+w/2,
+            0,
+            z+d/2
+        ),
+
+        project(
+            x-w/2,
+            0,
+            z+d/2
+        )
+    ];
+
+
+    /*
+       지붕
+    */
+
+    const top = [
+
+        project(
+            x-w/2,
+            h,
+            z-d/2
+        ),
+
+        project(
+            x+w/2,
+            h,
+            z-d/2
+        ),
+
+        project(
+            x+w/2,
+            h,
+            z+d/2
+        ),
+
+        project(
+            x-w/2,
+            h,
+            z+d/2
+        )
+    ];
+
+
+    const baseColor =
+        buildingColors[
+            building.type
+        ];
+
+
+    /*
+       왼쪽
+    */
+
+    polygon(
+
+        [
+            bottom[0],
+            bottom[3],
+            top[3],
+            top[0]
+        ],
+
+        shade(
+            baseColor,
+            -.15
+        )
+    );
+
+
+    /*
+       오른쪽
+    */
+
+    polygon(
+
+        [
+            bottom[1],
+            bottom[2],
+            top[2],
+            top[1]
+        ],
+
+        shade(
+            baseColor,
+            -.28
+        )
+    );
+
+
+    /*
+       지붕
+    */
+
+    polygon(
+        top,
+        shade(
+            baseColor,
+            .10
+        )
+    );
+
+
+    /*
+       창문
+    */
+
+    if(
+        h > 20
+    ){
+
+        const floors =
+            Math.min(
+                9,
+                Math.floor(
+                    h / 7
+                )
+            );
+
+
+        for(
+            let floor = 1;
+            floor < floors;
+            floor++
+        ){
+
+            const t =
+                floor / floors;
+
+
+            const left = {
+
+                x:
+                    top[0].x +
+                    (
+                        bottom[0].x -
+                        top[0].x
+                    ) * t,
+
+                y:
+                    top[0].y +
+                    (
+                        bottom[0].y -
+                        top[0].y
+                    ) * t
+            };
+
+
+            const right = {
+
+                x:
+                    top[1].x +
+                    (
+                        bottom[1].x -
+                        top[1].x
+                    ) * t,
+
+                y:
+                    top[1].y +
+                    (
+                        bottom[1].y -
+                        top[1].y
+                    ) * t
+            };
+
+
+            for(
+                let k = .15;
+                k < .9;
+                k += .22
+            ){
+
+                const wx =
+                    left.x +
+                    (
+                        right.x-left.x
+                    ) * k;
+
+
+                const wy =
+                    left.y +
+                    (
+                        right.y-left.y
+                    ) * k;
+
+
+                ctx.fillStyle =
+                    "rgba(215,235,247,.45)";
+
+
+                ctx.fillRect(
+                    wx,
+                    wy,
+                    4,
+                    5
+                );
+            }
+        }
+    }
+
+
+    /*
+       공공기관 표지
+    */
+
+    if(
+        building.type ===
+        "public"
+    ){
+
+        const sign =
+            project(
+                x,
+                h*.58,
+                z-d/2-.2
+            );
+
+
+        ctx.fillStyle =
+            "#edf7fb";
+
+
+        ctx.fillRect(
+            sign.x-21,
+            sign.y-5,
+            42,
+            10
+        );
+    }
 }
 
 
-draw();
+/* ============================================================
+   도로
+============================================================ */
+
+function drawRoads(){
+
+    /*
+       가로 도로
+    */
+
+    for(
+        let i=-4;
+        i<=4;
+        i++
+    ){
+
+        const z =
+            i*32;
+
+
+        polygon(
+
+            [
+                project(
+                    -135,
+                    0,
+                    z-5
+                ),
+
+                project(
+                    135,
+                    0,
+                    z-5
+                ),
+
+                project(
+                    135,
+                    0,
+                    z+5
+                ),
+
+                project(
+                    -135,
+                    0,
+                    z+5
+                )
+            ],
+
+            "#303943"
+        );
+
+
+        /*
+           중앙선
+        */
+
+        const a =
+            project(
+                -135,
+                .1,
+                z
+            );
+
+        const b =
+            project(
+                135,
+                .1,
+                z
+            );
+
+
+        ctx.beginPath();
+
+        ctx.moveTo(
+            a.x,
+            a.y
+        );
+
+        ctx.lineTo(
+            b.x,
+            b.y
+        );
+
+
+        ctx.strokeStyle =
+            "rgba(240,230,180,.55)";
+
+        ctx.lineWidth = 1;
+
+        ctx.setLineDash(
+            [7,8]
+        );
+
+        ctx.stroke();
+
+        ctx.setLineDash([]);
+    }
+
+
+    /*
+       세로 도로
+    */
+
+    for(
+        let i=-4;
+        i<=4;
+        i++
+    ){
+
+        const x =
+            i*32;
+
+
+        polygon(
+
+            [
+                project(
+                    x-5,
+                    0,
+                    -135
+                ),
+
+                project(
+                    x+5,
+                    0,
+                    -135
+                ),
+
+                project(
+                    x+5,
+                    0,
+                    135
+                ),
+
+                project(
+                    x-5,
+                    0,
+                    135
+                )
+            ],
+
+            "#303943"
+        );
+    }
+}
+
+
+/* ============================================================
+   공원
+============================================================ */
+
+function drawParks(){
+
+    parks.forEach(
+        park => {
+
+            polygon(
+
+                [
+                    project(
+                        park.x-
+                        park.width/2,
+                        0,
+                        park.z-
+                        park.depth/2
+                    ),
+
+                    project(
+                        park.x+
+                        park.width/2,
+                        0,
+                        park.z-
+                        park.depth/2
+                    ),
+
+                    project(
+                        park.x+
+                        park.width/2,
+                        0,
+                        park.z+
+                        park.depth/2
+                    ),
+
+                    project(
+                        park.x-
+                        park.width/2,
+                        0,
+                        park.z+
+                        park.depth/2
+                    )
+                ],
+
+                "#3e8050"
+            );
+        }
+    );
+}
+
+
+/* ============================================================
+   나무
+============================================================ */
+
+function drawTrees(){
+
+    trees.forEach(
+        tree => {
+
+            const p =
+                project(
+                    tree.x,
+                    tree.height,
+                    tree.z
+                );
+
+
+            ctx.fillStyle =
+                "#67472c";
+
+
+            ctx.fillRect(
+                p.x-2,
+                p.y,
+                4,
+                13
+            );
+
+
+            ctx.beginPath();
+
+            ctx.arc(
+                p.x,
+                p.y,
+                9*p.scale,
+                0,
+                Math.PI*2
+            );
+
+
+            ctx.fillStyle =
+                "#2f7040";
+
+            ctx.fill();
+        }
+    );
+}
+
+
+/* ============================================================
+   자동차
+============================================================ */
+
+function drawCars(){
+
+    cars.forEach(
+        car => {
+
+            if(
+                car.vertical
+            ){
+
+                car.z +=
+                    car.speed;
+
+
+                if(
+                    car.z > 135
+                ){
+                    car.z = -135;
+                }
+
+            }else{
+
+                car.x +=
+                    car.speed;
+
+
+                if(
+                    car.x > 135
+                ){
+                    car.x = -135;
+                }
+            }
+
+
+            const p =
+                project(
+                    car.x,
+                    1,
+                    car.z
+                );
+
+
+            const size =
+                5*p.scale;
+
+
+            ctx.fillStyle =
+                "#d84d48";
+
+
+            ctx.fillRect(
+
+                p.x-size,
+
+                p.y-size*.5,
+
+                size*2,
+
+                size
+            );
+        }
+    );
+}
+
+
+/* ============================================================
+   메인 렌더링
+============================================================ */
+
+function render(){
+
+    /*
+       하늘
+    */
+
+    const sky =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            HEIGHT
+        );
+
+
+    sky.addColorStop(
+        0,
+        "#91aec3"
+    );
+
+
+    sky.addColorStop(
+        1,
+        "#dce3e5"
+    );
+
+
+    ctx.fillStyle =
+        sky;
+
+
+    ctx.fillRect(
+        0,
+        0,
+        WIDTH,
+        HEIGHT
+    );
+
+
+    /*
+       지면
+    */
+
+    ctx.fillStyle =
+        "#8ea785";
+
+
+    ctx.fillRect(
+        0,
+        HEIGHT*.46,
+        WIDTH,
+        HEIGHT*.54
+    );
+
+
+    drawRoads();
+
+    drawParks();
+
+
+    /*
+       뒤 건물부터
+    */
+
+    const sortedBuildings =
+        [...buildings].sort(
+            (a,b)=>
+                b.z-a.z
+        );
+
+
+    sortedBuildings.forEach(
+        drawBuilding
+    );
+
+
+    drawTrees();
+
+    drawCars();
+
+
+    requestAnimationFrame(
+        render
+    );
+}
+
+
+render();
+
+
+/* ============================================================
+   정책 변수
+============================================================ */
+
+const controls = [
+
+    ["slider1","value1"],
+    ["slider2","value2"],
+    ["slider3","value3"],
+    ["slider4","value4"],
+    ["slider5","value5"],
+    ["slider6","value6"]
+
+];
+
+
+controls.forEach(
+    pair => {
+
+        const slider =
+            document.getElementById(
+                pair[0]
+            );
+
+
+        const value =
+            document.getElementById(
+                pair[1]
+            );
+
+
+        slider.addEventListener(
+            "input",
+            () => {
+
+                value.textContent =
+                    slider.value;
+
+                updateMetrics();
+            }
+        );
+    }
+);
+
+
+function getVariables(){
+
+    return controls.map(
+        pair =>
+            Number(
+                document.getElementById(
+                    pair[0]
+                ).value
+            )
+    );
+}
+
+
+/* ============================================================
+   현재 도시 상태
+============================================================ */
+
+const cityState = {
+
+    year:0,
+
+    population:52,
+
+    companies:350,
+
+    jobs:12.4,
+
+    commercial:63,
+
+    cooperation:48,
+
+    settlement:61,
+
+    /*
+       미래 상생지수 엔진용
+    */
+
+    coexistenceIndex:null,
+
+    /*
+       미래 멀티플레이어용
+    */
+
+    worldId:null,
+
+    players:[]
+};
+
+
+/* ============================================================
+   기본 지표 계산
+============================================================ */
+
+function updateMetrics(){
+
+    const [
+
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+
+    ] = getVariables();
+
+
+    const score =
+
+        institution*.18 +
+
+        industry*.22 +
+
+        research*.15 +
+
+        settlement*.18 +
+
+        transport*.15 +
+
+        firms*.12;
+
+
+    cityState.population =
+        32 +
+        score*.43;
+
+
+    cityState.companies =
+
+        120 +
+
+        industry*3 +
+
+        research*1.5 +
+
+        firms*2;
+
+
+    cityState.jobs =
+
+        5 +
+
+        cityState.companies*.17 +
+
+        score*.15;
+
+
+    cityState.commercial =
+
+        Math.min(
+            100,
+
+            settlement*.4 +
+
+            transport*.2 +
+
+            industry*.2 +
+
+            institution*.1 +
+
+            research*.1
+        );
+
+
+    cityState.cooperation =
+
+        Math.min(
+            100,
+
+            research*.55 +
+            industry*.25 +
+            institution*.20
+        );
+
+
+    cityState.settlement =
+
+        Math.min(
+            100,
+
+            settlement*.55 +
+            transport*.2 +
+            institution*.1 +
+            research*.15
+        );
+
+
+    document.getElementById(
+        "population"
+    ).textContent =
+        cityState.population
+            .toFixed(1) +
+        "만";
+
+
+    document.getElementById(
+        "companies"
+    ).textContent =
+        Math.round(
+            cityState.companies
+        );
+
+
+    document.getElementById(
+        "jobs"
+    ).textContent =
+        cityState.jobs
+            .toFixed(1) +
+        "만";
+
+
+    document.getElementById(
+        "commercial"
+    ).textContent =
+        Math.round(
+            cityState.commercial
+        ) + "%";
+
+
+    document.getElementById(
+        "cooperation"
+    ).textContent =
+        Math.round(
+            cityState.cooperation
+        ) + "%";
+
+
+    document.getElementById(
+        "settlement"
+    ).textContent =
+        Math.round(
+            cityState.settlement
+        ) + "%";
+}
+
+
+updateMetrics();
+
+
+/* ============================================================
+   시나리오
+============================================================ */
+
+function applyPreset(
+    a,
+    b,
+    c,
+    d,
+    e,
+    f
+){
+
+    const values =
+        [a,b,c,d,e,f];
+
+
+    controls.forEach(
+        (pair,index) => {
+
+            document.getElementById(
+                pair[0]
+            ).value =
+                values[index];
+
+
+            document.getElementById(
+                pair[1]
+            ).textContent =
+                values[index];
+        }
+    );
+
+
+    updateMetrics();
+
+    showToast(
+        "도시 전략이 적용되었습니다."
+    );
+}
+
+
+/* ============================================================
+   20년 시뮬레이션
+============================================================ */
+
+let simulationTimer =
+    null;
+
+
+function runSimulation(){
+
+    if(
+        simulationTimer
+    ){
+
+        clearInterval(
+            simulationTimer
+        );
+    }
+
+
+    let year = 0;
+
+
+    simulationTimer =
+        setInterval(
+            () => {
+
+                year++;
+
+
+                cityState.year =
+                    year;
+
+
+                document.getElementById(
+                    "year"
+                ).textContent =
+                    year +
+                    "년차";
+
+
+                const [
+
+                    a,
+                    b,
+                    c,
+                    d,
+                    e,
+                    f
+
+                ] =
+                    getVariables();
+
+
+                const strength =
+
+                    (
+                        a+b+c+d+e+f
+                    ) / 600;
+
+
+                cityState.population =
+
+                    42 +
+
+                    strength*18 +
+
+                    year*
+                    strength*.35;
+
+
+                cityState.companies =
+
+                    180 +
+
+                    strength*220 +
+
+                    year*
+                    strength*13;
+
+
+                cityState.jobs =
+
+                    7 +
+
+                    strength*4 +
+
+                    year*
+                    strength*.15;
+
+
+                cityState.commercial =
+
+                    Math.min(
+
+                        100,
+
+                        45 +
+
+                        strength*35 +
+
+                        year*
+                        strength*.7
+                    );
+
+
+                cityState.cooperation =
+
+                    Math.min(
+
+                        100,
+
+                        40 +
+
+                        strength*35 +
+
+                        year*.8
+                    );
+
+
+                cityState.settlement =
+
+                    Math.min(
+
+                        100,
+
+                        45 +
+
+                        strength*30 +
+
+                        year*.5
+                    );
+
+
+                updateDisplayedMetrics();
+
+
+                if(
+                    year >= 20
+                ){
+
+                    clearInterval(
+                        simulationTimer
+                    );
+
+
+                    showToast(
+                        "20년 시뮬레이션 완료"
+                    );
+
+
+                    document.getElementById(
+                        "year"
+                    ).textContent =
+                        "20년차 · 완료";
+                }
+
+            },
+
+            180
+        );
+}
+
+
+function updateDisplayedMetrics(){
+
+    document.getElementById(
+        "population"
+    ).textContent =
+        cityState.population
+            .toFixed(1) +
+        "만";
+
+
+    document.getElementById(
+        "companies"
+    ).textContent =
+        Math.round(
+            cityState.companies
+        );
+
+
+    document.getElementById(
+        "jobs"
+    ).textContent =
+        cityState.jobs
+            .toFixed(1) +
+        "만";
+
+
+    document.getElementById(
+        "commercial"
+    ).textContent =
+        Math.round(
+            cityState.commercial
+        ) + "%";
+
+
+    document.getElementById(
+        "cooperation"
+    ).textContent =
+        Math.round(
+            cityState.cooperation
+        ) + "%";
+
+
+    document.getElementById(
+        "settlement"
+    ).textContent =
+        Math.round(
+            cityState.settlement
+        ) + "%";
+}
+
+
+/* ============================================================
+   초기화
+============================================================ */
+
+function resetSimulation(){
+
+    if(
+        simulationTimer
+    ){
+
+        clearInterval(
+            simulationTimer
+        );
+    }
+
+
+    cityState.year = 0;
+
+
+    document.getElementById(
+        "year"
+    ).textContent =
+        "0년차";
+
+
+    applyPreset(
+        70,
+        65,
+        55,
+        60,
+        60,
+        35
+    );
+
+
+    cityView();
+}
+
+
+/* ============================================================
+   도시 카메라
+============================================================ */
+
+function cityView(){
+
+    currentMode =
+        "city";
+
+
+    document.getElementById(
+        "joystick"
+    ).style.display =
+        "none";
+
+
+    camera.x =
+        0;
+
+    camera.y =
+        175;
+
+    camera.z =
+        210;
+
+    camera.rotation =
+        .55;
+
+    camera.zoom =
+        1.08;
+}
+
+
+/* ============================================================
+   도시 진입
+============================================================ */
+
+function walkView(){
+
+    currentMode =
+        "walk";
+
+
+    document.getElementById(
+        "joystick"
+    ).style.display =
+        "block";
+
+
+    camera.x =
+        0;
+
+    camera.y =
+        48;
+
+    camera.z =
+        105;
+
+    camera.rotation =
+        0;
+
+    camera.zoom =
+        1.8;
+
+
+    showToast(
+        "도시에 진입했습니다. 조이스틱으로 이동하세요."
+    );
+}
+
+
+/* ============================================================
+   도시 회전 / 카메라
+============================================================ */
+
+let dragging =
+    false;
+
+let lastPointerX =
+    0;
+
+let lastPointerY =
+    0;
+
+
+canvas.addEventListener(
+    "pointerdown",
+    event => {
+
+        dragging =
+            true;
+
+        lastPointerX =
+            event.clientX;
+
+        lastPointerY =
+            event.clientY;
+    }
+);
+
+
+canvas.addEventListener(
+    "pointermove",
+    event => {
+
+        if(
+            !dragging ||
+            currentMode !== "city"
+        ){
+            return;
+        }
+
+
+        const dx =
+            event.clientX -
+            lastPointerX;
+
+
+        const dy =
+            event.clientY -
+            lastPointerY;
+
+
+        lastPointerX =
+            event.clientX;
+
+        lastPointerY =
+            event.clientY;
+
+
+        camera.rotation +=
+            dx*.006;
+
+
+        camera.y =
+
+            Math.max(
+
+                80,
+
+                Math.min(
+                    280,
+                    camera.y -
+                    dy*.7
+                )
+            );
+    }
+);
+
+
+canvas.addEventListener(
+    "pointerup",
+    () => {
+        dragging = false;
+    }
+);
+
+
+canvas.addEventListener(
+    "pointercancel",
+    () => {
+        dragging = false;
+    }
+);
+
+
+/* ============================================================
+   더블탭 → 건물 선택
+============================================================ */
+
+canvas.addEventListener(
+    "dblclick",
+    () => {
+
+        if(
+            currentMode !== "city"
+        ){
+            return;
+        }
+
+
+        let nearest =
+            buildings[0];
+
+
+        let minDistance =
+            Infinity;
+
+
+        buildings.forEach(
+            building => {
+
+                const distance =
+                    Math.hypot(
+
+                        building.x -
+                        camera.x,
+
+                        building.z -
+                        camera.z
+                    );
+
+
+                if(
+                    distance <
+                    minDistance
+                ){
+
+                    minDistance =
+                        distance;
+
+                    nearest =
+                        building;
+                }
+            }
+        );
+
+
+        showBuildingInfo(
+            nearest
+        );
+    }
+);
+
+
+/* ============================================================
+   건물 정보
+============================================================ */
+
+function showBuildingInfo(
+    building
+){
+
+    const typeNames = {
+
+        public:
+            "공공기관",
+
+        research:
+            "연구·R&D",
+
+        university:
+            "대학·교육",
+
+        industry:
+            "연계기업",
+
+        commercial:
+            "상업시설",
+
+        residential:
+            "주거시설"
+    };
+
+
+    document.getElementById(
+        "info"
+    ).style.display =
+        "block";
+
+
+    document.getElementById(
+        "info-title"
+    ).textContent =
+        building.name;
+
+
+    document.getElementById(
+        "info-type"
+    ).textContent =
+        typeNames[
+            building.type
+        ];
+
+
+    document.getElementById(
+        "info-description"
+    ).textContent =
+
+        "공공기관 이전 이후 지역 내 기능적 연계와 파급효과를 분석하기 위한 디지털 트윈 시설입니다. 향후 기관·기업·대학 간 상생 효과와 상생지수 계산에 연결할 수 있습니다.";
+}
+
+
+/* ============================================================
+   조이스틱
+============================================================ */
+
+const joystick =
+    document.getElementById(
+        "joystick"
+    );
+
+
+const stick =
+    document.getElementById(
+        "stick"
+    );
+
+
+let joystickX = 0;
+
+let joystickY = 0;
+
+let joystickActive =
+    false;
+
+
+joystick.addEventListener(
+    "pointerdown",
+    event => {
+
+        joystickActive =
+            true;
+
+        joystick.setPointerCapture(
+            event.pointerId
+        );
+
+        moveJoystick(
+            event
+        );
+    }
+);
+
+
+joystick.addEventListener(
+    "pointermove",
+    event => {
+
+        if(
+            joystickActive
+        ){
+
+            moveJoystick(
+                event
+            );
+        }
+    }
+);
+
+
+joystick.addEventListener(
+    "pointerup",
+    () => {
+
+        joystickActive =
+            false;
+
+        joystickX = 0;
+        joystickY = 0;
+
+
+        stick.style.left =
+            "34px";
+
+        stick.style.top =
+            "34px";
+    }
+);
+
+
+function moveJoystick(
+    event
+){
+
+    const rect =
+        joystick.getBoundingClientRect();
+
+
+    let x =
+        event.clientX -
+        (
+            rect.left +
+            rect.width/2
+        );
+
+
+    let y =
+        event.clientY -
+        (
+            rect.top +
+            rect.height/2
+        );
+
+
+    const max =
+        39;
+
+
+    const length =
+        Math.hypot(
+            x,
+            y
+        );
+
+
+    if(
+        length > max
+    ){
+
+        x =
+            x /
+            length *
+            max;
+
+        y =
+            y /
+            length *
+            max;
+    }
+
+
+    joystickX =
+        x/max;
+
+    joystickY =
+        y/max;
+
+
+    stick.style.left =
+        34 +
+        x +
+        "px";
+
+
+    stick.style.top =
+        34 +
+        y +
+        "px";
+}
+
+
+/* ============================================================
+   걷기
+============================================================ */
+
+setInterval(
+    () => {
+
+        if(
+            currentMode !==
+            "walk"
+        ){
+            return;
+        }
+
+
+        camera.x +=
+            joystickX * 2;
+
+
+        camera.z +=
+            joystickY * 2;
+
+
+        camera.x =
+            Math.max(
+                -125,
+                Math.min(
+                    125,
+                    camera.x
+                )
+            );
+
+
+        camera.z =
+            Math.max(
+                -125,
+                Math.min(
+                    125,
+                    camera.z
+                )
+            );
+
+    },
+
+    30
+);
+
+
+/* ============================================================
+   알림
+============================================================ */
+
+function showToast(
+    message
+){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    toast.textContent =
+        message;
+
+
+    toast.style.display =
+        "block";
+
+
+    setTimeout(
+        () => {
+
+            toast.style.display =
+                "none";
+
+        },
+
+        1800
+    );
+}
+
+
+/* ============================================================
+   미래 상생지수 API
+============================================================
+
+   나중에 네가 상생지수 계산식을 주면
+   이 함수만 실제 공식으로 교체하면 된다.
+
+   예:
+
+   calculateCoexistenceIndex(cityState)
+
+   → 84.7
+
+============================================================ */
+
+function calculateCoexistenceIndex(
+    state
+){
+
+    /*
+       현재는 임시값.
+
+       실제 연구에서 사용할 공식은
+       나중에 사용자가 제공하는
+       상생지수 산식으로 교체한다.
+    */
+
+    const score =
+
+        state.commercial*.20 +
+
+        state.cooperation*.30 +
+
+        state.settlement*.20 +
+
+        Math.min(
+            100,
+            state.companies/6
+        )*.15 +
+
+        Math.min(
+            100,
+            state.jobs*5
+        )*.15;
+
+
+    return Math.max(
+        0,
+        Math.min(
+            100,
+            score
+        )
+    );
+}
+
+
+/* ============================================================
+   미래 공유 월드 데이터 구조
+============================================================
+
+   현재는 로컬 구조만 준비.
+
+   나중에 서버(WebSocket 등)를 연결하면
+
+   친구의 위치
+   친구의 도시
+   건물 변화
+   도시 정책 변경
+   공동 시뮬레이션
+
+   등을 공유할 수 있다.
+
+============================================================ */
+
+const multiplayerState = {
+
+    worldId:null,
+
+    playerId:null,
+
+    players:{},
+
+    cityVersion:1,
+
+    connected:false
+};
+
+
+/*
+   미래 서버 연결 위치
+
+   connectToWorld("WORLD_ID")
+
+   형태로 확장 가능.
+*/
+
+function connectToWorld(
+    worldId
+){
+
+    multiplayerState.worldId =
+        worldId;
+
+    /*
+       향후 WebSocket 서버 연결
+    */
+
+    console.log(
+        "World prepared:",
+        worldId
+    );
+}
+
+
+/* ============================================================
+   시작
+============================================================ */
+
+cityView();
 
 </script>
 
