@@ -8,118 +8,164 @@
 <title>PUBLIC CITY TWIN</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+    box-sizing:border-box;
+}
 
 html,body{
     margin:0;
     width:100%;
     height:100%;
     overflow:hidden;
+    background:#9caeb7;
     font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif;
-    background:#9eb3bf;
 }
 
-#game{
+#renderCanvas{
     width:100%;
     height:100%;
     display:block;
     touch-action:none;
 }
 
-.panel{
+#topbar{
     position:fixed;
     z-index:20;
-    background:rgba(16,25,34,.88);
-    color:#fff;
-    border:1px solid rgba(255,255,255,.15);
-    border-radius:15px;
-    backdrop-filter:blur(15px);
-    box-shadow:0 12px 35px rgba(0,0,0,.25);
-}
-
-#top{
+    top:12px;
     left:12px;
     right:12px;
-    top:12px;
-    height:62px;
-    padding:11px 16px;
+
+    height:58px;
+
     display:flex;
-    justify-content:space-between;
     align-items:center;
+    justify-content:space-between;
+
+    padding:10px 16px;
+
+    color:white;
+
+    background:rgba(17,25,32,.88);
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:14px;
 }
 
 .title{
+    font-size:15px;
     font-weight:900;
-    font-size:16px;
 }
 
-.sub{
-    font-size:9px;
-    color:#aab7c2;
+.subtitle{
     margin-top:3px;
+    font-size:9px;
+    color:#aab7c0;
 }
 
-#modeText{
-    color:#69baff;
+#mode{
     font-size:11px;
-    font-weight:800;
+    font-weight:900;
+    color:#65baf0;
 }
 
-#controls{
-    top:88px;
+.panel{
+    position:fixed;
+    z-index:20;
+
+    color:white;
+
+    background:rgba(17,25,32,.88);
+    backdrop-filter:blur(15px);
+
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:14px;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.2);
+}
+
+#policy{
+    top:82px;
     left:12px;
-    width:265px;
-    max-height:calc(100% - 105px);
+
+    width:270px;
+    max-height:calc(100% - 96px);
+
     overflow:auto;
+
     padding:14px;
 }
 
-.label{
+.section{
+    margin-bottom:14px;
+}
+
+.section-title{
+    margin-bottom:9px;
+
     font-size:10px;
     font-weight:900;
-    color:#aebbc6;
-    margin-bottom:9px;
+
+    color:#aebbc5;
 }
 
 .slider{
-    margin-bottom:11px;
+    margin-bottom:10px;
 }
 
-.sliderHead{
+.slider-row{
     display:flex;
     justify-content:space-between;
+
     font-size:10px;
-    margin-bottom:3px;
 }
 
-.sliderHead b{
-    color:#64b9f4;
+.slider-row b{
+    color:#61b8ef;
 }
 
 input[type=range]{
     width:100%;
-    accent-color:#4ca9e8;
+    accent-color:#4ba8df;
 }
 
 button{
     width:100%;
     min-height:40px;
+
     margin:3px 0;
+
     border:0;
     border-radius:9px;
-    color:#fff;
-    background:#293d4d;
+
+    color:white;
+
+    background:#2d414f;
+
     font-weight:800;
 }
 
-button.primary{background:#287fb8}
-button.green{background:#197653}
-button.orange{background:#896029}
+button.primary{
+    background:#287eae;
+}
 
-#metrics{
+button.green{
+    background:#197250;
+}
+
+button.orange{
+    background:#815d2e;
+}
+
+#stats{
+    position:fixed;
+    z-index:20;
+
     right:12px;
     bottom:12px;
-    width:270px;
+
+    width:280px;
+
     padding:13px;
 }
 
@@ -129,33 +175,43 @@ button.orange{background:#896029}
     gap:7px;
 }
 
-.metric{
-    background:rgba(255,255,255,.06);
-    border-radius:9px;
+.stat{
     padding:8px;
+
+    border-radius:9px;
+
+    background:rgba(255,255,255,.055);
 }
 
-.metric span{
+.stat small{
     display:block;
-    color:#93a4b2;
+
+    color:#91a1ac;
+
     font-size:8px;
 }
 
-.metric strong{
+.stat strong{
     display:block;
-    font-size:15px;
+
     margin-top:2px;
+
+    font-size:15px;
 }
 
 #viewButtons{
     position:fixed;
     z-index:25;
+
     left:50%;
-    bottom:13px;
+    bottom:12px;
+
     transform:translateX(-50%);
-    width:250px;
+
     display:flex;
-    gap:5px;
+    gap:6px;
+
+    width:250px;
 }
 
 #viewButtons button{
@@ -164,241 +220,425 @@ button.orange{background:#896029}
 
 #joystick{
     display:none;
+
     position:fixed;
     z-index:30;
+
     left:18px;
-    bottom:22px;
-    width:130px;
-    height:130px;
+    bottom:25px;
+
+    width:132px;
+    height:132px;
+
     border-radius:50%;
-    background:rgba(0,0,0,.23);
-    border:2px solid rgba(255,255,255,.3);
+
+    background:rgba(0,0,0,.25);
+
+    border:2px solid rgba(255,255,255,.25);
+
     touch-action:none;
 }
 
 #stick{
     position:absolute;
-    width:50px;
-    height:50px;
+
+    width:48px;
+    height:48px;
+
+    left:40px;
+    top:40px;
+
     border-radius:50%;
-    background:rgba(67,166,229,.92);
-    left:38px;
-    top:38px;
+
+    background:rgba(65,164,225,.9);
 }
 
-#info{
+#buildingInfo{
     display:none;
+
+    position:fixed;
+    z-index:30;
+
     right:12px;
-    top:88px;
+    top:82px;
+
     width:280px;
-    padding:15px;
+
+    padding:14px;
+
+    color:white;
+
+    background:rgba(17,25,32,.92);
+    backdrop-filter:blur(15px);
+
+    border-radius:14px;
+
+    border:1px solid rgba(255,255,255,.15);
 }
 
-#infoName{
+#buildingName{
     font-size:17px;
     font-weight:900;
 }
 
-#infoType{
-    color:#67baf5;
-    font-size:10px;
+#buildingType{
     margin-top:4px;
+
+    color:#65baf0;
+
+    font-size:10px;
+    font-weight:800;
 }
 
-#infoText{
-    color:#c0ccd5;
+#buildingDescription{
+    margin-top:9px;
+
+    color:#c1ccd3;
+
     font-size:10px;
     line-height:1.6;
-    margin-top:9px;
 }
 
 #toast{
     display:none;
+
     position:fixed;
     z-index:100;
+
     left:50%;
-    top:85px;
+    top:80px;
+
     transform:translateX(-50%);
+
     padding:9px 14px;
+
     border-radius:9px;
-    background:rgba(10,20,30,.94);
-    color:#fff;
+
+    background:rgba(12,20,27,.95);
+
+    color:white;
+
     font-size:11px;
     font-weight:800;
 }
 
 @media(max-width:700px){
-    #controls{width:225px}
-    #metrics{width:210px}
+
+    #policy{
+        width:225px;
+    }
+
+    #stats{
+        width:215px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="game"></canvas>
+<canvas id="renderCanvas"></canvas>
 
-<div id="top" class="panel">
+
+<div id="topbar">
+
     <div>
-        <div class="title">PUBLIC CITY TWIN</div>
-        <div class="sub">
-            2차 공공기관 이전 · 기능·산업 중심 3D 디지털 트윈
+        <div class="title">
+            PUBLIC CITY TWIN
+        </div>
+
+        <div class="subtitle">
+            2차 공공기관 이전 · 기능·산업 중심 도시 디지털 트윈
         </div>
     </div>
-    <div id="modeText">조감도</div>
-</div>
 
-<div id="controls" class="panel">
-
-    <div class="label">도시 정책 변수</div>
-
-    <div class="slider">
-        <div class="sliderHead">
-            <span>공공기관 집적도</span>
-            <b id="n1">70</b>
-        </div>
-        <input id="s1" type="range" min="0" max="100" value="70">
+    <div id="mode">
+        조감도
     </div>
-
-    <div class="slider">
-        <div class="sliderHead">
-            <span>산업 연계성</span>
-            <b id="n2">65</b>
-        </div>
-        <input id="s2" type="range" min="0" max="100" value="65">
-    </div>
-
-    <div class="slider">
-        <div class="sliderHead">
-            <span>대학·연구 역량</span>
-            <b id="n3">55</b>
-        </div>
-        <input id="s3" type="range" min="0" max="100" value="55">
-    </div>
-
-    <div class="slider">
-        <div class="sliderHead">
-            <span>정주 환경</span>
-            <b id="n4">60</b>
-        </div>
-        <input id="s4" type="range" min="0" max="100" value="60">
-    </div>
-
-    <div class="slider">
-        <div class="sliderHead">
-            <span>교통 접근성</span>
-            <b id="n5">60</b>
-        </div>
-        <input id="s5" type="range" min="0" max="100" value="60">
-    </div>
-
-    <div class="slider">
-        <div class="sliderHead">
-            <span>초기 기업 기반</span>
-            <b id="n6">35</b>
-        </div>
-        <input id="s6" type="range" min="0" max="100" value="35">
-    </div>
-
-    <div class="label">도시 전략</div>
-
-    <button onclick="preset(75,70,65,75,70,50)">
-        균형형
-    </button>
-
-    <button onclick="preset(80,95,75,55,65,80)">
-        산업 클러스터형
-    </button>
-
-    <button onclick="preset(65,55,60,95,75,40)">
-        정주 우선형
-    </button>
-
-    <button onclick="preset(70,65,60,70,98,45)">
-        교통 거점형
-    </button>
-
-    <div class="label" style="margin-top:14px">
-        시뮬레이션
-    </div>
-
-    <button class="green" onclick="simulate()">
-        ▶ 20년 시뮬레이션
-    </button>
-
-    <button class="orange" onclick="resetAll()">
-        ↻ 초기화
-    </button>
 
 </div>
 
-<div id="info" class="panel">
-    <div id="infoName"></div>
-    <div id="infoType"></div>
-    <div id="infoText"></div>
+
+<div id="policy" class="panel">
+
+    <div class="section">
+
+        <div class="section-title">
+            도시 정책 변수
+        </div>
+
+
+        <div class="slider">
+
+            <div class="slider-row">
+                <span>공공기관 집적</span>
+                <b id="v1">70</b>
+            </div>
+
+            <input
+                id="s1"
+                type="range"
+                min="0"
+                max="100"
+                value="70">
+        </div>
+
+
+        <div class="slider">
+
+            <div class="slider-row">
+                <span>산업 연계성</span>
+                <b id="v2">65</b>
+            </div>
+
+            <input
+                id="s2"
+                type="range"
+                min="0"
+                max="100"
+                value="65">
+        </div>
+
+
+        <div class="slider">
+
+            <div class="slider-row">
+                <span>대학·연구</span>
+                <b id="v3">55</b>
+            </div>
+
+            <input
+                id="s3"
+                type="range"
+                min="0"
+                max="100"
+                value="55">
+        </div>
+
+
+        <div class="slider">
+
+            <div class="slider-row">
+                <span>정주 환경</span>
+                <b id="v4">60</b>
+            </div>
+
+            <input
+                id="s4"
+                type="range"
+                min="0"
+                max="100"
+                value="60">
+        </div>
+
+
+        <div class="slider">
+
+            <div class="slider-row">
+                <span>교통 접근성</span>
+                <b id="v5">60</b>
+            </div>
+
+            <input
+                id="s5"
+                type="range"
+                min="0"
+                max="100"
+                value="60">
+        </div>
+
+
+        <div class="slider">
+
+            <div class="slider-row">
+                <span>초기 기업 기반</span>
+                <b id="v6">35</b>
+            </div>
+
+            <input
+                id="s6"
+                type="range"
+                min="0"
+                max="100"
+                value="35">
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            도시 전략
+        </div>
+
+        <button onclick="applyPreset(
+            75,70,65,75,70,50
+        )">
+            균형형
+        </button>
+
+        <button onclick="applyPreset(
+            80,95,75,55,65,80
+        )">
+            산업 클러스터형
+        </button>
+
+        <button onclick="applyPreset(
+            65,55,60,95,75,40
+        )">
+            정주 우선형
+        </button>
+
+        <button onclick="applyPreset(
+            70,65,60,70,98,45
+        )">
+            교통 거점형
+        </button>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            시뮬레이션
+        </div>
+
+        <button
+            class="green"
+            onclick="runSimulation()">
+            ▶ 20년 도시 시뮬레이션
+        </button>
+
+        <button
+            class="orange"
+            onclick="resetCity()">
+            ↻ 초기화
+        </button>
+
+    </div>
+
 </div>
 
-<div id="metrics" class="panel">
 
-    <div class="label">도시 성과</div>
+<div id="buildingInfo">
+
+    <div id="buildingName"></div>
+
+    <div id="buildingType"></div>
+
+    <div id="buildingDescription"></div>
+
+</div>
+
+
+<div id="stats" class="panel">
+
+    <div class="section-title">
+        도시 성과
+    </div>
 
     <div class="grid">
 
-        <div class="metric">
-            <span>정주인구</span>
+        <div class="stat">
+            <small>정주인구</small>
             <strong id="population">52.0만</strong>
         </div>
 
-        <div class="metric">
-            <span>연계기업</span>
+        <div class="stat">
+            <small>연계기업</small>
             <strong id="companies">350</strong>
         </div>
 
-        <div class="metric">
-            <span>일자리</span>
+        <div class="stat">
+            <small>일자리</small>
             <strong id="jobs">12.4만</strong>
         </div>
 
-        <div class="metric">
-            <span>상권 활성도</span>
+        <div class="stat">
+            <small>상권활성도</small>
             <strong id="commercial">63%</strong>
         </div>
 
-        <div class="metric">
-            <span>산학협력</span>
+        <div class="stat">
+            <small>산학협력</small>
             <strong id="cooperation">48%</strong>
         </div>
 
-        <div class="metric">
-            <span>정착률</span>
+        <div class="stat">
+            <small>정착률</small>
             <strong id="settlement">61%</strong>
         </div>
 
+        <div class="stat">
+            <small>상생지수</small>
+            <strong id="coexistence">—</strong>
+        </div>
+
+        <div class="stat">
+            <small>시뮬레이션</small>
+            <strong id="year">0년</strong>
+        </div>
+
     </div>
+
 </div>
+
 
 <div id="viewButtons">
-    <button onclick="overview()">🛰️ 조감도</button>
-    <button onclick="enterCity()">🚶 도시 진입</button>
+
+    <button onclick="setOverview()">
+        🛰️ 조감도
+    </button>
+
+    <button
+        class="primary"
+        onclick="setWalk()">
+        🚶 도시 진입
+    </button>
+
 </div>
 
+
 <div id="joystick">
+
     <div id="stick"></div>
+
 </div>
+
 
 <div id="toast"></div>
 
 
+<!--
+==========================================================
+ENGINE
+==========================================================
+
+이 버전은 Babylon.js를 사용한다.
+
+최종적으로 실제 GLB/GLTF 건물을 넣을 때
+SceneLoader.ImportMeshAsync를 이용한다.
+
+현재 외부 라이브러리를 사용하므로
+인터넷 연결이 필요하다.
+==========================================================
+-->
+
 <script src="https://cdn.babylonjs.com/babylon.js"></script>
+
 
 <script>
 
-/* ============================================================
+/* =========================================================
    ENGINE
-============================================================ */
+========================================================= */
 
 const canvas =
-    document.getElementById("game");
+    document.getElementById(
+        "renderCanvas"
+    );
 
 const engine =
     new BABYLON.Engine(
@@ -414,45 +654,22 @@ const scene =
     new BABYLON.Scene(engine);
 
 
-/* ============================================================
-   SKY
-============================================================ */
+/* =========================================================
+   WORLD
+========================================================= */
 
 scene.clearColor =
     new BABYLON.Color4(
-        0.58,
-        0.70,
-        0.78,
+        .60,
+        .71,
+        .78,
         1
     );
 
 
-/* ============================================================
-   CAMERA
-============================================================ */
-
-const camera =
-    new BABYLON.UniversalCamera(
-        "player",
-        new BABYLON.Vector3(
-            0,
-            1.7,
-            110
-        ),
-        scene
-    );
-
-camera.minZ=.05;
-camera.maxZ=1000;
-
-camera.speed=.45;
-
-camera.angularSensibility=3500;
-
-
-/* ============================================================
+/* =========================================================
    LIGHT
-============================================================ */
+========================================================= */
 
 const sun =
     new BABYLON.DirectionalLight(
@@ -460,24 +677,24 @@ const sun =
         new BABYLON.Vector3(
             -.45,
             -1,
-            -.3
+            -.35
         ),
         scene
     );
 
 sun.position =
     new BABYLON.Vector3(
-        150,
         250,
-        120
+        300,
+        180
     );
 
-sun.intensity=2.2;
+sun.intensity=2.0;
 
 
-const hemi =
+const skyLight =
     new BABYLON.HemisphericLight(
-        "sky",
+        "skyLight",
         new BABYLON.Vector3(
             0,
             1,
@@ -486,28 +703,34 @@ const hemi =
         scene
     );
 
-hemi.intensity=.72;
+skyLight.intensity=.75;
 
 
-/* ============================================================
+/* =========================================================
    SHADOW
-============================================================ */
+========================================================= */
 
-const shadows =
+const shadowGenerator =
     new BABYLON.ShadowGenerator(
         2048,
         sun
     );
 
-shadows.useBlurExponentialShadowMap=true;
-shadows.blurKernel=24;
+shadowGenerator.useBlurExponentialShadowMap=true;
+
+shadowGenerator.blurKernel=24;
 
 
-/* ============================================================
-   MATERIALS
-============================================================ */
+/* =========================================================
+   MATERIAL
+========================================================= */
 
-function mat(name,color,rough=.7){
+function material(
+    name,
+    color,
+    roughness=.75,
+    metallic=0
+){
 
     const m =
         new BABYLON.PBRMaterial(
@@ -516,215 +739,398 @@ function mat(name,color,rough=.7){
         );
 
     m.albedoColor =
-        BABYLON.Color3.FromHexString(color);
+        BABYLON.Color3.FromHexString(
+            color
+        );
 
-    m.roughness=rough;
-    m.metallic=0;
+    m.roughness=roughness;
+
+    m.metallic=metallic;
 
     return m;
 }
 
 
-const M={
+const MAT={
 
-    road:mat("road","#35383B",.94),
+    asphalt:
+        material(
+            "asphalt",
+            "#34383B",
+            .95
+        ),
 
-    sidewalk:mat("sidewalk","#9B9D9B",.9),
+    sidewalk:
+        material(
+            "sidewalk",
+            "#9B9D9B",
+            .9
+        ),
 
-    grass:mat("grass","#4D744E",1),
+    grass:
+        material(
+            "grass",
+            "#55794E",
+            1
+        ),
 
-    public:mat("public","#687D8D",.55),
+    soil:
+        material(
+            "soil",
+            "#756148",
+            1
+        ),
 
-    office:mat("office","#7B858B",.5),
+    public:
+        material(
+            "public",
+            "#687D8D",
+            .48
+        ),
 
-    research:mat("research","#587E92",.25),
+    office:
+        material(
+            "office",
+            "#737D82",
+            .5
+        ),
 
-    university:mat("university","#796C83",.6),
+    glass:
+        material(
+            "glass",
+            "#4E819C",
+            .08
+        ),
 
-    residential:mat("residential","#A0A6A6",.78),
+    old:
+        material(
+            "old",
+            "#88776A",
+            .85
+        ),
 
-    commercial:mat("commercial","#A17D5E",.62),
+    brick:
+        material(
+            "brick",
+            "#835C4E",
+            .9
+        ),
 
-    industry:mat("industry","#6C7274",.82),
+    residential:
+        material(
+            "residential",
+            "#A2A7A5",
+            .78
+        ),
 
-    glass:mat("glass","#5486A0",.08),
+    commercial:
+        material(
+            "commercial",
+            "#A17D5C",
+            .65
+        ),
 
-    white:mat("white","#E1E2E0",.7),
+    industrial:
+        material(
+            "industrial",
+            "#6D7475",
+            .9
+        ),
 
-    dark:mat("dark","#17191A",.9),
+    roof:
+        material(
+            "roof",
+            "#292D2F",
+            .9
+        ),
 
-    tree:mat("tree","#3C6E42",1),
+    tree:
+        material(
+            "tree",
+            "#3D6840",
+            1
+        ),
 
-    trunk:mat("trunk","#60442C",1),
+    trunk:
+        material(
+            "trunk",
+            "#61452F",
+            1
+        ),
 
-    marking:mat("marking","#E8E7DE",.7)
+    white:
+        material(
+            "white",
+            "#E2E1DD",
+            .72
+        ),
+
+    yellow:
+        material(
+            "yellow",
+            "#D1B64D",
+            .6
+        )
 };
 
 
-/* ============================================================
+/* =========================================================
    GROUND
-============================================================ */
+========================================================= */
 
 const ground =
     BABYLON.MeshBuilder.CreateGround(
-        "ground",
+        "world",
         {
-            width:460,
-            height:460,
-            subdivisions:4
+            width:900,
+            height:900,
+            subdivisions:12
         },
         scene
     );
 
-ground.material=M.grass;
+ground.material=MAT.grass;
 
 
-/* ============================================================
-   CITY ARRAYS
-============================================================ */
+/* =========================================================
+   CITY ZONES
+=========================================================
 
-const buildings=[];
-const cars=[];
+   월드를 다음처럼 만든다.
+
+        시골 / 산림
+             ↓
+        농촌 / 마을
+             ↓
+        외곽 주거
+             ↓
+        구도심
+             ↓
+        중심도심
+             ↓
+        공공기관
+             ↓
+        신도시
+             ↓
+        산업지구
+
+   즉 어디로 이동해도 다른 지역이 이어진다.
+========================================================= */
 
 
-/* ============================================================
+/* =========================================================
    ROAD
-============================================================ */
+========================================================= */
 
-function road(x,z,w,d){
+function makeRoad(
+    x,
+    z,
+    width,
+    depth
+){
 
-    const r =
+    const road =
         BABYLON.MeshBuilder.CreateBox(
             "road",
             {
-                width:w,
-                height:.12,
-                depth:d
+                width,
+                depth,
+                height:.12
             },
             scene
         );
 
-    r.position.set(
+    road.position.set(
         x,
         .06,
         z
     );
 
-    r.material=M.road;
+    road.material=MAT.asphalt;
+
+
+    return road;
 }
 
 
-/* ============================================================
+/* =========================================================
    SIDEWALK
-============================================================ */
+========================================================= */
 
-function sidewalk(x,z,w,d){
+function makeSidewalk(
+    x,
+    z,
+    width,
+    depth
+){
 
     const s =
         BABYLON.MeshBuilder.CreateBox(
             "sidewalk",
             {
-                width:w,
-                height:.18,
-                depth:d
+                width,
+                depth,
+                height:.18
             },
             scene
         );
 
     s.position.set(
         x,
-        .13,
+        .14,
         z
     );
 
-    s.material=M.sidewalk;
+    s.material=MAT.sidewalk;
 }
 
 
-/* ============================================================
-   ROAD NETWORK
-============================================================ */
+/* =========================================================
+   MAIN ROAD NETWORK
+========================================================= */
 
-for(let i=-5;i<=5;i++){
+for(
+    let p=-8*45;
+    p<=8*45;
+    p+=45
+){
 
-    const p=i*35;
+    makeRoad(
+        0,
+        p,
+        900,
+        11
+    );
 
-    road(0,p,460,10);
+    makeSidewalk(
+        0,
+        p-7,
+        900,
+        2
+    );
 
-    sidewalk(0,p-6.5,460,2);
-    sidewalk(0,p+6.5,460,2);
+    makeSidewalk(
+        0,
+        p+7,
+        900,
+        2
+    );
 
-    road(p,0,10,460);
 
-    sidewalk(p-6.5,0,2,460);
-    sidewalk(p+6.5,0,2,460);
+    makeRoad(
+        p,
+        0,
+        11,
+        900
+    );
+
+    makeSidewalk(
+        p-7,
+        0,
+        2,
+        900
+    );
+
+    makeSidewalk(
+        p+7,
+        0,
+        2,
+        900
+    );
 }
 
 
-/* ============================================================
-   ROAD MARKINGS
-============================================================ */
+/* =========================================================
+   ROAD MARKING
+========================================================= */
 
-for(let i=-5;i<=5;i++){
-
-    const p=i*35;
-
-    for(let x=-220;x<220;x+=14){
-
-        const line =
-            BABYLON.MeshBuilder.CreateBox(
-                "lane",
-                {
-                    width:7,
-                    height:.04,
-                    depth:.25
-                },
-                scene
-            );
-
-        line.position.set(
-            x,
-            .13,
-            p
-        );
-
-        line.material=M.marking;
-    }
-
-    for(let z=-220;z<220;z+=14){
-
-        const line =
-            BABYLON.MeshBuilder.CreateBox(
-                "lane",
-                {
-                    width:.25,
-                    height:.04,
-                    depth:7
-                },
-                scene
-            );
-
-        line.position.set(
-            p,
-            .13,
-            z
-        );
-
-        line.material=M.marking;
-    }
-}
-
-
-/* ============================================================
-   BUILDING
-============================================================ */
-
-function building(
+function roadMarking(
     x,
     z,
-    w,
-    d,
-    h,
+    horizontal=true
+){
+
+    const line =
+        BABYLON.MeshBuilder.CreateBox(
+            "roadLine",
+            horizontal
+            ?
+            {
+                width:6,
+                depth:.22,
+                height:.035
+            }
+            :
+            {
+                width:.22,
+                depth:6,
+                height:.035
+            },
+            scene
+        );
+
+    line.position.set(
+        x,
+        .14,
+        z
+    );
+
+    line.material=MAT.white;
+}
+
+
+for(
+    let p=-8*45;
+    p<=8*45;
+    p+=45
+){
+
+    for(
+        let x=-430;
+        x<430;
+        x+=13
+    ){
+
+        roadMarking(
+            x,
+            p,
+            true
+        );
+    }
+
+
+    for(
+        let z=-430;
+        z<430;
+        z+=13
+    ){
+
+        roadMarking(
+            p,
+            z,
+            false
+        );
+    }
+}
+
+
+/* =========================================================
+   BUILDING STORAGE
+========================================================= */
+
+const buildings=[];
+
+
+/* =========================================================
+   DETAILED BUILDING
+========================================================= */
+
+function createBuilding(
+    x,
+    z,
+    width,
+    depth,
+    height,
     type,
     name
 ){
@@ -733,273 +1139,552 @@ function building(
         BABYLON.MeshBuilder.CreateBox(
             name,
             {
-                width:w,
-                depth:d,
-                height:h
+                width,
+                depth,
+                height
             },
             scene
         );
 
     body.position.set(
         x,
-        h/2,
+        height/2,
         z
     );
 
-    body.material=M[type];
+    body.material=
+        MAT[type] ||
+        MAT.office;
 
-    shadows.addShadowCaster(body);
+
+    shadowGenerator
+        .addShadowCaster(
+            body
+        );
 
 
-    const data={
+    buildings.push({
         mesh:body,
-        x,z,w,d,h,type,name
-    };
-
-    buildings.push(data);
-
-
-    /*
-       입체적인 외벽 프레임
-    */
-
-    if(type!=="industry"){
-
-        for(let floor=0;floor<Math.min(12,Math.floor(h/5));floor++){
-
-            const y=
-                2.8+
-                floor*
-                Math.min(
-                    5,
-                    h/(Math.floor(h/5)+1)
-                );
-
-            for(let col=0;col<Math.min(8,Math.floor(w/4));col++){
-
-                const wx=
-                    x-w/2+
-                    2+
-                    col*
-                    ((w-4)/
-                    Math.max(
-                        1,
-                        Math.min(8,Math.floor(w/4))-1
-                    ));
-
-                const win =
-                    BABYLON.MeshBuilder.CreateBox(
-                        "window",
-                        {
-                            width:1.3,
-                            height:1.55,
-                            depth:.07
-                        },
-                        scene
-                    );
-
-                win.position.set(
-                    wx,
-                    y,
-                    z-d/2-.04
-                );
-
-                win.material=M.glass;
-            }
-        }
-    }
+        x,
+        z,
+        width,
+        depth,
+        height,
+        type,
+        name
+    });
 
 
     /*
-       지붕
+       옥상
     */
 
     const roof =
         BABYLON.MeshBuilder.CreateBox(
             "roof",
             {
-                width:w+1,
-                height:.35,
-                depth:d+1
+                width:width+1,
+                depth:depth+1,
+                height:.35
             },
             scene
         );
 
     roof.position.set(
         x,
-        h+.18,
+        height+.17,
         z
     );
 
-    roof.material=M.dark;
-}
+    roof.material=MAT.roof;
 
 
-/* ============================================================
-   LANDMARK PUBLIC INSTITUTION
-============================================================ */
+    /*
+       창문
 
-building(
-    0,
-    0,
-    38,
-    28,
-    62,
-    "public",
-    "통합 공공기관 본청"
-);
-
-
-/*
-   공공기관 중앙 아트리움
-*/
-
-const atrium =
-    BABYLON.MeshBuilder.CreateBox(
-        "atrium",
-        {
-            width:15,
-            height:55,
-            depth:7
-        },
-        scene
-    );
-
-atrium.position.set(
-    0,
-    27.5,
-    -14.3
-);
-
-atrium.material=M.glass;
-
-
-/* ============================================================
-   PUBLIC BUILDINGS
-============================================================ */
-
-building(
-    -48,0,
-    25,19,45,
-    "public",
-    "지역정책기관"
-);
-
-building(
-    48,0,
-    25,19,42,
-    "public",
-    "지역산업지원기관"
-);
-
-building(
-    0,-48,
-    31,22,48,
-    "research",
-    "공공정책 연구센터"
-);
-
-
-/* ============================================================
-   UNIVERSITY
-============================================================ */
-
-building(
-    -80,-65,
-    47,30,26,
-    "university",
-    "지역혁신대학"
-);
-
-building(
-    -80,-30,
-    27,18,34,
-    "research",
-    "산학협력센터"
-);
-
-
-/* ============================================================
-   INDUSTRIAL CLUSTER
-============================================================ */
-
-for(let i=0;i<24;i++){
-
-    const col=i%6;
-    const row=Math.floor(i/6);
-
-    building(
-        70+col*18,
-        -90+row*29,
-        14,
-        11,
-        19+(i%5)*4,
-        "industry",
-        "연계기업 "+(i+1)
-    );
-}
-
-
-/* ============================================================
-   COMMERCIAL DISTRICT
-============================================================ */
-
-for(let i=0;i<18;i++){
-
-    const col=i%6;
-    const row=Math.floor(i/6);
-
-    building(
-        -105+col*21,
-        48+row*24,
-        14,
-        11,
-        17+(i%4)*5,
-        "commercial",
-        "상업시설 "+(i+1)
-    );
-}
-
-
-/* ============================================================
-   RESIDENTIAL
-============================================================ */
-
-for(let i=0;i<45;i++){
-
-    const col=i%9;
-    const row=Math.floor(i/9);
-
-    const x=-125+col*31;
-    const z=-15+row*29;
+       모든 건물을 단순 박스가 아니라
+       입면을 가진 건물처럼 보이게 한다.
+    */
 
     if(
-        Math.abs(x)<25 &&
-        Math.abs(z)<30
-    )
-        continue;
+        width>10 &&
+        depth>10
+    ){
 
-    building(
-        x,
-        z,
-        14,
-        13,
-        27+(i%6)*4,
-        "residential",
-        "주거단지 "+(i+1)
+        const floors=
+            Math.max(
+                1,
+                Math.floor(
+                    height/4
+                )
+            );
+
+
+        const cols=
+            Math.max(
+                2,
+                Math.floor(
+                    width/4
+                )
+            );
+
+
+        for(
+            let f=0;
+            f<floors;
+            f++
+        ){
+
+            const y=
+                2+
+                f*
+                (
+                    (height-4)/
+                    Math.max(
+                        1,
+                        floors-1
+                    )
+                );
+
+
+            for(
+                let c=0;
+                c<cols;
+                c++
+            ){
+
+                const wx=
+                    x-width/2+2+
+                    c*
+                    (
+                        (width-4)/
+                        Math.max(
+                            1,
+                            cols-1
+                        )
+                    );
+
+
+                const window =
+                    BABYLON.MeshBuilder.CreateBox(
+                        "window",
+                        {
+                            width:1.25,
+                            height:1.45,
+                            depth:.06
+                        },
+                        scene
+                    );
+
+                window.position.set(
+                    wx,
+                    y,
+                    z-depth/2-.04
+                );
+
+                window.material=MAT.glass;
+            }
+        }
+    }
+
+
+    return body;
+}
+
+
+/* =========================================================
+   DOWNTOWN
+========================================================= */
+
+function generateDowntown(){
+
+    for(
+        let i=0;
+        i<45;
+        i++
+    ){
+
+        const angle=
+            Math.random()*
+            Math.PI*2;
+
+        const radius=
+            60+
+            Math.random()*90;
+
+
+        const x=
+            Math.cos(angle)*
+            radius;
+
+        const z=
+            Math.sin(angle)*
+            radius;
+
+
+        createBuilding(
+            x,
+            z,
+            14+
+                Math.random()*14,
+            12+
+                Math.random()*12,
+            30+
+                Math.random()*80,
+            "office",
+            "도심 업무시설"
+        );
+    }
+}
+
+
+/* =========================================================
+   OLD TOWN
+========================================================= */
+
+function generateOldTown(){
+
+    for(
+        let x=-210;
+        x<=-80;
+        x+=20
+    ){
+
+        for(
+            let z=-70;
+            z<=70;
+            z+=24
+        ){
+
+            createBuilding(
+                x+
+                    (Math.random()-.5)*4,
+                z+
+                    (Math.random()-.5)*4,
+                15,
+                13,
+                8+
+                    Math.random()*12,
+                Math.random()>.5
+                    ?"old"
+                    :"brick",
+                "구도심 건물"
+            );
+        }
+    }
+}
+
+
+/* =========================================================
+   NEW TOWN
+========================================================= */
+
+function generateNewTown(){
+
+    for(
+        let x=100;
+        x<=250;
+        x+=30
+    ){
+
+        for(
+            let z=-150;
+            z<=150;
+            z+=38
+        ){
+
+            createBuilding(
+                x,
+                z,
+                19,
+                17,
+                45+
+                    Math.random()*40,
+                "residential",
+                "신도시 주거단지"
+            );
+        }
+    }
+}
+
+
+/* =========================================================
+   PUBLIC INSTITUTION CLUSTER
+========================================================= */
+
+function generatePublicCluster(){
+
+    createBuilding(
+        0,
+        0,
+        45,
+        30,
+        65,
+        "public",
+        "통합 공공기관 본청"
+    );
+
+
+    createBuilding(
+        -65,
+        0,
+        27,
+        22,
+        48,
+        "public",
+        "지역정책기관"
+    );
+
+
+    createBuilding(
+        65,
+        0,
+        27,
+        22,
+        45,
+        "public",
+        "지역산업지원기관"
+    );
+
+
+    createBuilding(
+        0,
+        -65,
+        35,
+        25,
+        50,
+        "public",
+        "공공연구센터"
+    );
+
+
+    createBuilding(
+        0,
+        65,
+        31,
+        24,
+        42,
+        "research",
+        "산학협력센터"
     );
 }
 
 
-/* ============================================================
-   TREES
-============================================================ */
+/* =========================================================
+   UNIVERSITY
+========================================================= */
 
-function tree(x,z){
+function generateUniversity(){
+
+    for(
+        let i=0;
+        i<14;
+        i++
+    ){
+
+        const x=
+            -220+
+            (i%5)*38;
+
+        const z=
+            160+
+            Math.floor(i/5)*35;
+
+
+        createBuilding(
+            x,
+            z,
+            24,
+            18,
+            18+
+                Math.random()*18,
+            "office",
+            "지역혁신대학"
+        );
+    }
+}
+
+
+/* =========================================================
+   INDUSTRIAL
+========================================================= */
+
+function generateIndustrial(){
+
+    for(
+        let i=0;
+        i<35;
+        i++
+    ){
+
+        const x=
+            230+
+            Math.random()*180;
+
+        const z=
+            -220+
+            Math.random()*440;
+
+
+        createBuilding(
+            x,
+            z,
+            20+
+                Math.random()*25,
+            18+
+                Math.random()*20,
+            10+
+                Math.random()*18,
+            "industrial",
+            "연계기업"
+        );
+    }
+}
+
+
+/* =========================================================
+   COMMERCIAL
+========================================================= */
+
+function generateCommercial(){
+
+    for(
+        let i=0;
+        i<45;
+        i++
+    ){
+
+        const x=
+            -300+
+            Math.random()*600;
+
+        const z=
+            -300+
+            Math.random()*600;
+
+
+        if(
+            Math.abs(x)<100 &&
+            Math.abs(z)<100
+        )
+            continue;
+
+
+        createBuilding(
+            x,
+            z,
+            12+
+                Math.random()*8,
+            10+
+                Math.random()*8,
+            8+
+                Math.random()*15,
+            "commercial",
+            "상업시설"
+        );
+    }
+}
+
+
+/* =========================================================
+   RURAL HOUSES
+========================================================= */
+
+function ruralHouse(
+    x,
+    z
+){
+
+    createBuilding(
+        x,
+        z,
+        13,
+        10,
+        5+
+            Math.random()*3,
+        "old",
+        "농촌 주택"
+    );
+}
+
+
+function generateRural(){
+
+    for(
+        let i=0;
+        i<45;
+        i++
+    ){
+
+        const x=
+            -420+
+            Math.random()*170;
+
+        const z=
+            -300+
+            Math.random()*600;
+
+
+        ruralHouse(
+            x,
+            z
+        );
+    }
+
+
+    /*
+       논 / 밭
+    */
+
+    for(
+        let i=0;
+        i<30;
+        i++
+    ){
+
+        const x=
+            -400+
+            Math.random()*130;
+
+        const z=
+            -280+
+            Math.random()*560;
+
+
+        const field =
+            BABYLON.MeshBuilder.CreateBox(
+                "field",
+                {
+                    width:25,
+                    depth:18,
+                    height:.08
+                },
+                scene
+            );
+
+        field.position.set(
+            x,
+            .04,
+            z
+        );
+
+        field.material=MAT.soil;
+    }
+}
+
+
+/* =========================================================
+   PARK
+========================================================= */
+
+function tree(
+    x,
+    z
+){
 
     const trunk =
         BABYLON.MeshBuilder.CreateCylinder(
-            "trunk",
+            "treeTrunk",
             {
                 diameter:.65,
                 height:4
@@ -1013,373 +1698,345 @@ function tree(x,z){
         z
     );
 
-    trunk.material=M.trunk;
+    trunk.material=MAT.trunk;
 
 
     const crown =
         BABYLON.MeshBuilder.CreateSphere(
-            "crown",
+            "treeCrown",
             {
                 diameter:5,
-                segments:10
+                segments:12
             },
             scene
         );
 
     crown.position.set(
         x,
-        5.4,
+        5,
         z
     );
 
-    crown.material=M.tree;
+    crown.material=MAT.tree;
 
-    shadows.addShadowCaster(crown);
+
+    shadowGenerator
+        .addShadowCaster(
+            crown
+        );
 }
 
 
-/* ============================================================
-   PARKS
-============================================================ */
-
-function park(x,z,w,d){
+function park(
+    x,
+    z,
+    width,
+    depth
+){
 
     const p =
         BABYLON.MeshBuilder.CreateBox(
             "park",
             {
-                width:w,
-                height:.2,
-                depth:d
+                width,
+                depth,
+                height:.15
             },
             scene
         );
 
     p.position.set(
         x,
-        .1,
+        .075,
         z
     );
 
-    p.material=M.grass;
+    p.material=MAT.grass;
 
 
-    for(let i=0;i<22;i++){
+    for(
+        let i=0;
+        i<25;
+        i++
+    ){
 
         tree(
-            x+(Math.random()-.5)*(w-5),
-            z+(Math.random()-.5)*(d-5)
+            x+
+                (Math.random()-.5)*
+                (width-5),
+
+            z+
+                (Math.random()-.5)*
+                (depth-5)
         );
     }
 }
 
 
-park(-48,48,42,30);
-park(60,-50,38,30);
-park(75,70,40,28);
+/* =========================================================
+   GENERATE WORLD
+========================================================= */
+
+generateDowntown();
+
+generateOldTown();
+
+generateNewTown();
+
+generatePublicCluster();
+
+generateUniversity();
+
+generateIndustrial();
+
+generateCommercial();
+
+generateRural();
 
 
-/* ============================================================
-   CARS
-============================================================ */
+park(
+    -80,
+    120,
+    60,
+    45
+);
 
-function car(horizontal){
+park(
+    120,
+    -120,
+    55,
+    40
+);
 
-    const root =
-        new BABYLON.TransformNode(
-            "car",
-            scene
-        );
-
-
-    const body =
-        BABYLON.MeshBuilder.CreateBox(
-            "body",
-            {
-                width:2.3,
-                height:.7,
-                depth:4.4
-            },
-            scene
-        );
-
-    body.parent=root;
-    body.position.y=.75;
-    body.material=M.white;
+park(
+    -260,
+    -150,
+    70,
+    55
+);
 
 
-    const cabin =
-        BABYLON.MeshBuilder.CreateBox(
-            "cabin",
-            {
-                width:1.75,
-                height:.65,
-                depth:2
-            },
-            scene
-        );
+/* =========================================================
+   WALK CAMERA
+========================================================= */
 
-    cabin.parent=root;
-    cabin.position.y=1.3;
-    cabin.material=M.glass;
-
-
-    const positions=[
-        [-1.05,.43,-1.45],
-        [1.05,.43,-1.45],
-        [-1.05,.43,1.45],
-        [1.05,.43,1.45]
-    ];
-
-
-    positions.forEach(p=>{
-
-        const wheel =
-            BABYLON.MeshBuilder.CreateCylinder(
-                "wheel",
-                {
-                    diameter:.7,
-                    height:.3,
-                    tessellation:12
-                },
-                scene
-            );
-
-        wheel.parent=root;
-        wheel.rotation.z=Math.PI/2;
-
-        wheel.position.set(
-            p[0],
-            p[1],
-            p[2]
-        );
-
-        wheel.material=M.dark;
-    });
-
-
-    cars.push({
-        root,
-        horizontal,
-        speed:.08+Math.random()*.08
-    });
-}
-
-
-for(let i=0;i<25;i++)
-    car(true);
-
-for(let i=0;i<18;i++)
-    car(false);
-
-
-cars.forEach((c,i)=>{
-
-    if(c.horizontal){
-
-        c.root.position.x=
-            -220+Math.random()*440;
-
-        c.root.position.z=
-            (Math.floor(Math.random()*11)-5)*35;
-
-    }else{
-
-        c.root.position.z=
-            -220+Math.random()*440;
-
-        c.root.position.x=
-            (Math.floor(Math.random()*11)-5)*35;
-
-        c.root.rotation.y=
-            Math.PI/2;
-    }
-});
-
-
-/* ============================================================
-   MODE
-============================================================ */
-
-let mode="overview";
-
-
-function overview(){
-
-    mode="overview";
-
-    camera.detachControl(canvas);
-
-    document.getElementById(
-        "joystick"
-    ).style.display="none";
-
-    document.getElementById(
-        "modeText"
-    ).textContent="조감도";
-
-
-    camera.position=
-        new BABYLON.Vector3(
-            0,
-            300,
-            300
-        );
-
-
-    camera.setTarget(
-        new BABYLON.Vector3(
-            0,
-            0,
-            0
-        )
-    );
-
-
-    toast("조감도 모드");
-}
-
-
-function enterCity(){
-
-    mode="walk";
-
-    camera.detachControl(canvas);
-
-    document.getElementById(
-        "joystick"
-    ).style.display="block";
-
-    document.getElementById(
-        "modeText"
-    ).textContent="사람 시점";
-
-
-    /*
-       ★ 사람 눈높이
-    */
-
-    camera.position=
+const walkCamera =
+    new BABYLON.UniversalCamera(
+        "walkCamera",
         new BABYLON.Vector3(
             0,
             1.7,
-            115
-        );
+            120
+        ),
+        scene
+    );
 
 
-    camera.rotation=
+walkCamera.minZ=.05;
+
+walkCamera.maxZ=1200;
+
+
+/*
+   ★ 마인크래프트처럼 느린 속도
+*/
+
+walkCamera.speed=.18;
+
+
+/*
+   키보드도 FPS 방식
+*/
+
+walkCamera.keysUp=[
+    87,
+    38
+];
+
+walkCamera.keysDown=[
+    83,
+    40
+];
+
+walkCamera.keysLeft=[
+    65,
+    37
+];
+
+walkCamera.keysRight=[
+    68,
+    39
+];
+
+
+/*
+   화면 회전 감도 ↓
+
+   이전 버전보다 훨씬 둔하게
+*/
+
+walkCamera.angularSensibility=7000;
+
+
+/*
+   사람 몸 충돌 높이
+*/
+
+walkCamera.ellipsoid=
+    new BABYLON.Vector3(
+        .45,
+        .85,
+        .45
+    );
+
+walkCamera.ellipsoidOffset=
+    new BABYLON.Vector3(
+        0,
+        .85,
+        0
+    );
+
+walkCamera.checkCollisions=true;
+
+walkCamera.applyGravity=true;
+
+
+/* =========================================================
+   OVERVIEW CAMERA
+========================================================= */
+
+const overviewCamera =
+    new BABYLON.ArcRotateCamera(
+        "overviewCamera",
+
+        -Math.PI/2,
+
+        Math.PI/3.2,
+
+        520,
+
         new BABYLON.Vector3(
             0,
-            Math.PI,
+            0,
             0
-        );
+        ),
+
+        scene
+    );
 
 
-    toast("도시에 들어왔습니다");
+overviewCamera.lowerRadiusLimit=100;
+
+overviewCamera.upperRadiusLimit=800;
+
+overviewCamera.wheelPrecision=3;
+
+
+/* =========================================================
+   CAMERA SWITCH
+========================================================= */
+
+function setWalk(){
+
+    scene.activeCamera=
+        walkCamera;
+
+    walkCamera.attachControl(
+        canvas,
+        true
+    );
+
+    overviewCamera.detachControl(
+        canvas
+    );
+
+
+    document.getElementById(
+        "mode"
+    ).textContent=
+        "사람 시점";
+
+
+    document.getElementById(
+        "joystick"
+    ).style.display=
+        "block";
+
+
+    toast(
+        "도시 안으로 들어왔습니다"
+    );
 }
 
 
-/* ============================================================
-   LOOK
-============================================================ */
+function setOverview(){
 
-let looking=false;
-let lx=0;
-let ly=0;
+    scene.activeCamera=
+        overviewCamera;
 
 
-canvas.addEventListener(
-    "pointerdown",
-    e=>{
-
-        if(mode!=="walk")
-            return;
-
-        looking=true;
-
-        lx=e.clientX;
-        ly=e.clientY;
-
-        canvas.setPointerCapture(
-            e.pointerId
-        );
-    }
-);
+    walkCamera.detachControl(
+        canvas
+    );
 
 
-canvas.addEventListener(
-    "pointermove",
-    e=>{
-
-        if(!looking || mode!=="walk")
-            return;
-
-        const dx=e.clientX-lx;
-        const dy=e.clientY-ly;
-
-        lx=e.clientX;
-        ly=e.clientY;
+    overviewCamera.attachControl(
+        canvas,
+        true
+    );
 
 
-        camera.rotation.y -=
-            dx*.004;
+    document.getElementById(
+        "mode"
+    ).textContent=
+        "조감도";
 
 
-        camera.rotation.x -=
-            dy*.003;
+    document.getElementById(
+        "joystick"
+    ).style.display=
+        "none";
 
 
-        camera.rotation.x=
-            Math.max(
-                -.9,
-                Math.min(
-                    .9,
-                    camera.rotation.x
-                )
-            );
-    }
-);
+    toast(
+        "조감도 모드"
+    );
+}
 
 
-canvas.addEventListener(
-    "pointerup",
-    ()=>{
-        looking=false;
-    }
-);
-
-
-/* ============================================================
+/* =========================================================
    JOYSTICK
-============================================================ */
+========================================================= */
 
-const joystick=
+const joystick =
     document.getElementById(
         "joystick"
     );
 
-const stick=
+const stick =
     document.getElementById(
         "stick"
     );
 
 
-let jx=0;
-let jy=0;
-let active=false;
+let joystickX=0;
+
+let joystickY=0;
+
+let joystickActive=false;
 
 
 joystick.addEventListener(
     "pointerdown",
     e=>{
 
-        active=true;
+        joystickActive=true;
 
         joystick.setPointerCapture(
             e.pointerId
         );
 
-        joystickMove(e);
+        moveJoystick(e);
     }
 );
 
@@ -1388,297 +2045,350 @@ joystick.addEventListener(
     "pointermove",
     e=>{
 
-        if(active)
-            joystickMove(e);
+        if(
+            joystickActive
+        )
+            moveJoystick(e);
     }
 );
 
 
 joystick.addEventListener(
     "pointerup",
-    joystickReset
+    resetJoystick
 );
 
 
 joystick.addEventListener(
     "pointercancel",
-    joystickReset
+    resetJoystick
 );
 
 
-function joystickMove(e){
+function moveJoystick(e){
 
-    const r=
+    const rect=
         joystick.getBoundingClientRect();
 
 
     let x=
         e.clientX-
-        (r.left+r.width/2);
+        (
+            rect.left+
+            rect.width/2
+        );
 
 
     let y=
         e.clientY-
-        (r.top+r.height/2);
+        (
+            rect.top+
+            rect.height/2
+        );
 
 
-    const max=40;
+    const max=38;
 
-    const length=
-        Math.hypot(x,y);
+    const distance=
+        Math.hypot(
+            x,
+            y
+        );
 
 
-    if(length>max){
+    if(
+        distance>max
+    ){
 
-        x=x/length*max;
-        y=y/length*max;
+        x=
+            x/distance*
+            max;
+
+        y=
+            y/distance*
+            max;
     }
 
 
-    jx=x/max;
-    jy=y/max;
+    joystickX=
+        x/max;
+
+    joystickY=
+        y/max;
 
 
     stick.style.left=
-        (40+x)+"px";
+        (42+x)+"px";
 
     stick.style.top=
-        (40+y)+"px";
+        (42+y)+"px";
 }
 
 
-function joystickReset(){
+function resetJoystick(){
 
-    active=false;
+    joystickActive=false;
 
-    jx=0;
-    jy=0;
+    joystickX=0;
 
-    stick.style.left="40px";
-    stick.style.top="40px";
+    joystickY=0;
+
+    stick.style.left="42px";
+
+    stick.style.top="42px";
 }
 
 
-/* ============================================================
-   PLAYER MOVEMENT
-============================================================ */
+/* =========================================================
+   JOYSTICK MOVEMENT
 
-setInterval(()=>{
+   ★ 핵심 수정
 
-    if(mode!=="walk")
+   위 = 전진
+
+   아래 = 후진
+
+   그리고 전체 속도를 낮게 설정
+========================================================= */
+
+scene.onBeforeRenderObservable.add(()=>{
+
+    if(
+        scene.activeCamera !==
+        walkCamera
+    )
         return;
 
 
-    const speed=.55;
-
-
-    /*
-       카메라가 보는 방향
-    */
-
     const forward=
         new BABYLON.Vector3(
-            Math.sin(camera.rotation.y),
+            Math.sin(
+                walkCamera.rotation.y
+            ),
             0,
-            Math.cos(camera.rotation.y)
+            Math.cos(
+                walkCamera.rotation.y
+            )
         );
 
 
     const right=
         new BABYLON.Vector3(
-            Math.cos(camera.rotation.y),
+            Math.cos(
+                walkCamera.rotation.y
+            ),
             0,
-            -Math.sin(camera.rotation.y)
+            -Math.sin(
+                walkCamera.rotation.y
+            )
         );
 
 
     /*
-       ★ 핵심
+       위로 밀면 joystickY = -1
 
-       joystick 위쪽:
-       jy = -1
+       -(-1) = +1
 
-       따라서 -jy = +1
-
-       → 바라보는 방향으로 전진
+       따라서 정확히 전진
     */
 
-    camera.position.addInPlace(
+    const movement=
         forward.scale(
-            -jy*speed
-        )
-    );
+            -joystickY*.12
+        );
 
 
-    camera.position.addInPlace(
+    movement.addInPlace(
         right.scale(
-            jx*speed
+            joystickX*.12
         )
     );
 
 
-    camera.position.y=1.7;
+    walkCamera.position
+        .addInPlace(
+            movement
+        );
 
 
     /*
-       도시 경계
+       사람 눈높이 유지
     */
 
-    camera.position.x=
-        Math.max(
-            -215,
-            Math.min(
-                215,
-                camera.position.x
-            )
-        );
+    walkCamera.position.y=
+        1.7;
+});
 
 
-    camera.position.z=
-        Math.max(
-            -215,
-            Math.min(
-                215,
-                camera.position.z
-            )
-        );
-
-},20);
-
-
-/* ============================================================
+/* =========================================================
    BUILDING CLICK
-============================================================ */
+========================================================= */
 
 scene.onPointerObservable.add(
-    info=>{
+    pointerInfo=>{
 
         if(
-            info.type !==
-            BABYLON.PointerEventTypes.POINTERPICK
+            pointerInfo.type !==
+            BABYLON.PointerEventTypes
+                .POINTERPICK
         )
             return;
 
 
-        if(!info.pickInfo.hit)
+        if(
+            !pointerInfo.pickInfo.hit
+        )
             return;
 
 
-        const mesh=
-            info.pickInfo.pickedMesh;
+        const picked=
+            pointerInfo
+                .pickInfo
+                .pickedMesh;
 
 
-        const b=
+        const found=
             buildings.find(
-                x=>x.mesh===mesh
+                b=>
+                    b.mesh===
+                    picked
             );
 
 
-        if(!b)
+        if(!found)
             return;
 
 
-        showInfo(b);
+        showBuilding(
+            found
+        );
     }
 );
 
 
-function showInfo(b){
+function showBuilding(
+    building
+){
 
     const types={
 
-        public:"공공기관",
+        public:
+            "공공기관",
 
-        research:"연구·R&D",
+        office:
+            "업무시설",
 
-        university:"대학·교육",
+        research:
+            "연구시설",
 
-        residential:"주거",
+        residential:
+            "주거",
 
-        commercial:"상업",
+        commercial:
+            "상업시설",
 
-        industry:"산업·기업"
+        industrial:
+            "산업시설",
+
+        old:
+            "구도심·농촌",
+
+        brick:
+            "구도심"
     };
 
 
     document.getElementById(
-        "info"
-    ).style.display="block";
+        "buildingInfo"
+    ).style.display=
+        "block";
 
 
     document.getElementById(
-        "infoName"
-    ).textContent=b.name;
-
-
-    document.getElementById(
-        "infoType"
+        "buildingName"
     ).textContent=
-        types[b.type];
+        building.name;
 
 
     document.getElementById(
-        "infoText"
+        "buildingType"
+    ).textContent=
+        types[
+            building.type
+        ] ||
+        "도시시설";
+
+
+    document.getElementById(
+        "buildingDescription"
     ).textContent=
 
-        "이 시설은 공공기관 이전에 따른 기능적 연계와 지역경제 파급효과를 분석하기 위한 가상 도시 구성요소입니다.";
+        "2차 공공기관 이전에 따른 기능적 연계와 지역경제 파급효과를 분석하기 위한 가상 도시 구성요소입니다.";
 }
 
 
-/* ============================================================
-   VARIABLES
-============================================================ */
+/* =========================================================
+   POLICY VARIABLES
+========================================================= */
 
-const pairs=[
-    ["s1","n1"],
-    ["s2","n2"],
-    ["s3","n3"],
-    ["s4","n4"],
-    ["s5","n5"],
-    ["s6","n6"]
+const sliders=[
+    ["s1","v1"],
+    ["s2","v2"],
+    ["s3","v3"],
+    ["s4","v4"],
+    ["s5","v5"],
+    ["s6","v6"]
 ];
 
 
-pairs.forEach(p=>{
+sliders.forEach(
+    pair=>{
 
-    const input=
-        document.getElementById(p[0]);
+        const input=
+            document.getElementById(
+                pair[0]
+            );
 
-    const number=
-        document.getElementById(p[1]);
-
-
-    input.addEventListener(
-        "input",
-        ()=>{
-
-            number.textContent=
-                input.value;
-
-            calculate();
-        }
-    );
-});
+        const value=
+            document.getElementById(
+                pair[1]
+            );
 
 
-function values(){
+        input.addEventListener(
+            "input",
+            ()=>{
 
-    return pairs.map(
-        p=>
+                value.textContent=
+                    input.value;
+
+                calculateMetrics();
+            }
+        );
+    }
+);
+
+
+function getValues(){
+
+    return sliders.map(
+        pair=>
             Number(
-                document.getElementById(
-                    p[0]
-                ).value
+                document
+                    .getElementById(
+                        pair[0]
+                    )
+                    .value
             )
     );
 }
 
 
-/* ============================================================
-   SIMULATION STATE
-============================================================ */
+/* =========================================================
+   METRICS
+========================================================= */
 
-const state={
+const metrics={
 
     population:52,
 
@@ -1692,17 +2402,13 @@ const state={
 
     settlement:61,
 
-    year:0,
+    coexistence:null,
 
-    coexistenceIndex:null
+    year:0
 };
 
 
-/* ============================================================
-   BASIC CALCULATION
-============================================================ */
-
-function calculate(){
+function calculateMetrics(){
 
     const [
         institution,
@@ -1711,7 +2417,8 @@ function calculate(){
         settlement,
         transport,
         firms
-    ]=values();
+    ]=
+        getValues();
 
 
     const strength=
@@ -1724,310 +2431,344 @@ function calculate(){
         firms*.12;
 
 
-    state.population=
-        32+
-        strength*.43;
+    metrics.population=
+        30+
+        strength*.44;
 
 
-    state.companies=
+    metrics.companies=
         120+
         industry*3+
-        research*1.5+
+        research*1.4+
         firms*2;
 
 
-    state.jobs=
+    metrics.jobs=
         5+
-        state.companies*.17+
-        strength*.15;
+        metrics.companies*.17+
+        strength*.12;
 
 
-    state.commercial=
-        settlement*.4+
-        transport*.2+
+    metrics.commercial=
+        settlement*.38+
+        transport*.22+
         industry*.2+
         institution*.1+
         research*.1;
 
 
-    state.cooperation=
+    metrics.cooperation=
         research*.55+
         industry*.25+
         institution*.2;
 
 
-    state.settlement=
+    metrics.settlement=
         settlement*.55+
         transport*.2+
         institution*.1+
         research*.15;
 
 
-    display();
+    updateMetrics();
 }
 
 
-function display(){
+function updateMetrics(){
 
     document.getElementById(
         "population"
     ).textContent=
-        state.population.toFixed(1)+"만";
+        metrics.population.toFixed(1)+
+        "만";
 
 
     document.getElementById(
         "companies"
     ).textContent=
         Math.round(
-            state.companies
+            metrics.companies
         );
 
 
     document.getElementById(
         "jobs"
     ).textContent=
-        state.jobs.toFixed(1)+"만";
+        metrics.jobs.toFixed(1)+
+        "만";
 
 
     document.getElementById(
         "commercial"
     ).textContent=
         Math.round(
-            state.commercial
-        )+"%";
+            metrics.commercial
+        )+
+        "%";
 
 
     document.getElementById(
         "cooperation"
     ).textContent=
         Math.round(
-            state.cooperation
-        )+"%";
+            metrics.cooperation
+        )+
+        "%";
 
 
     document.getElementById(
         "settlement"
     ).textContent=
         Math.round(
-            state.settlement
-        )+"%";
+            metrics.settlement
+        )+
+        "%";
+
+
+    document.getElementById(
+        "year"
+    ).textContent=
+        metrics.year+
+        "년";
+
+
+    document.getElementById(
+        "coexistence"
+    ).textContent=
+        metrics.coexistence === null
+        ? "—"
+        :
+        metrics.coexistence
+            .toFixed(1);
 }
 
 
-calculate();
+calculateMetrics();
 
 
-/* ============================================================
-   PRESET
-============================================================ */
+/* =========================================================
+   PRESETS
+========================================================= */
 
-function preset(
+function applyPreset(
     a,b,c,d,e,f
 ){
 
-    const arr=[
+    const values=[
         a,b,c,d,e,f
     ];
 
 
-    pairs.forEach(
-        (p,i)=>{
+    sliders.forEach(
+        (pair,i)=>{
 
-            document.getElementById(
-                p[0]
-            ).value=
-                arr[i];
+            document
+                .getElementById(
+                    pair[0]
+                )
+                .value=
+                values[i];
 
 
-            document.getElementById(
-                p[1]
-            ).textContent=
-                arr[i];
+            document
+                .getElementById(
+                    pair[1]
+                )
+                .textContent=
+                values[i];
         }
     );
 
 
-    calculate();
+    calculateMetrics();
+
 
     toast(
-        "도시 전략이 적용되었습니다"
+        "도시 전략을 적용했습니다"
     );
 }
 
 
-/* ============================================================
-   20 YEAR SIMULATION
-============================================================ */
+/* =========================================================
+   SIMULATION
+========================================================= */
 
-let timer=null;
+let simulationTimer=null;
 
 
-function simulate(){
+function runSimulation(){
 
-    if(timer)
-        clearInterval(timer);
+    if(simulationTimer)
+        clearInterval(
+            simulationTimer
+        );
 
 
     let year=0;
 
 
-    timer=setInterval(()=>{
+    simulationTimer=
+        setInterval(
+            ()=>{
 
-        year++;
+                year++;
 
-        state.year=year;
-
-
-        const [
-            a,b,c,d,e,f
-        ]=values();
+                metrics.year=
+                    year;
 
 
-        const strength=
-            (a+b+c+d+e+f)/600;
+                const [
+                    a,b,c,d,e,f
+                ]=
+                    getValues();
 
 
-        state.population=
-            42+
-            strength*18+
-            year*
-            strength*.35;
+                const strength=
+                    (
+                        a+b+c+d+e+f
+                    )/600;
 
 
-        state.companies=
-            180+
-            strength*220+
-            year*
-            strength*13;
+                metrics.population=
+                    42+
+                    strength*18+
+                    year*
+                    strength*.35;
 
 
-        state.jobs=
-            7+
-            strength*4+
-            year*
-            strength*.15;
+                metrics.companies=
+                    180+
+                    strength*220+
+                    year*
+                    strength*13;
 
 
-        state.commercial=
-            Math.min(
-                100,
-                45+
-                strength*35+
-                year*
-                strength*.7
-            );
+                metrics.jobs=
+                    7+
+                    strength*4+
+                    year*
+                    strength*.15;
 
 
-        state.cooperation=
-            Math.min(
-                100,
-                40+
-                strength*35+
-                year*.8
-            );
+                metrics.commercial=
+                    Math.min(
+                        100,
+                        45+
+                        strength*35+
+                        year*
+                        strength*.7
+                    );
 
 
-        state.settlement=
-            Math.min(
-                100,
-                45+
-                strength*30+
-                year*.5
-            );
+                metrics.cooperation=
+                    Math.min(
+                        100,
+                        40+
+                        strength*35+
+                        year*.8
+                    );
 
 
-        display();
+                metrics.settlement=
+                    Math.min(
+                        100,
+                        45+
+                        strength*30+
+                        year*.5
+                    );
 
 
-        document.getElementById(
-            "modeText"
-        ).textContent=
-            "시뮬레이션 "+
-            year+
-            "년차";
+                updateMetrics();
 
 
-        if(year>=20){
+                if(
+                    year>=20
+                ){
 
-            clearInterval(timer);
-
-
-            state.coexistenceIndex=
-                calculateCoexistenceIndex(
-                    state
-                );
+                    clearInterval(
+                        simulationTimer
+                    );
 
 
-            toast(
-                "20년 완료 · 상생지수 "+
-                state.coexistenceIndex.toFixed(1)
-            );
-        }
+                    metrics.coexistence=
+                        calculateCoexistenceIndex(
+                            metrics
+                        );
 
-    },180);
+
+                    updateMetrics();
+
+
+                    toast(
+                        "20년 시뮬레이션 완료"
+                    );
+                }
+
+            },
+            180
+        );
 }
 
 
-/* ============================================================
-   FUTURE COEXISTENCE INDEX
-============================================================ */
+/* =========================================================
+   COEXISTENCE INDEX ENGINE
+=========================================================
 
-function calculateCoexistenceIndex(s){
+   ★★★
 
-    /*
-       ★★★★★
+   지금은 임시식.
 
-       나중에 네가 알려주는
-       실제 '상생지수 계산법'으로
-       이 함수만 교체하면 된다.
+   나중에 네가 실제 상생지수 산식을 주면
+   이 함수에 그대로 넣는다.
 
-       예:
+========================================================= */
 
-       기관-기업 연계
-       산학협력
-       지역고용
-       정주
-       상권
-       교통
-       인구유지
+function calculateCoexistenceIndex(
+    m
+){
 
-       등의 실제 산식을
-       그대로 넣을 수 있음.
-    */
+    const value=
+
+        m.commercial*.20+
+
+        m.cooperation*.30+
+
+        m.settlement*.20+
+
+        Math.min(
+            100,
+            m.companies/6
+        )*.15+
+
+        Math.min(
+            100,
+            m.jobs*5
+        )*.15;
 
 
     return Math.max(
         0,
         Math.min(
             100,
-
-            s.commercial*.20+
-            s.cooperation*.30+
-            s.settlement*.20+
-            Math.min(
-                100,
-                s.companies/6
-            )*.15+
-            Math.min(
-                100,
-                s.jobs*5
-            )*.15
+            value
         )
     );
 }
 
 
-/* ============================================================
+/* =========================================================
    RESET
-============================================================ */
+========================================================= */
 
-function resetAll(){
+function resetCity(){
 
-    if(timer)
-        clearInterval(timer);
+    if(simulationTimer)
+        clearInterval(
+            simulationTimer
+        );
 
 
-    preset(
+    applyPreset(
         70,
         65,
         55,
@@ -2037,72 +2778,56 @@ function resetAll(){
     );
 
 
-    state.year=0;
+    metrics.year=0;
 
-    overview();
+    metrics.coexistence=null;
+
+    updateMetrics();
+
+    setOverview();
 }
 
 
-/* ============================================================
+/* =========================================================
    TOAST
-============================================================ */
+========================================================= */
 
-function toast(text){
+function toast(
+    text
+){
 
-    const t=
+    const el=
         document.getElementById(
             "toast"
         );
 
 
-    t.textContent=text;
-    t.style.display="block";
+    el.textContent=text;
+
+    el.style.display=
+        "block";
 
 
     setTimeout(
         ()=>{
-            t.style.display="none";
+            el.style.display=
+                "none";
         },
-        1800
+        1700
     );
 }
 
 
-/* ============================================================
-   CAR ANIMATION
-============================================================ */
+/* =========================================================
+   START
+========================================================= */
 
-scene.onBeforeRenderObservable.add(()=>{
-
-    cars.forEach(c=>{
-
-        if(c.horizontal){
-
-            c.root.position.x+=
-                c.speed;
-
-            if(
-                c.root.position.x>230
-            )
-                c.root.position.x=-230;
-
-        }else{
-
-            c.root.position.z+=
-                c.speed;
-
-            if(
-                c.root.position.z>230
-            )
-                c.root.position.z=-230;
-        }
-    });
-});
+setOverview();
 
 
-/* ============================================================
+/* =========================================================
    RENDER
-============================================================ */
+========================================================= */
 
 engine.runRenderLoop(
     ()=>{
@@ -2117,13 +2842,6 @@ window.addEventListener(
         engine.resize();
     }
 );
-
-
-/* ============================================================
-   INITIAL VIEW
-============================================================ */
-
-overview();
 
 </script>
 
