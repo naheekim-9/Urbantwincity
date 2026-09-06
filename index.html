@@ -34,7 +34,6 @@ html,body{
     top:12px;
     left:12px;
     right:12px;
-
     height:58px;
 
     display:flex;
@@ -245,8 +244,8 @@ button.orange{
     width:48px;
     height:48px;
 
-    left:40px;
-    top:40px;
+    left:42px;
+    top:42px;
 
     border-radius:50%;
 
@@ -331,6 +330,10 @@ button.orange{
     #stats{
         width:215px;
     }
+
+    #buildingInfo{
+        width:220px;
+    }
 }
 </style>
 </head>
@@ -338,7 +341,6 @@ button.orange{
 <body>
 
 <canvas id="renderCanvas"></canvas>
-
 
 <div id="topbar">
 
@@ -367,7 +369,6 @@ button.orange{
             도시 정책 변수
         </div>
 
-
         <div class="slider">
 
             <div class="slider-row">
@@ -375,12 +376,11 @@ button.orange{
                 <b id="v1">70</b>
             </div>
 
-            <input
-                id="s1"
-                type="range"
-                min="0"
-                max="100"
-                value="70">
+            <input id="s1"
+                   type="range"
+                   min="0"
+                   max="100"
+                   value="70">
         </div>
 
 
@@ -391,12 +391,11 @@ button.orange{
                 <b id="v2">65</b>
             </div>
 
-            <input
-                id="s2"
-                type="range"
-                min="0"
-                max="100"
-                value="65">
+            <input id="s2"
+                   type="range"
+                   min="0"
+                   max="100"
+                   value="65">
         </div>
 
 
@@ -407,12 +406,11 @@ button.orange{
                 <b id="v3">55</b>
             </div>
 
-            <input
-                id="s3"
-                type="range"
-                min="0"
-                max="100"
-                value="55">
+            <input id="s3"
+                   type="range"
+                   min="0"
+                   max="100"
+                   value="55">
         </div>
 
 
@@ -423,12 +421,11 @@ button.orange{
                 <b id="v4">60</b>
             </div>
 
-            <input
-                id="s4"
-                type="range"
-                min="0"
-                max="100"
-                value="60">
+            <input id="s4"
+                   type="range"
+                   min="0"
+                   max="100"
+                   value="60">
         </div>
 
 
@@ -439,12 +436,11 @@ button.orange{
                 <b id="v5">60</b>
             </div>
 
-            <input
-                id="s5"
-                type="range"
-                min="0"
-                max="100"
-                value="60">
+            <input id="s5"
+                   type="range"
+                   min="0"
+                   max="100"
+                   value="60">
         </div>
 
 
@@ -455,12 +451,11 @@ button.orange{
                 <b id="v6">35</b>
             </div>
 
-            <input
-                id="s6"
-                type="range"
-                min="0"
-                max="100"
-                value="35">
+            <input id="s6"
+                   type="range"
+                   min="0"
+                   max="100"
+                   value="35">
         </div>
 
     </div>
@@ -472,27 +467,19 @@ button.orange{
             도시 전략
         </div>
 
-        <button onclick="applyPreset(
-            75,70,65,75,70,50
-        )">
+        <button onclick="applyPreset(75,70,65,75,70,50)">
             균형형
         </button>
 
-        <button onclick="applyPreset(
-            80,95,75,55,65,80
-        )">
+        <button onclick="applyPreset(80,95,75,55,65,80)">
             산업 클러스터형
         </button>
 
-        <button onclick="applyPreset(
-            65,55,60,95,75,40
-        )">
+        <button onclick="applyPreset(65,55,60,95,75,40)">
             정주 우선형
         </button>
 
-        <button onclick="applyPreset(
-            70,65,60,70,98,45
-        )">
+        <button onclick="applyPreset(70,65,60,70,98,45)">
             교통 거점형
         </button>
 
@@ -611,23 +598,7 @@ button.orange{
 <div id="toast"></div>
 
 
-<!--
-==========================================================
-ENGINE
-==========================================================
-
-이 버전은 Babylon.js를 사용한다.
-
-최종적으로 실제 GLB/GLTF 건물을 넣을 때
-SceneLoader.ImportMeshAsync를 이용한다.
-
-현재 외부 라이브러리를 사용하므로
-인터넷 연결이 필요하다.
-==========================================================
--->
-
 <script src="https://cdn.babylonjs.com/babylon.js"></script>
-
 
 <script>
 
@@ -636,9 +607,7 @@ SceneLoader.ImportMeshAsync를 이용한다.
 ========================================================= */
 
 const canvas =
-    document.getElementById(
-        "renderCanvas"
-    );
+    document.getElementById("renderCanvas");
 
 const engine =
     new BABYLON.Engine(
@@ -653,11 +622,6 @@ const engine =
 const scene =
     new BABYLON.Scene(engine);
 
-
-/* =========================================================
-   WORLD
-========================================================= */
-
 scene.clearColor =
     new BABYLON.Color4(
         .60,
@@ -668,7 +632,7 @@ scene.clearColor =
 
 
 /* =========================================================
-   LIGHT
+   LIGHTING
 ========================================================= */
 
 const sun =
@@ -875,254 +839,53 @@ const MAT={
 
 
 /* =========================================================
-   GROUND
-========================================================= */
-
-const ground =
-    BABYLON.MeshBuilder.CreateGround(
-        "world",
-        {
-            width:900,
-            height:900,
-            subdivisions:12
-        },
-        scene
-    );
-
-ground.material=MAT.grass;
-
-
-/* =========================================================
-   CITY ZONES
-=========================================================
-
-   월드를 다음처럼 만든다.
-
-        시골 / 산림
-             ↓
-        농촌 / 마을
-             ↓
-        외곽 주거
-             ↓
-        구도심
-             ↓
-        중심도심
-             ↓
-        공공기관
-             ↓
-        신도시
-             ↓
-        산업지구
-
-   즉 어디로 이동해도 다른 지역이 이어진다.
-========================================================= */
-
-
-/* =========================================================
-   ROAD
-========================================================= */
-
-function makeRoad(
-    x,
-    z,
-    width,
-    depth
-){
-
-    const road =
-        BABYLON.MeshBuilder.CreateBox(
-            "road",
-            {
-                width,
-                depth,
-                height:.12
-            },
-            scene
-        );
-
-    road.position.set(
-        x,
-        .06,
-        z
-    );
-
-    road.material=MAT.asphalt;
-
-
-    return road;
-}
-
-
-/* =========================================================
-   SIDEWALK
-========================================================= */
-
-function makeSidewalk(
-    x,
-    z,
-    width,
-    depth
-){
-
-    const s =
-        BABYLON.MeshBuilder.CreateBox(
-            "sidewalk",
-            {
-                width,
-                depth,
-                height:.18
-            },
-            scene
-        );
-
-    s.position.set(
-        x,
-        .14,
-        z
-    );
-
-    s.material=MAT.sidewalk;
-}
-
-
-/* =========================================================
-   MAIN ROAD NETWORK
-========================================================= */
-
-for(
-    let p=-8*45;
-    p<=8*45;
-    p+=45
-){
-
-    makeRoad(
-        0,
-        p,
-        900,
-        11
-    );
-
-    makeSidewalk(
-        0,
-        p-7,
-        900,
-        2
-    );
-
-    makeSidewalk(
-        0,
-        p+7,
-        900,
-        2
-    );
-
-
-    makeRoad(
-        p,
-        0,
-        11,
-        900
-    );
-
-    makeSidewalk(
-        p-7,
-        0,
-        2,
-        900
-    );
-
-    makeSidewalk(
-        p+7,
-        0,
-        2,
-        900
-    );
-}
-
-
-/* =========================================================
-   ROAD MARKING
-========================================================= */
-
-function roadMarking(
-    x,
-    z,
-    horizontal=true
-){
-
-    const line =
-        BABYLON.MeshBuilder.CreateBox(
-            "roadLine",
-            horizontal
-            ?
-            {
-                width:6,
-                depth:.22,
-                height:.035
-            }
-            :
-            {
-                width:.22,
-                depth:6,
-                height:.035
-            },
-            scene
-        );
-
-    line.position.set(
-        x,
-        .14,
-        z
-    );
-
-    line.material=MAT.white;
-}
-
-
-for(
-    let p=-8*45;
-    p<=8*45;
-    p+=45
-){
-
-    for(
-        let x=-430;
-        x<430;
-        x+=13
-    ){
-
-        roadMarking(
-            x,
-            p,
-            true
-        );
-    }
-
-
-    for(
-        let z=-430;
-        z<430;
-        z+=13
-    ){
-
-        roadMarking(
-            p,
-            z,
-            false
-        );
-    }
-}
-
-
-/* =========================================================
-   BUILDING STORAGE
+   CITY STORAGE
 ========================================================= */
 
 const buildings=[];
 
+const cityObjects=[];
+
 
 /* =========================================================
-   DETAILED BUILDING
+   REGISTER OBJECT
+========================================================= */
+
+function registerCityObject(mesh){
+
+    cityObjects.push(mesh);
+
+    return mesh;
+}
+
+
+/* =========================================================
+   CLEAR CITY
+========================================================= */
+
+function clearCity(){
+
+    buildings.length=0;
+
+    cityObjects.forEach(
+        mesh=>{
+
+            if(
+                mesh &&
+                !mesh.isDisposed()
+            ){
+                mesh.dispose();
+            }
+
+        }
+    );
+
+    cityObjects.length=0;
+}
+
+
+/* =========================================================
+   BUILDING
 ========================================================= */
 
 function createBuilding(
@@ -1152,32 +915,37 @@ function createBuilding(
         z
     );
 
-    body.material=
+    body.material =
         MAT[type] ||
         MAT.office;
 
 
+    registerCityObject(body);
+
     shadowGenerator
-        .addShadowCaster(
-            body
-        );
+        .addShadowCaster(body);
 
 
     buildings.push({
+
         mesh:body,
+
         x,
         z,
+
         width,
         depth,
         height,
+
         type,
         name
+
     });
 
 
-    /*
-       옥상
-    */
+    /* =====================
+       ROOF
+    ===================== */
 
     const roof =
         BABYLON.MeshBuilder.CreateBox(
@@ -1198,13 +966,12 @@ function createBuilding(
 
     roof.material=MAT.roof;
 
+    registerCityObject(roof);
 
-    /*
-       창문
 
-       모든 건물을 단순 박스가 아니라
-       입면을 가진 건물처럼 보이게 한다.
-    */
+    /* =====================
+       WINDOWS
+    ===================== */
 
     if(
         width>10 &&
@@ -1218,7 +985,6 @@ function createBuilding(
                     height/4
                 )
             );
-
 
         const cols=
             Math.max(
@@ -1282,7 +1048,10 @@ function createBuilding(
                     z-depth/2-.04
                 );
 
-                window.material=MAT.glass;
+                window.material=
+                    MAT.glass;
+
+                registerCityObject(window);
             }
         }
     }
@@ -1293,14 +1062,313 @@ function createBuilding(
 
 
 /* =========================================================
+   ROAD NETWORK
+========================================================= */
+
+function generateRoadNetwork(){
+
+    const [
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+    ]=getValues();
+
+
+    /*
+       교통 접근성이 높을수록
+       도로 간격이 좁아진다.
+    */
+
+    const spacing =
+        72-
+        transport*.34;
+
+
+    const roadCount =
+        Math.ceil(
+            430/spacing
+        );
+
+
+    for(
+        let i=-roadCount;
+        i<=roadCount;
+        i++
+    ){
+
+        const p=i*spacing;
+
+
+        /* horizontal */
+
+        const roadH =
+            BABYLON.MeshBuilder.CreateBox(
+                "dynamicRoadH",
+                {
+                    width:860,
+                    depth:11,
+                    height:.12
+                },
+                scene
+            );
+
+        roadH.position.set(
+            0,
+            .06,
+            p
+        );
+
+        roadH.material=
+            MAT.asphalt;
+
+        registerCityObject(roadH);
+
+
+        /* vertical */
+
+        const roadV =
+            BABYLON.MeshBuilder.CreateBox(
+                "dynamicRoadV",
+                {
+                    width:11,
+                    depth:860,
+                    height:.12
+                },
+                scene
+            );
+
+        roadV.position.set(
+            p,
+            .06,
+            0
+        );
+
+        roadV.material=
+            MAT.asphalt;
+
+        registerCityObject(roadV);
+
+
+        /* sidewalks */
+
+        const sw1 =
+            BABYLON.MeshBuilder.CreateBox(
+                "sidewalk",
+                {
+                    width:860,
+                    depth:2,
+                    height:.18
+                },
+                scene
+            );
+
+        sw1.position.set(
+            0,
+            .14,
+            p-7
+        );
+
+        sw1.material=
+            MAT.sidewalk;
+
+        registerCityObject(sw1);
+
+
+        const sw2 =
+            BABYLON.MeshBuilder.CreateBox(
+                "sidewalk",
+                {
+                    width:2,
+                    depth:860,
+                    height:.18
+                },
+                scene
+            );
+
+        sw2.position.set(
+            p-7,
+            .14,
+            0
+        );
+
+        sw2.material=
+            MAT.sidewalk;
+
+        registerCityObject(sw2);
+    }
+}
+
+
+/* =========================================================
+   ROAD MARKING
+========================================================= */
+
+function generateRoadMarkings(){
+
+    const [
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+    ]=getValues();
+
+
+    const spacing =
+        72-
+        transport*.34;
+
+
+    const roadCount =
+        Math.ceil(
+            430/spacing
+        );
+
+
+    for(
+        let i=-roadCount;
+        i<=roadCount;
+        i++
+    ){
+
+        const p=i*spacing;
+
+
+        for(
+            let x=-420;
+            x<420;
+            x+=14
+        ){
+
+            const mark =
+                BABYLON.MeshBuilder.CreateBox(
+                    "roadMark",
+                    {
+                        width:6,
+                        depth:.18,
+                        height:.035
+                    },
+                    scene
+                );
+
+            mark.position.set(
+                x,
+                .14,
+                p
+            );
+
+            mark.material=
+                MAT.white;
+
+            registerCityObject(mark);
+        }
+
+
+        for(
+            let z=-420;
+            z<420;
+            z+=14
+        ){
+
+            const mark =
+                BABYLON.MeshBuilder.CreateBox(
+                    "roadMark",
+                    {
+                        width:.18,
+                        depth:6,
+                        height:.035
+                    },
+                    scene
+                );
+
+            mark.position.set(
+                p,
+                .14,
+                z
+            );
+
+            mark.material=
+                MAT.white;
+
+            registerCityObject(mark);
+        }
+    }
+}
+
+
+/* =========================================================
+   RANDOM BUILDING HELPER
+========================================================= */
+
+function randomBuilding(
+    x,
+    z,
+    type,
+    name,
+    minHeight,
+    maxHeight
+){
+
+    const width=
+        11+
+        Math.random()*18;
+
+    const depth=
+        10+
+        Math.random()*17;
+
+    const height=
+        minHeight+
+        Math.random()*
+        (
+            maxHeight-
+            minHeight
+        );
+
+
+    return createBuilding(
+        x,
+        z,
+        width,
+        depth,
+        height,
+        type,
+        name
+    );
+}
+
+
+/* =========================================================
    DOWNTOWN
 ========================================================= */
 
 function generateDowntown(){
 
+    const [
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+    ]=getValues();
+
+
+    const count=
+        Math.round(
+            20+
+            institution*.15+
+            firms*.20
+        );
+
+
     for(
         let i=0;
-        i<45;
+        i<count;
         i++
     ){
 
@@ -1309,8 +1377,8 @@ function generateDowntown(){
             Math.PI*2;
 
         const radius=
-            60+
-            Math.random()*90;
+            65+
+            Math.random()*105;
 
 
         const x=
@@ -1322,184 +1390,186 @@ function generateDowntown(){
             radius;
 
 
-        createBuilding(
+        randomBuilding(
             x,
             z,
-            14+
-                Math.random()*14,
-            12+
-                Math.random()*12,
-            30+
-                Math.random()*80,
             "office",
-            "도심 업무시설"
+            "도심 업무시설",
+            30,
+            105
         );
     }
 }
 
 
 /* =========================================================
-   OLD TOWN
-========================================================= */
-
-function generateOldTown(){
-
-    for(
-        let x=-210;
-        x<=-80;
-        x+=20
-    ){
-
-        for(
-            let z=-70;
-            z<=70;
-            z+=24
-        ){
-
-            createBuilding(
-                x+
-                    (Math.random()-.5)*4,
-                z+
-                    (Math.random()-.5)*4,
-                15,
-                13,
-                8+
-                    Math.random()*12,
-                Math.random()>.5
-                    ?"old"
-                    :"brick",
-                "구도심 건물"
-            );
-        }
-    }
-}
-
-
-/* =========================================================
-   NEW TOWN
-========================================================= */
-
-function generateNewTown(){
-
-    for(
-        let x=100;
-        x<=250;
-        x+=30
-    ){
-
-        for(
-            let z=-150;
-            z<=150;
-            z+=38
-        ){
-
-            createBuilding(
-                x,
-                z,
-                19,
-                17,
-                45+
-                    Math.random()*40,
-                "residential",
-                "신도시 주거단지"
-            );
-        }
-    }
-}
-
-
-/* =========================================================
-   PUBLIC INSTITUTION CLUSTER
+   PUBLIC CLUSTER
 ========================================================= */
 
 function generatePublicCluster(){
 
-    createBuilding(
-        0,
-        0,
-        45,
-        30,
-        65,
-        "public",
-        "통합 공공기관 본청"
-    );
+    const [
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+    ]=getValues();
 
 
-    createBuilding(
-        -65,
-        0,
-        27,
-        22,
-        48,
-        "public",
-        "지역정책기관"
-    );
+    const count=
+        Math.max(
+            2,
+            Math.round(
+                2+
+                institution*.14
+            )
+        );
 
-
-    createBuilding(
-        65,
-        0,
-        27,
-        22,
-        45,
-        "public",
-        "지역산업지원기관"
-    );
-
-
-    createBuilding(
-        0,
-        -65,
-        35,
-        25,
-        50,
-        "public",
-        "공공연구센터"
-    );
-
-
-    createBuilding(
-        0,
-        65,
-        31,
-        24,
-        42,
-        "research",
-        "산학협력센터"
-    );
-}
-
-
-/* =========================================================
-   UNIVERSITY
-========================================================= */
-
-function generateUniversity(){
 
     for(
         let i=0;
-        i<14;
+        i<count;
         i++
     ){
 
+        const angle=
+            i/count*
+            Math.PI*2;
+
+
+        const radius=
+            25+
+            Math.random()*75;
+
+
         const x=
-            -220+
-            (i%5)*38;
+            Math.cos(angle)*
+            radius;
 
         const z=
-            160+
-            Math.floor(i/5)*35;
+            Math.sin(angle)*
+            radius;
+
+
+        const height=
+            30+
+            institution*.45+
+            Math.random()*35;
 
 
         createBuilding(
             x,
             z,
-            24,
-            18,
+            22+
+                Math.random()*22,
             18+
-                Math.random()*18,
+                Math.random()*15,
+            height,
+            "public",
+            "공공기관 "+(i+1)
+        );
+    }
+}
+
+
+/* =========================================================
+   RESEARCH
+========================================================= */
+
+function generateResearch(){
+
+    const [
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+    ]=getValues();
+
+
+    const count=
+        Math.round(
+            4+
+            research*.18
+        );
+
+
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
+        const x=
+            -230+
+            Math.random()*120;
+
+        const z=
+            120+
+            Math.random()*140;
+
+
+        randomBuilding(
+            x,
+            z,
             "office",
-            "지역혁신대학"
+            "대학·연구시설",
+            14,
+            42
+        );
+    }
+}
+
+
+/* =========================================================
+   RESIDENTIAL
+========================================================= */
+
+function generateResidential(){
+
+    const [
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+    ]=getValues();
+
+
+    const count=
+        Math.round(
+            12+
+            settlement*.52+
+            transport*.12
+        );
+
+
+    for(
+        let i=0;
+        i<count;
+        i++
+    ){
+
+        const x=
+            110+
+            Math.random()*175;
+
+        const z=
+            -175+
+            Math.random()*350;
+
+
+        randomBuilding(
+            x,
+            z,
+            "residential",
+            "주거시설",
+            20,
+            80
         );
     }
 }
@@ -1511,32 +1581,46 @@ function generateUniversity(){
 
 function generateIndustrial(){
 
+    const [
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+    ]=getValues();
+
+
+    const count=
+        Math.round(
+            7+
+            industry*.62+
+            firms*.25
+        );
+
+
     for(
         let i=0;
-        i<35;
+        i<count;
         i++
     ){
 
         const x=
-            230+
-            Math.random()*180;
+            250+
+            Math.random()*170;
 
         const z=
             -220+
             Math.random()*440;
 
 
-        createBuilding(
+        randomBuilding(
             x,
             z,
-            20+
-                Math.random()*25,
-            18+
-                Math.random()*20,
-            10+
-                Math.random()*18,
             "industrial",
-            "연계기업"
+            "연계기업·산업시설",
+            10,
+            32
         );
     }
 }
@@ -1548,71 +1632,144 @@ function generateIndustrial(){
 
 function generateCommercial(){
 
+    const [
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+    ]=getValues();
+
+
+    const count=
+        Math.round(
+            15+
+            settlement*.28+
+            firms*.42+
+            transport*.20
+        );
+
+
     for(
         let i=0;
-        i<45;
+        i<count;
         i++
     ){
 
+        const angle=
+            Math.random()*
+            Math.PI*2;
+
+
+        const radius=
+            115+
+            Math.random()*250;
+
+
         const x=
-            -300+
-            Math.random()*600;
+            Math.cos(angle)*
+            radius;
 
         const z=
-            -300+
-            Math.random()*600;
+            Math.sin(angle)*
+            radius;
 
 
-        if(
-            Math.abs(x)<100 &&
-            Math.abs(z)<100
-        )
-            continue;
-
-
-        createBuilding(
+        randomBuilding(
             x,
             z,
-            12+
-                Math.random()*8,
-            10+
-                Math.random()*8,
-            8+
-                Math.random()*15,
             "commercial",
-            "상업시설"
+            "지역 상업시설",
+            8,
+            25
         );
     }
 }
 
 
 /* =========================================================
-   RURAL HOUSES
+   OLD TOWN
 ========================================================= */
 
-function ruralHouse(
-    x,
-    z
-){
+function generateOldTown(){
 
-    createBuilding(
-        x,
-        z,
-        13,
-        10,
-        5+
-            Math.random()*3,
-        "old",
-        "농촌 주택"
-    );
-}
+    const [
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+    ]=getValues();
 
 
-function generateRural(){
+    const count=
+        Math.round(
+            25+
+            (100-settlement)*.18
+        );
+
 
     for(
         let i=0;
-        i<45;
+        i<count;
+        i++
+    ){
+
+        const x=
+            -230+
+            Math.random()*125;
+
+        const z=
+            -100+
+            Math.random()*200;
+
+
+        const type=
+            Math.random()>.5
+            ?"old"
+            :"brick";
+
+
+        randomBuilding(
+            x,
+            z,
+            type,
+            "구도심 건물",
+            7,
+            22
+        );
+    }
+}
+
+
+/* =========================================================
+   RURAL
+========================================================= */
+
+function generateRural(){
+
+    const [
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+    ]=getValues();
+
+
+    const count=
+        Math.round(
+            30+
+            (100-settlement)*.15
+        );
+
+
+    for(
+        let i=0;
+        i<count;
         i++
     ){
 
@@ -1625,16 +1782,18 @@ function generateRural(){
             Math.random()*600;
 
 
-        ruralHouse(
+        randomBuilding(
             x,
-            z
+            z,
+            "old",
+            "농촌 주택",
+            5,
+            10
         );
     }
 
 
-    /*
-       논 / 밭
-    */
+    /* fields */
 
     for(
         let i=0;
@@ -1643,12 +1802,12 @@ function generateRural(){
     ){
 
         const x=
-            -400+
-            Math.random()*130;
+            -420+
+            Math.random()*150;
 
         const z=
-            -280+
-            Math.random()*560;
+            -300+
+            Math.random()*600;
 
 
         const field =
@@ -1668,13 +1827,16 @@ function generateRural(){
             z
         );
 
-        field.material=MAT.soil;
+        field.material=
+            MAT.soil;
+
+        registerCityObject(field);
     }
 }
 
 
 /* =========================================================
-   PARK
+   TREE
 ========================================================= */
 
 function tree(
@@ -1698,7 +1860,10 @@ function tree(
         z
     );
 
-    trunk.material=MAT.trunk;
+    trunk.material=
+        MAT.trunk;
+
+    registerCityObject(trunk);
 
 
     const crown =
@@ -1717,15 +1882,20 @@ function tree(
         z
     );
 
-    crown.material=MAT.tree;
+    crown.material=
+        MAT.tree;
+
+    registerCityObject(crown);
 
 
     shadowGenerator
-        .addShadowCaster(
-            crown
-        );
+        .addShadowCaster(crown);
 }
 
+
+/* =========================================================
+   PARK
+========================================================= */
 
 function park(
     x,
@@ -1751,69 +1921,129 @@ function park(
         z
     );
 
-    p.material=MAT.grass;
+    p.material=
+        MAT.grass;
+
+    registerCityObject(p);
 
 
     for(
         let i=0;
-        i<25;
+        i<20;
         i++
     ){
 
         tree(
             x+
-                (Math.random()-.5)*
-                (width-5),
+            (
+                Math.random()-.5
+            )*
+            Math.max(
+                5,
+                width-5
+            ),
 
             z+
-                (Math.random()-.5)*
-                (depth-5)
+            (
+                Math.random()-.5
+            )*
+            Math.max(
+                5,
+                depth-5
+            )
         );
     }
 }
 
 
 /* =========================================================
-   GENERATE WORLD
+   DYNAMIC CITY GENERATOR
 ========================================================= */
 
-generateDowntown();
+function rebuildCity(){
 
-generateOldTown();
-
-generateNewTown();
-
-generatePublicCluster();
-
-generateUniversity();
-
-generateIndustrial();
-
-generateCommercial();
-
-generateRural();
+    clearCity();
 
 
-park(
-    -80,
-    120,
-    60,
-    45
-);
+    /*
+       정책변수를 읽고
+       도시의 구조 자체를 다시 만든다.
+    */
 
-park(
-    120,
-    -120,
-    55,
-    40
-);
+    generateRoadNetwork();
 
-park(
-    -260,
-    -150,
-    70,
-    55
-);
+    generateRoadMarkings();
+
+    generateRural();
+
+    generateOldTown();
+
+    generateResidential();
+
+    generateDowntown();
+
+    generatePublicCluster();
+
+    generateResearch();
+
+    generateIndustrial();
+
+    generateCommercial();
+
+
+    /*
+       정주환경이 좋을수록
+       공원 증가
+    */
+
+    const [
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+    ]=getValues();
+
+
+    const parkCount=
+        Math.round(
+            2+
+            settlement/13
+        );
+
+
+    for(
+        let i=0;
+        i<parkCount;
+        i++
+    ){
+
+        park(
+            -180+
+            Math.random()*360,
+
+            -180+
+            Math.random()*360,
+
+            30+
+            Math.random()*40,
+
+            25+
+            Math.random()*35
+        );
+    }
+
+
+    /*
+       도시 재구성 후
+       정보창 닫기
+    */
+
+    document.getElementById(
+        "buildingInfo"
+    ).style.display="none";
+}
 
 
 /* =========================================================
@@ -1838,14 +2068,14 @@ walkCamera.maxZ=1200;
 
 
 /*
-   ★ 마인크래프트처럼 느린 속도
+   현실 보행보다 약간 빠른 속도
 */
 
-walkCamera.speed=.18;
+walkCamera.speed=.30;
 
 
 /*
-   키보드도 FPS 방식
+   FPS keyboard
 */
 
 walkCamera.keysUp=[
@@ -1869,18 +2099,8 @@ walkCamera.keysRight=[
 ];
 
 
-/*
-   화면 회전 감도 ↓
-
-   이전 버전보다 훨씬 둔하게
-*/
-
 walkCamera.angularSensibility=7000;
 
-
-/*
-   사람 몸 충돌 높이
-*/
 
 walkCamera.ellipsoid=
     new BABYLON.Vector3(
@@ -1902,7 +2122,7 @@ walkCamera.applyGravity=true;
 
 
 /* =========================================================
-   OVERVIEW CAMERA
+   OVERVIEW
 ========================================================= */
 
 const overviewCamera =
@@ -1933,7 +2153,7 @@ overviewCamera.wheelPrecision=3;
 
 
 /* =========================================================
-   CAMERA SWITCH
+   VIEW SWITCH
 ========================================================= */
 
 function setWalk(){
@@ -1941,10 +2161,12 @@ function setWalk(){
     scene.activeCamera=
         walkCamera;
 
+
     walkCamera.attachControl(
         canvas,
         true
     );
+
 
     overviewCamera.detachControl(
         canvas
@@ -2047,8 +2269,12 @@ joystick.addEventListener(
 
         if(
             joystickActive
-        )
+        ){
+
             moveJoystick(e);
+
+        }
+
     }
 );
 
@@ -2088,6 +2314,7 @@ function moveJoystick(e){
 
 
     const max=38;
+
 
     const distance=
         Math.hypot(
@@ -2141,87 +2368,74 @@ function resetJoystick(){
 
 /* =========================================================
    JOYSTICK MOVEMENT
-
-   ★ 핵심 수정
-
-   위 = 전진
-
-   아래 = 후진
-
-   그리고 전체 속도를 낮게 설정
 ========================================================= */
 
-scene.onBeforeRenderObservable.add(()=>{
+scene.onBeforeRenderObservable.add(
+    ()=>{
 
-    if(
-        scene.activeCamera !==
-        walkCamera
-    )
-        return;
-
-
-    const forward=
-        new BABYLON.Vector3(
-            Math.sin(
-                walkCamera.rotation.y
-            ),
-            0,
-            Math.cos(
-                walkCamera.rotation.y
-            )
-        );
-
-
-    const right=
-        new BABYLON.Vector3(
-            Math.cos(
-                walkCamera.rotation.y
-            ),
-            0,
-            -Math.sin(
-                walkCamera.rotation.y
-            )
-        );
-
-
-    /*
-       위로 밀면 joystickY = -1
-
-       -(-1) = +1
-
-       따라서 정확히 전진
-    */
-
-    const movement=
-        forward.scale(
-            -joystickY*.12
-        );
-
-
-    movement.addInPlace(
-        right.scale(
-            joystickX*.12
+        if(
+            scene.activeCamera !==
+            walkCamera
         )
-    );
+            return;
 
 
-    walkCamera.position
-        .addInPlace(
-            movement
+        const forward=
+            new BABYLON.Vector3(
+                Math.sin(
+                    walkCamera.rotation.y
+                ),
+                0,
+                Math.cos(
+                    walkCamera.rotation.y
+                )
+            );
+
+
+        const right=
+            new BABYLON.Vector3(
+                Math.cos(
+                    walkCamera.rotation.y
+                ),
+                0,
+                -Math.sin(
+                    walkCamera.rotation.y
+                )
+            );
+
+
+        /*
+           위 = 전진
+           아래 = 후진
+        */
+
+        const movement=
+            forward.scale(
+                -joystickY*.22
+            );
+
+
+        movement.addInPlace(
+            right.scale(
+                joystickX*.22
+            )
         );
 
 
-    /*
-       사람 눈높이 유지
-    */
+        walkCamera.position
+            .addInPlace(
+                movement
+            );
 
-    walkCamera.position.y=
-        1.7;
-});
+
+        walkCamera.position.y=
+            1.7;
+    }
+);
 
 
 /* =========================================================
-   BUILDING CLICK
+   BUILDING PICK
 ========================================================= */
 
 scene.onPointerObservable.add(
@@ -2255,16 +2469,20 @@ scene.onPointerObservable.add(
             );
 
 
-        if(!found)
+        if(
+            !found
+        )
             return;
 
 
-        showBuilding(
-            found
-        );
+        showBuilding(found);
     }
 );
 
+
+/* =========================================================
+   BUILDING INFO
+========================================================= */
 
 function showBuilding(
     building
@@ -2323,7 +2541,7 @@ function showBuilding(
         "buildingDescription"
     ).textContent=
 
-        "2차 공공기관 이전에 따른 기능적 연계와 지역경제 파급효과를 분석하기 위한 가상 도시 구성요소입니다.";
+        "정책변수에 따라 도시 내부의 기능적 배치와 규모가 변화하는 디지털 트윈 구성요소입니다.";
 }
 
 
@@ -2332,13 +2550,23 @@ function showBuilding(
 ========================================================= */
 
 const sliders=[
+
     ["s1","v1"],
+
     ["s2","v2"],
+
     ["s3","v3"],
+
     ["s4","v4"],
+
     ["s5","v5"],
+
     ["s6","v6"]
+
 ];
+
+
+let rebuildTimer=null;
 
 
 sliders.forEach(
@@ -2362,12 +2590,44 @@ sliders.forEach(
                 value.textContent=
                     input.value;
 
+
                 calculateMetrics();
+
+
+                /*
+                   너무 빠르게 슬라이더를
+                   움직일 때 매 프레임마다
+                   도시를 재생성하지 않도록
+                   짧게 지연한다.
+                */
+
+                clearTimeout(
+                    rebuildTimer
+                );
+
+
+                rebuildTimer=
+                    setTimeout(
+                        ()=>{
+
+                            rebuildCity();
+
+                            toast(
+                                "정책 변화가 도시 공간에 반영되었습니다"
+                            );
+
+                        },
+                        180
+                    );
             }
         );
     }
 );
 
+
+/* =========================================================
+   GET POLICY VALUES
+========================================================= */
 
 function getValues(){
 
@@ -2405,8 +2665,13 @@ const metrics={
     coexistence:null,
 
     year:0
+
 };
 
+
+/* =========================================================
+   CALCULATE METRICS
+========================================================= */
 
 function calculateMetrics(){
 
@@ -2421,13 +2686,22 @@ function calculateMetrics(){
         getValues();
 
 
+    /*
+       정책변수 가중합
+    */
+
     const strength=
 
         institution*.18+
+
         industry*.22+
+
         research*.15+
+
         settlement*.18+
+
         transport*.15+
+
         firms*.12;
 
 
@@ -2452,27 +2726,31 @@ function calculateMetrics(){
     metrics.commercial=
         settlement*.38+
         transport*.22+
-        industry*.2+
-        institution*.1+
-        research*.1;
+        industry*.20+
+        institution*.10+
+        research*.10;
 
 
     metrics.cooperation=
         research*.55+
         industry*.25+
-        institution*.2;
+        institution*.20;
 
 
     metrics.settlement=
         settlement*.55+
-        transport*.2+
-        institution*.1+
+        transport*.20+
+        institution*.10+
         research*.15;
 
 
     updateMetrics();
 }
 
+
+/* =========================================================
+   UPDATE METRICS
+========================================================= */
 
 function updateMetrics(){
 
@@ -2535,15 +2813,16 @@ function updateMetrics(){
     document.getElementById(
         "coexistence"
     ).textContent=
-        metrics.coexistence === null
+
+        metrics.coexistence===null
+
         ? "—"
+
         :
+
         metrics.coexistence
             .toFixed(1);
 }
-
-
-calculateMetrics();
 
 
 /* =========================================================
@@ -2551,7 +2830,12 @@ calculateMetrics();
 ========================================================= */
 
 function applyPreset(
-    a,b,c,d,e,f
+    a,
+    b,
+    c,
+    d,
+    e,
+    f
 ){
 
     const values=[
@@ -2583,8 +2867,11 @@ function applyPreset(
     calculateMetrics();
 
 
+    rebuildCity();
+
+
     toast(
-        "도시 전략을 적용했습니다"
+        "도시 전략이 3D 공간에 반영되었습니다"
     );
 }
 
@@ -2598,13 +2885,32 @@ let simulationTimer=null;
 
 function runSimulation(){
 
-    if(simulationTimer)
+    if(simulationTimer){
+
         clearInterval(
             simulationTimer
         );
 
+        simulationTimer=null;
+    }
+
+
+    /*
+       시뮬레이션 시작 시
+       현재 정책을 도시 초기조건으로 반영
+    */
+
+    rebuildCity();
+
 
     let year=0;
+
+
+    metrics.year=0;
+
+    metrics.coexistence=null;
+
+    updateMetrics();
 
 
     simulationTimer=
@@ -2618,68 +2924,134 @@ function runSimulation(){
 
 
                 const [
-                    a,b,c,d,e,f
+                    a,
+                    b,
+                    c,
+                    d,
+                    e,
+                    f
                 ]=
                     getValues();
 
 
-                const strength=
-                    (
-                        a+b+c+d+e+f
-                    )/600;
+                /*
+                   각 정책변수가
+                   시간에 따라 누적되는 구조
+                */
 
+                const policyStrength=
+
+                    a*.18+
+                    b*.22+
+                    c*.15+
+                    d*.18+
+                    e*.15+
+                    f*.12;
+
+
+                const growth=
+                    policyStrength/100;
+
+
+                /*
+                   인구
+                */
 
                 metrics.population=
                     42+
-                    strength*18+
+                    growth*18+
                     year*
-                    strength*.35;
+                    growth*.45;
 
+
+                /*
+                   기업
+                */
 
                 metrics.companies=
                     180+
-                    strength*220+
+                    growth*220+
                     year*
-                    strength*13;
+                    growth*14;
 
+
+                /*
+                   일자리
+                */
 
                 metrics.jobs=
                     7+
-                    strength*4+
+                    growth*4+
                     year*
-                    strength*.15;
+                    growth*.18;
 
+
+                /*
+                   상권
+                */
 
                 metrics.commercial=
                     Math.min(
                         100,
                         45+
-                        strength*35+
+                        growth*35+
                         year*
-                        strength*.7
+                        growth*.8
                     );
 
+
+                /*
+                   산학협력
+                */
 
                 metrics.cooperation=
                     Math.min(
                         100,
                         40+
-                        strength*35+
-                        year*.8
+                        growth*35+
+                        year*.9
                     );
 
+
+                /*
+                   정착률
+                */
 
                 metrics.settlement=
                     Math.min(
                         100,
                         45+
-                        strength*30+
-                        year*.5
+                        growth*30+
+                        year*.55
                     );
 
 
                 updateMetrics();
 
+
+                /*
+                   ★★★
+
+                   매 5년마다
+                   실제 도시 공간도
+                   성장하도록 재구성
+
+                */
+
+                if(
+                    year%5===0
+                ){
+
+                    rebuildSimulationCity(
+                        year
+                    );
+
+                }
+
+
+                /*
+                   20년 완료
+                */
 
                 if(
                     year>=20
@@ -2688,6 +3060,8 @@ function runSimulation(){
                     clearInterval(
                         simulationTimer
                     );
+
+                    simulationTimer=null;
 
 
                     metrics.coexistence=
@@ -2700,32 +3074,244 @@ function runSimulation(){
 
 
                     toast(
-                        "20년 시뮬레이션 완료"
+                        "20년 도시 시뮬레이션 완료"
                     );
                 }
 
             },
-            180
+            300
         );
 }
 
 
 /* =========================================================
-   COEXISTENCE INDEX ENGINE
-=========================================================
+   SIMULATION CITY GROWTH
+========================================================= */
 
-   ★★★
+function rebuildSimulationCity(
+    year
+){
 
-   지금은 임시식.
+    /*
+       기존 도시를 제거하고
+       현재 정책 + 시간에 따라
+       더 성장한 도시를 만든다.
+    */
 
-   나중에 네가 실제 상생지수 산식을 주면
-   이 함수에 그대로 넣는다.
+    clearCity();
 
+
+    const [
+        institution,
+        industry,
+        research,
+        settlement,
+        transport,
+        firms
+    ]=
+        getValues();
+
+
+    /*
+       시간이 지날수록
+       각 기능의 효과가 증가
+    */
+
+    const growth=
+        1+
+        year*.025;
+
+
+    /*
+       도로
+    */
+
+    generateRoadNetwork();
+
+    generateRoadMarkings();
+
+
+    /*
+       농촌
+    */
+
+    generateRural();
+
+
+    /*
+       구도심
+    */
+
+    generateOldTown();
+
+
+    /*
+       주거
+
+       정주환경 + 시간
+    */
+
+    const residentialExtra=
+        Math.round(
+            year*
+            settlement/
+            160
+        );
+
+
+    for(
+        let i=0;
+        i<residentialExtra;
+        i++
+    ){
+
+        const x=
+            110+
+            Math.random()*175;
+
+        const z=
+            -175+
+            Math.random()*350;
+
+
+        randomBuilding(
+            x,
+            z,
+            "residential",
+            "신규 주거시설",
+            20,
+            85
+        );
+    }
+
+
+    generateResidential();
+
+
+    /*
+       도심
+    */
+
+    generateDowntown();
+
+
+    /*
+       공공기관
+    */
+
+    generatePublicCluster();
+
+
+    /*
+       연구시설
+    */
+
+    generateResearch();
+
+
+    /*
+       산업시설
+
+       산업연계성 + 초기기업
+    */
+
+    const industrialExtra=
+        Math.round(
+            year*
+            (
+                industry+
+                firms
+            )/
+            180
+        );
+
+
+    for(
+        let i=0;
+        i<industrialExtra;
+        i++
+    ){
+
+        const x=
+            250+
+            Math.random()*170;
+
+        const z=
+            -220+
+            Math.random()*440;
+
+
+        randomBuilding(
+            x,
+            z,
+            "industrial",
+            "신규 연계기업",
+            10,
+            35
+        );
+    }
+
+
+    generateIndustrial();
+
+
+    /*
+       상업
+    */
+
+    generateCommercial();
+
+
+    /*
+       공원
+    */
+
+    const parkCount=
+        Math.round(
+            2+
+            settlement/13+
+            year/5
+        );
+
+
+    for(
+        let i=0;
+        i<parkCount;
+        i++
+    ){
+
+        park(
+
+            -180+
+            Math.random()*360,
+
+            -180+
+            Math.random()*360,
+
+            30+
+            Math.random()*40,
+
+            25+
+            Math.random()*35
+        );
+    }
+}
+
+
+/* =========================================================
+   COEXISTENCE INDEX
 ========================================================= */
 
 function calculateCoexistenceIndex(
     m
 ){
+
+    /*
+       현재는 임시 계산식.
+
+       나중에 사용자가 제시하는
+       실제 상생지수 공식으로 교체한다.
+    */
 
     const value=
 
@@ -2762,10 +3348,14 @@ function calculateCoexistenceIndex(
 
 function resetCity(){
 
-    if(simulationTimer)
+    if(simulationTimer){
+
         clearInterval(
             simulationTimer
         );
+
+        simulationTimer=null;
+    }
 
 
     applyPreset(
@@ -2783,6 +3373,10 @@ function resetCity(){
     metrics.coexistence=null;
 
     updateMetrics();
+
+
+    rebuildCity();
+
 
     setOverview();
 }
@@ -2808,19 +3402,29 @@ function toast(
         "block";
 
 
-    setTimeout(
-        ()=>{
-            el.style.display=
-                "none";
-        },
-        1700
+    clearTimeout(
+        el._timer
     );
+
+
+    el._timer=
+        setTimeout(
+            ()=>{
+                el.style.display=
+                    "none";
+            },
+            1700
+        );
 }
 
 
 /* =========================================================
    START
 ========================================================= */
+
+rebuildCity();
+
+calculateMetrics();
 
 setOverview();
 
@@ -2835,6 +3439,10 @@ engine.runRenderLoop(
     }
 );
 
+
+/* =========================================================
+   RESIZE
+========================================================= */
 
 window.addEventListener(
     "resize",
