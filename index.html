@@ -1,24 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eef4f8">
 
-<title>PUBLIC CITY TWIN</title>
+<title>2차 공공기관 이전 · Urban Twin</title>
 
 <style>
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 html,body{
     margin:0;
     width:100%;
     height:100%;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",
+    "Noto Sans KR",sans-serif;
+    background:#eef4f8;
+    color:#17212b;
+}
+
+body{
     overflow:hidden;
-    background:#9caeb7;
-    font-family:-apple-system,BlinkMacSystemFont,"Noto Sans KR",sans-serif;
+}
+
+button,input,select{
+    font:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+#app{
+    width:100%;
+    height:100%;
+}
+
+header{
+    height:64px;
+    background:rgba(255,255,255,.94);
+    border-bottom:1px solid #d9e1e7;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 18px;
+    position:relative;
+    z-index:10;
+}
+
+header b{
+    font-size:16px;
+    letter-spacing:.08em;
+}
+
+header span{
+    margin-left:10px;
+    color:#6c7883;
+    font-size:13px;
+}
+
+.top{
+    display:flex;
+    gap:8px;
+}
+
+button{
+    border:1px solid #ccd6de;
+    background:white;
+    border-radius:9px;
+    padding:9px 13px;
+}
+
+button:hover{
+    background:#f4f7f9;
+}
+
+main{
+    height:calc(100% - 64px);
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 350px;
+}
+
+#viewport{
+    position:relative;
+    min-width:0;
+    overflow:hidden;
+    background:#b9c9d4;
 }
 
 #renderCanvas{
@@ -28,311 +96,242 @@ html,body{
     touch-action:none;
 }
 
-#topbar{
-    position:fixed;
-    z-index:20;
-    top:12px;
-    left:12px;
-    right:12px;
-    height:58px;
-
+#loading{
+    position:absolute;
+    inset:0;
+    z-index:5;
     display:flex;
     align-items:center;
-    justify-content:space-between;
+    justify-content:center;
+    flex-direction:column;
+    background:#dfe9ee;
+    color:#33434f;
+}
 
-    padding:10px 16px;
+#loading small{
+    margin-top:8px;
+    color:#71808b;
+}
 
+#hud{
+    position:absolute;
+    left:18px;
+    top:18px;
+    z-index:3;
+    background:rgba(255,255,255,.88);
+    border:1px solid rgba(0,0,0,.08);
+    border-radius:10px;
+    padding:9px 12px;
+    font-size:13px;
+}
+
+#crosshair{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    z-index:3;
     color:white;
-
-    background:rgba(17,25,32,.88);
-    backdrop-filter:blur(15px);
-
-    border:1px solid rgba(255,255,255,.15);
-    border-radius:14px;
+    font-size:20px;
+    text-shadow:0 1px 3px #000;
+    pointer-events:none;
 }
 
-.title{
-    font-size:15px;
-    font-weight:900;
+#hint{
+    position:absolute;
+    left:50%;
+    bottom:18px;
+    transform:translateX(-50%);
+    z-index:3;
+    background:rgba(255,255,255,.88);
+    border-radius:9px;
+    padding:8px 12px;
+    font-size:12px;
+    color:#53616c;
 }
 
-.subtitle{
-    margin-top:3px;
-    font-size:9px;
-    color:#aab7c0;
-}
-
-#mode{
-    font-size:11px;
-    font-weight:900;
-    color:#65baf0;
-}
-
-.panel{
-    position:fixed;
-    z-index:20;
-
-    color:white;
-
-    background:rgba(17,25,32,.88);
-    backdrop-filter:blur(15px);
-
-    border:1px solid rgba(255,255,255,.14);
-    border-radius:14px;
-
-    box-shadow:0 12px 35px rgba(0,0,0,.2);
-}
-
-#policy{
-    top:82px;
-    left:12px;
-
-    width:270px;
-    max-height:calc(100% - 96px);
-
-    overflow:auto;
-
+aside{
+    overflow-y:auto;
+    background:#f5f8fa;
     padding:14px;
 }
 
-.section{
-    margin-bottom:14px;
+.panel{
+    background:white;
+    border:1px solid #dce4e9;
+    border-radius:12px;
+    padding:15px;
+    margin-bottom:12px;
 }
 
-.section-title{
-    margin-bottom:9px;
-
-    font-size:10px;
-    font-weight:900;
-
-    color:#aebbc5;
+.panel h3{
+    margin:0 0 13px;
+    font-size:15px;
 }
 
-.slider{
-    margin-bottom:10px;
-}
-
-.slider-row{
+label{
     display:flex;
     justify-content:space-between;
-
-    font-size:10px;
+    margin-top:12px;
+    font-size:13px;
 }
 
-.slider-row b{
-    color:#61b8ef;
+output{
+    font-weight:700;
 }
 
 input[type=range]{
     width:100%;
-    accent-color:#4ba8df;
+    margin:5px 0;
 }
 
-button{
-    width:100%;
-    min-height:40px;
-
-    margin:3px 0;
-
-    border:0;
-    border-radius:9px;
-
-    color:white;
-
-    background:#2d414f;
-
-    font-weight:800;
-}
-
-button.primary{
-    background:#287eae;
-}
-
-button.green{
-    background:#197250;
-}
-
-button.orange{
-    background:#815d2e;
-}
-
-#stats{
-    position:fixed;
-    z-index:20;
-
-    right:12px;
-    bottom:12px;
-
-    width:280px;
-
-    padding:13px;
-}
-
-.grid{
+.row{
     display:grid;
     grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:14px;
+}
+
+select{
+    width:100%;
+    border:1px solid #ccd6de;
+    border-radius:8px;
+    padding:9px;
+    background:white;
+}
+
+.primary{
+    width:100%;
+    margin-top:12px;
+    background:#17212b;
+    color:white;
+    border-color:#17212b;
+    font-weight:700;
+}
+
+.primary:hover{
+    background:#2d3b46;
+}
+
+.metrics{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+.metrics div{
+    background:#f3f6f8;
+    border-radius:9px;
+    padding:10px;
+}
+
+.metrics b{
+    display:block;
+    font-size:20px;
+}
+
+.metrics small{
+    color:#71808b;
+}
+
+.bar{
+    height:8px;
+    background:#e7edf1;
+    border-radius:10px;
+    overflow:hidden;
+    margin:15px 0 7px;
+}
+
+.bar i{
+    display:block;
+    height:100%;
+    width:0%;
+    background:#354b5a;
+}
+
+.yearrow{
+    display:grid;
+    grid-template-columns:1fr 1fr 1.3fr;
     gap:7px;
 }
 
-.stat{
-    padding:8px;
-
-    border-radius:9px;
-
-    background:rgba(255,255,255,.055);
+.timeline{
+    height:7px;
+    background:#e5ebef;
+    border-radius:10px;
+    overflow:hidden;
+    margin-top:14px;
 }
 
-.stat small{
+.timeline i{
     display:block;
-
-    color:#91a1ac;
-
-    font-size:8px;
+    width:0;
+    height:100%;
+    background:#354b5a;
 }
 
-.stat strong{
-    display:block;
-
-    margin-top:2px;
-
-    font-size:15px;
+#status{
+    color:#65737e;
+    font-size:12px;
+    margin-bottom:0;
 }
 
-#viewButtons{
-    position:fixed;
-    z-index:25;
+.compare{
+    margin-top:14px;
+    border-top:1px solid #e1e7eb;
+    padding-top:12px;
+}
 
-    left:50%;
-    bottom:12px;
-
-    transform:translateX(-50%);
-
+.compare-item{
     display:flex;
-    gap:6px;
-
-    width:250px;
+    justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid #edf1f3;
+    font-size:13px;
 }
 
-#viewButtons button{
-    margin:0;
-}
-
-#joystick{
-    display:none;
-
-    position:fixed;
-    z-index:30;
-
-    left:18px;
-    bottom:25px;
-
-    width:132px;
-    height:132px;
-
-    border-radius:50%;
-
-    background:rgba(0,0,0,.25);
-
-    border:2px solid rgba(255,255,255,.25);
-
-    touch-action:none;
-}
-
-#stick{
-    position:absolute;
-
-    width:48px;
-    height:48px;
-
-    left:42px;
-    top:42px;
-
-    border-radius:50%;
-
-    background:rgba(65,164,225,.9);
-}
-
-#buildingInfo{
-    display:none;
-
-    position:fixed;
-    z-index:30;
-
-    right:12px;
-    top:82px;
-
-    width:280px;
-
-    padding:14px;
-
-    color:white;
-
-    background:rgba(17,25,32,.92);
-    backdrop-filter:blur(15px);
-
-    border-radius:14px;
-
-    border:1px solid rgba(255,255,255,.15);
-}
-
-#buildingName{
-    font-size:17px;
-    font-weight:900;
-}
-
-#buildingType{
-    margin-top:4px;
-
-    color:#65baf0;
-
-    font-size:10px;
+.best{
     font-weight:800;
 }
 
-#buildingDescription{
-    margin-top:9px;
-
-    color:#c1ccd3;
-
-    font-size:10px;
-    line-height:1.6;
+#optimizationResult{
+    margin-top:12px;
+    background:#f3f6f8;
+    border-radius:10px;
+    padding:12px;
+    display:none;
 }
 
-#toast{
-    display:none;
+#optimizationResult strong{
+    display:block;
+    font-size:15px;
+    margin-bottom:8px;
+}
 
-    position:fixed;
-    z-index:100;
-
-    left:50%;
-    top:80px;
-
-    transform:translateX(-50%);
-
-    padding:9px 14px;
-
-    border-radius:9px;
-
-    background:rgba(12,20,27,.95);
-
-    color:white;
-
+.small{
     font-size:11px;
-    font-weight:800;
+    color:#75828c;
+    line-height:1.5;
 }
 
-@media(max-width:700px){
-
-    #policy{
-        width:225px;
+@media(max-width:900px){
+    body{
+        overflow:auto;
     }
 
-    #stats{
-        width:215px;
+    main{
+        height:auto;
+        min-height:calc(100% - 64px);
+        grid-template-columns:1fr;
     }
 
-    #buildingInfo{
-        width:220px;
+    #viewport{
+        height:58vh;
+        min-height:360px;
+    }
+
+    aside{
+        height:auto;
     }
 }
 </style>
@@ -340,282 +339,1085 @@ button.orange{
 
 <body>
 
-<canvas id="renderCanvas"></canvas>
+<div id="app">
 
-<div id="topbar">
-
+<header>
     <div>
-        <div class="title">
-            PUBLIC CITY TWIN
-        </div>
-
-        <div class="subtitle">
-            2차 공공기관 이전 · 기능·산업 중심 도시 디지털 트윈
-        </div>
+        <b>URBAN TWIN</b>
+        <span>2차 공공기관 이전 시뮬레이터</span>
     </div>
 
-    <div id="mode">
-        조감도
+    <div class="top">
+        <button id="walkBtn">🚶 도시 진입</button>
+        <button id="resetBtn">↺ 초기화</button>
     </div>
+</header>
+
+<main>
+
+<section id="viewport">
+
+    <canvas id="renderCanvas"></canvas>
+
+    <div id="loading">
+        도시를 만드는 중…
+        <small>정책변수와 도시구조를 연결하고 있습니다.</small>
+    </div>
+
+    <div id="hud">
+        <span id="year">2026</span>
+        <span> · </span>
+        <span id="mode">관찰 모드</span>
+    </div>
+
+    <div id="crosshair">+</div>
+
+    <div id="hint">
+        화면 드래그 → 시점 회전 · 도시 진입 → 1인칭 이동
+    </div>
+
+</section>
+
+
+<aside>
+
+<!-- =========================
+     정책변수
+========================= -->
+
+<div class="panel">
+
+<h3>🏙 도시 정책변수</h3>
+
+<label>
+    공공기관 집적
+    <output id="instO">70</output>
+</label>
+<input id="inst" type="range" min="0" max="100" value="70">
+
+<label>
+    산업 연계성
+    <output id="indO">65</output>
+</label>
+<input id="ind" type="range" min="0" max="100" value="65">
+
+<label>
+    대학·연구
+    <output id="uniO">55</output>
+</label>
+<input id="uni" type="range" min="0" max="100" value="55">
+
+<label>
+    정주 환경
+    <output id="liveO">60</output>
+</label>
+<input id="live" type="range" min="0" max="100" value="60">
+
+<label>
+    교통 접근성
+    <output id="transO">60</output>
+</label>
+<input id="trans" type="range" min="0" max="100" value="60">
+
+<label>
+    초기 기업 기반
+    <output id="firmO">35</output>
+</label>
+<input id="firm" type="range" min="0" max="100" value="35">
+
+<div class="row">
+
+<select id="scenario">
+    <option value="balanced">A 균형형</option>
+    <option value="industry">B 산업 클러스터형</option>
+    <option value="living">C 정주 우선형</option>
+    <option value="transport">D 교통 거점형</option>
+</select>
+
+<select id="form">
+    <option value="multi">다핵형</option>
+    <option value="compact">집약형</option>
+    <option value="linear">선형형</option>
+    <option value="mixed">혼합형</option>
+</select>
+
+</div>
+
+<button class="primary" id="apply">
+    도시 설계 반영
+</button>
 
 </div>
 
 
-<div id="policy" class="panel">
+<!-- =========================
+     2046 도시성과
+========================= -->
 
-    <div class="section">
+<div class="panel">
 
-        <div class="section-title">
-            도시 정책 변수
-        </div>
+<h3>📊 2046 도시성과</h3>
 
-        <div class="slider">
+<div class="metrics">
 
-            <div class="slider-row">
-                <span>공공기관 집적</span>
-                <b id="v1">70</b>
-            </div>
+<div>
+    <b id="pop">0</b>
+    <small>정주인구</small>
+</div>
 
-            <input id="s1"
-                   type="range"
-                   min="0"
-                   max="100"
-                   value="70">
-        </div>
+<div>
+    <b id="firms">0</b>
+    <small>연계기업</small>
+</div>
 
+<div>
+    <b id="jobs">0</b>
+    <small>일자리</small>
+</div>
 
-        <div class="slider">
+<div>
+    <b id="vac">0%</b>
+    <small>상권 공실</small>
+</div>
 
-            <div class="slider-row">
-                <span>산업 연계성</span>
-                <b id="v2">65</b>
-            </div>
+<div>
+    <b id="coop">0</b>
+    <small>산학협력</small>
+</div>
 
-            <input id="s2"
-                   type="range"
-                   min="0"
-                   max="100"
-                   value="65">
-        </div>
+<div>
+    <b id="settle">0%</b>
+    <small>정착률</small>
+</div>
 
+</div>
 
-        <div class="slider">
+<div class="bar">
+    <i id="score"></i>
+</div>
 
-            <div class="slider-row">
-                <span>대학·연구</span>
-                <b id="v3">55</b>
-            </div>
-
-            <input id="s3"
-                   type="range"
-                   min="0"
-                   max="100"
-                   value="55">
-        </div>
-
-
-        <div class="slider">
-
-            <div class="slider-row">
-                <span>정주 환경</span>
-                <b id="v4">60</b>
-            </div>
-
-            <input id="s4"
-                   type="range"
-                   min="0"
-                   max="100"
-                   value="60">
-        </div>
-
-
-        <div class="slider">
-
-            <div class="slider-row">
-                <span>교통 접근성</span>
-                <b id="v5">60</b>
-            </div>
-
-            <input id="s5"
-                   type="range"
-                   min="0"
-                   max="100"
-                   value="60">
-        </div>
-
-
-        <div class="slider">
-
-            <div class="slider-row">
-                <span>초기 기업 기반</span>
-                <b id="v6">35</b>
-            </div>
-
-            <input id="s6"
-                   type="range"
-                   min="0"
-                   max="100"
-                   value="35">
-        </div>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            도시 전략
-        </div>
-
-        <button onclick="applyPreset(75,70,65,75,70,50)">
-            균형형
-        </button>
-
-        <button onclick="applyPreset(80,95,75,55,65,80)">
-            산업 클러스터형
-        </button>
-
-        <button onclick="applyPreset(65,55,60,95,75,40)">
-            정주 우선형
-        </button>
-
-        <button onclick="applyPreset(70,65,60,70,98,45)">
-            교통 거점형
-        </button>
-
-    </div>
-
-
-    <div class="section">
-
-        <div class="section-title">
-            시뮬레이션
-        </div>
-
-        <button
-            class="green"
-            onclick="runSimulation()">
-            ▶ 20년 도시 시뮬레이션
-        </button>
-
-        <button
-            class="orange"
-            onclick="resetCity()">
-            ↻ 초기화
-        </button>
-
-    </div>
+<small>
+    도시성과 종합값
+    <b id="scoreT">0</b>/100
+</small>
 
 </div>
 
 
-<div id="buildingInfo">
+<!-- =========================
+     상생지수
+========================= -->
 
-    <div id="buildingName"></div>
+<div class="panel">
 
-    <div id="buildingType"></div>
+<h3>🤝 상생지수</h3>
 
-    <div id="buildingDescription"></div>
+<div style="
+    font-size:28px;
+    font-weight:800;
+    padding:10px 0;
+">
+    <span id="coexistence">—</span>
+</div>
+
+<p class="small">
+    상생지표는 연구자가 설정한 지표를 입력한 후 계산됩니다.
+    현재 단계에서는 임의의 가중치를 적용하지 않습니다.
+</p>
 
 </div>
 
 
-<div id="stats" class="panel">
+<!-- =========================
+     시뮬레이션
+========================= -->
 
-    <div class="section-title">
-        도시 성과
-    </div>
+<div class="panel">
 
-    <div class="grid">
+<h3>⏳ 20년 시뮬레이션</h3>
 
-        <div class="stat">
-            <small>정주인구</small>
-            <strong id="population">52.0만</strong>
-        </div>
+<div class="yearrow">
 
-        <div class="stat">
-            <small>연계기업</small>
-            <strong id="companies">350</strong>
-        </div>
+<button id="minus">−1년</button>
+<button id="plus">+1년</button>
+<button id="run">▶ 20년</button>
 
-        <div class="stat">
-            <small>일자리</small>
-            <strong id="jobs">12.4만</strong>
-        </div>
+</div>
 
-        <div class="stat">
-            <small>상권활성도</small>
-            <strong id="commercial">63%</strong>
-        </div>
+<div class="timeline">
+    <i id="progress"></i>
+</div>
 
-        <div class="stat">
-            <small>산학협력</small>
-            <strong id="cooperation">48%</strong>
-        </div>
-
-        <div class="stat">
-            <small>정착률</small>
-            <strong id="settlement">61%</strong>
-        </div>
-
-        <div class="stat">
-            <small>상생지수</small>
-            <strong id="coexistence">—</strong>
-        </div>
-
-        <div class="stat">
-            <small>시뮬레이션</small>
-            <strong id="year">0년</strong>
-        </div>
-
-    </div>
+<p id="status">
+    2026년 · 이전 준비 단계
+</p>
 
 </div>
 
 
-<div id="viewButtons">
+<!-- =========================
+     전략 비교
+========================= -->
 
-    <button onclick="setOverview()">
-        🛰️ 조감도
-    </button>
+<div class="panel">
 
-    <button
-        class="primary"
-        onclick="setWalk()">
-        🚶 도시 진입
-    </button>
+<h3>⚖️ 전략 비교</h3>
+
+<div class="compare">
+
+<div class="compare-item">
+    <span>A 균형형</span>
+    <b id="compareA">—</b>
+</div>
+
+<div class="compare-item">
+    <span>B 산업 클러스터형</span>
+    <b id="compareB">—</b>
+</div>
+
+<div class="compare-item">
+    <span>C 정주 우선형</span>
+    <b id="compareC">—</b>
+</div>
+
+<div class="compare-item">
+    <span>D 교통 거점형</span>
+    <b id="compareD">—</b>
+</div>
+
+</div>
 
 </div>
 
 
-<div id="joystick">
+<!-- =========================
+     최적 모델 탐색
+========================= -->
 
-    <div id="stick"></div>
+<div class="panel">
+
+<h3>🔍 최적 모델 탐색</h3>
+
+<p class="small">
+6개 정책변수의 다양한 조합을 반복 시뮬레이션하여
+향후 상생지수를 최대화하는 도시모델을 탐색합니다.
+</p>
+
+<button class="primary" id="optimize">
+    🏆 최적 모델 탐색
+</button>
+
+<div id="optimizationResult">
+
+<strong>🏆 최적 도시 모델</strong>
+
+<div id="bestVariables"></div>
+
+<div style="margin-top:8px">
+    도시성과:
+    <b id="bestPerformance">—</b>
+</div>
+
+<div style="margin-top:5px">
+    상생지수:
+    <b>—</b>
+</div>
+
+<p class="small">
+상생지표가 입력되면 이 값이 실제 최적화 목적함수로 연결됩니다.
+</p>
+
+</div>
 
 </div>
 
 
-<div id="toast"></div>
+<!-- =========================
+     도시 구성
+========================= -->
+
+<div class="panel">
+
+<h3>🌆 도시 구성</h3>
+
+<p class="small">
+🏛 공공기관 · 🏢 업무·상업 · 🏠 주거 ·
+🎓 대학·R&amp;D · 🏭 산업 · 🌳 공원 ·
+🚉 광역교통
+</p>
+
+<p class="small">
+정책변수를 조정하면 도시의 기능 배치와
+20년 후 도시성과가 함께 변화합니다.
+</p>
+
+</div>
+
+</aside>
+
+</main>
+</div>
 
 
+<!-- Babylon.js -->
 <script src="https://cdn.babylonjs.com/babylon.js"></script>
+
 
 <script>
 
-/* =========================================================
-   ENGINE
-========================================================= */
+"use strict";
+
+/* =====================================================
+   1. 정책변수
+===================================================== */
+
+const state = {
+
+    year: 2026,
+
+    policies: {
+        institution: 70,
+        industry: 65,
+        university: 55,
+        living: 60,
+        transport: 60,
+        firms: 35
+    },
+
+    performance: {
+        population: 0,
+        companies: 0,
+        jobs: 0,
+        vacancy: 0,
+        cooperation: 0,
+        settlement: 0,
+        score: 0
+    }
+
+};
+
+
+/* =====================================================
+   2. 상생지표
+=====================================================
+
+   ⚠️ 아직 비워둠.
+
+   나중에 사용자가 직접 상생지표를 입력하면
+   이 배열만 채워서 최적화 목적함수와 연결한다.
+===================================================== */
+
+const COEXISTENCE_INDICATORS = [];
+
+
+function calculateCoexistenceIndex(result){
+
+    if(COEXISTENCE_INDICATORS.length === 0){
+        return null;
+    }
+
+    let weightedScore = 0;
+    let totalWeight = 0;
+
+    for(const indicator of COEXISTENCE_INDICATORS){
+
+        const value = Number(
+            indicator.calculate(result)
+        );
+
+        const weight = Number(
+            indicator.weight
+        );
+
+        if(
+            Number.isFinite(value) &&
+            Number.isFinite(weight)
+        ){
+
+            weightedScore += value * weight;
+            totalWeight += weight;
+
+        }
+
+    }
+
+    if(totalWeight === 0){
+        return null;
+    }
+
+    return Math.max(
+        0,
+        Math.min(
+            100,
+            weightedScore / totalWeight
+        )
+    );
+
+}
+
+
+/* =====================================================
+   3. 정책변수 UI
+===================================================== */
+
+const controls = {
+
+    institution:
+        document.getElementById("inst"),
+
+    industry:
+        document.getElementById("ind"),
+
+    university:
+        document.getElementById("uni"),
+
+    living:
+        document.getElementById("live"),
+
+    transport:
+        document.getElementById("trans"),
+
+    firms:
+        document.getElementById("firm")
+
+};
+
+
+const outputs = {
+
+    institution:
+        document.getElementById("instO"),
+
+    industry:
+        document.getElementById("indO"),
+
+    university:
+        document.getElementById("uniO"),
+
+    living:
+        document.getElementById("liveO"),
+
+    transport:
+        document.getElementById("transO"),
+
+    firms:
+        document.getElementById("firmO")
+
+};
+
+
+Object.keys(controls).forEach(key => {
+
+    controls[key].addEventListener(
+        "input",
+        () => {
+
+            const value =
+                Number(controls[key].value);
+
+            outputs[key].textContent =
+                value;
+
+        }
+    );
+
+});
+
+
+function readPolicies(){
+
+    for(const key of Object.keys(controls)){
+
+        state.policies[key] =
+            Number(controls[key].value);
+
+    }
+
+}
+
+
+/* =====================================================
+   4. 전략 프리셋
+===================================================== */
+
+const scenarios = {
+
+    balanced: {
+        institution:70,
+        industry:65,
+        university:55,
+        living:60,
+        transport:60,
+        firms:35
+    },
+
+    industry: {
+        institution:75,
+        industry:90,
+        university:75,
+        living:50,
+        transport:65,
+        firms:70
+    },
+
+    living: {
+        institution:60,
+        industry:50,
+        university:55,
+        living:90,
+        transport:70,
+        firms:35
+    },
+
+    transport: {
+        institution:65,
+        industry:60,
+        university:55,
+        living:65,
+        transport:95,
+        firms:45
+    }
+
+};
+
+
+function applyScenario(name){
+
+    const scenario =
+        scenarios[name];
+
+    if(!scenario){
+        return;
+    }
+
+    for(const key of Object.keys(scenario)){
+
+        controls[key].value =
+            scenario[key];
+
+        outputs[key].textContent =
+            scenario[key];
+
+    }
+
+    readPolicies();
+
+    buildCity();
+
+    simulate20Years();
+
+}
+
+
+/* =====================================================
+   5. 20년 도시성장 모델
+===================================================== */
+
+function simulateYear(year){
+
+    const p =
+        state.policies;
+
+    const progress =
+        (year - 2026) / 20;
+
+    /*
+      정책변수 간 상호작용을 고려한
+      간단한 도시성장 모델
+    */
+
+    const institutionalEffect =
+        p.institution * 0.22;
+
+    const industryEffect =
+        p.industry * 0.27;
+
+    const universityEffect =
+        p.university * 0.16;
+
+    const livingEffect =
+        p.living * 0.22;
+
+    const transportEffect =
+        p.transport * 0.16;
+
+    const firmEffect =
+        p.firms * 0.20;
+
+
+    const synergy =
+        (
+            p.institution *
+            p.industry *
+            0.002
+        )
+        +
+        (
+            p.industry *
+            p.university *
+            0.0015
+        )
+        +
+        (
+            p.university *
+            p.living *
+            0.001
+        )
+        +
+        (
+            p.transport *
+            p.industry *
+            0.001
+        );
+
+
+    const basePopulation =
+        30000;
+
+    const populationGrowth =
+        institutionalEffect +
+        industryEffect +
+        universityEffect +
+        livingEffect +
+        transportEffect +
+        synergy;
+
+
+    const population =
+        basePopulation *
+        (
+            1 +
+            populationGrowth *
+            progress /
+            100
+        );
+
+
+    const companies =
+        100 +
+        (
+            p.industry * 2.5
+        ) +
+        (
+            p.firms * 2
+        ) +
+        (
+            p.university * .8
+        ) +
+        (
+            p.institution * .7
+        );
+
+
+    const jobs =
+        companies * 16
+        +
+        p.institution * 35
+        +
+        p.industry * 30;
+
+
+    const cooperation =
+        Math.min(
+            100,
+            (
+                p.institution * .25 +
+                p.industry * .25 +
+                p.university * .30 +
+                p.firms * .20
+            )
+        );
+
+
+    const settlement =
+        Math.min(
+            100,
+            (
+                p.living * .40 +
+                p.transport * .20 +
+                p.university * .10 +
+                p.industry * .10 +
+                p.institution * .20
+            )
+        );
+
+
+    const vacancy =
+        Math.max(
+            3,
+            Math.min(
+                70,
+                55
+                - p.living * .18
+                - p.industry * .15
+                - p.firms * .20
+                - p.transport * .08
+            )
+        );
+
+
+    const score =
+        Math.max(
+            0,
+            Math.min(
+                100,
+
+                population / 1000 * .10 +
+                companies * .12 +
+                jobs / 100 * .20 +
+                (100 - vacancy) * .20 +
+                cooperation * .18 +
+                settlement * .20
+            )
+        );
+
+
+    return {
+
+        population,
+        companies,
+        jobs,
+        vacancy,
+        cooperation,
+        settlement,
+        score
+
+    };
+
+}
+
+
+function simulate20Years(){
+
+    readPolicies();
+
+    state.year = 2046;
+
+    state.performance =
+        simulateYear(2046);
+
+    updateMetrics();
+
+}
+
+
+function updateMetrics(){
+
+    const r =
+        state.performance;
+
+    document.getElementById("pop")
+        .textContent =
+        Math.round(r.population)
+            .toLocaleString();
+
+    document.getElementById("firms")
+        .textContent =
+        Math.round(r.companies)
+            .toLocaleString();
+
+    document.getElementById("jobs")
+        .textContent =
+        Math.round(r.jobs)
+            .toLocaleString();
+
+    document.getElementById("vac")
+        .textContent =
+        r.vacancy.toFixed(1) + "%";
+
+    document.getElementById("coop")
+        .textContent =
+        r.cooperation.toFixed(1);
+
+    document.getElementById("settle")
+        .textContent =
+        r.settlement.toFixed(1) + "%";
+
+    document.getElementById("score")
+        .style.width =
+        r.score + "%";
+
+    document.getElementById("scoreT")
+        .textContent =
+        r.score.toFixed(1);
+
+
+    const coexistence =
+        calculateCoexistenceIndex(r);
+
+    document.getElementById(
+        "coexistence"
+    ).textContent =
+        coexistence === null
+        ? "—"
+        : coexistence.toFixed(1);
+
+}
+
+
+/* =====================================================
+   6. 전략 비교
+===================================================== */
+
+function compareStrategies(){
+
+    const original = {
+        ...state.policies
+    };
+
+    const results = {};
+
+    for(const key of Object.keys(scenarios)){
+
+        state.policies =
+            {
+                ...scenarios[key]
+            };
+
+        results[key] =
+            simulateYear(2046);
+
+    }
+
+    state.policies =
+        original;
+
+    document.getElementById("compareA")
+        .textContent =
+        results.balanced.score.toFixed(1);
+
+    document.getElementById("compareB")
+        .textContent =
+        results.industry.score.toFixed(1);
+
+    document.getElementById("compareC")
+        .textContent =
+        results.living.score.toFixed(1);
+
+    document.getElementById("compareD")
+        .textContent =
+        results.transport.score.toFixed(1);
+
+}
+
+
+/* =====================================================
+   7. 최적 모델 탐색
+===================================================== */
+
+function optimizeModel(){
+
+    readPolicies();
+
+    const levels =
+        [40,50,60,70,80,90];
+
+    let best = null;
+
+    /*
+      계산량을 제한하면서
+      다양한 정책조합을 탐색한다.
+
+      총 정책자원은 360 이하로 제한.
+    */
+
+    for(const institution of levels){
+
+        for(const industry of levels){
+
+            for(const university of levels){
+
+                for(const living of levels){
+
+                    for(const transport of levels){
+
+                        for(const firms of levels){
+
+                            const total =
+                                institution +
+                                industry +
+                                university +
+                                living +
+                                transport +
+                                firms;
+
+                            if(total > 360){
+                                continue;
+                            }
+
+                            const candidate = {
+
+                                institution,
+                                industry,
+                                university,
+                                living,
+                                transport,
+                                firms
+
+                            };
+
+                            const old =
+                                state.policies;
+
+                            state.policies =
+                                candidate;
+
+                            const result =
+                                simulateYear(2046);
+
+                            const coexistence =
+                                calculateCoexistenceIndex(
+                                    result
+                                );
+
+                            /*
+                              상생지표가 아직 없으므로
+                              현재는 도시성과를 후보 평가값으로 사용.
+
+                              상생지표 입력 후
+                              이 부분을 coexistence 기준으로
+                              자동 전환하면 된다.
+                            */
+
+                            const objective =
+                                coexistence === null
+                                ? result.score
+                                : coexistence;
+
+
+                            if(
+                                best === null ||
+                                objective > best.objective
+                            ){
+
+                                best = {
+
+                                    policies:
+                                        {...candidate},
+
+                                    result:
+                                        {...result},
+
+                                    objective
+
+                                };
+
+                            }
+
+                            state.policies =
+                                old;
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    if(!best){
+        return;
+    }
+
+
+    state.policies =
+        best.policies;
+
+
+    for(const key of Object.keys(
+        best.policies
+    )){
+
+        controls[key].value =
+            best.policies[key];
+
+        outputs[key].textContent =
+            best.policies[key];
+
+    }
+
+
+    state.performance =
+        best.result;
+
+    state.year =
+        2046;
+
+
+    updateMetrics();
+
+
+    const resultBox =
+        document.getElementById(
+            "optimizationResult"
+        );
+
+    resultBox.style.display =
+        "block";
+
+
+    document.getElementById(
+        "bestVariables"
+    ).innerHTML = `
+
+        공공기관 집적:
+        <b>${best.policies.institution}</b>
+        <br>
+
+        산업 연계성:
+        <b>${best.policies.industry}</b>
+        <br>
+
+        대학·연구:
+        <b>${best.policies.university}</b>
+        <br>
+
+        정주 환경:
+        <b>${best.policies.living}</b>
+        <br>
+
+        교통 접근성:
+        <b>${best.policies.transport}</b>
+        <br>
+
+        초기 기업 기반:
+        <b>${best.policies.firms}</b>
+
+    `;
+
+
+    document.getElementById(
+        "bestPerformance"
+    ).textContent =
+        best.result.score.toFixed(1);
+
+
+    buildCity();
+
+}
+
+
+/* =====================================================
+   8. Babylon.js 도시
+===================================================== */
 
 const canvas =
-    document.getElementById("renderCanvas");
+    document.getElementById(
+        "renderCanvas"
+    );
 
 const engine =
     new BABYLON.Engine(
         canvas,
         true,
         {
-            antialias:true,
-            adaptToDeviceRatio:true
+            preserveDrawingBuffer:true,
+            stencil:true
         }
     );
 
@@ -624,269 +1426,108 @@ const scene =
 
 scene.clearColor =
     new BABYLON.Color4(
-        .60,
-        .71,
-        .78,
-        1
+        .70,.78,.82,1
     );
 
 
-/* =========================================================
-   LIGHTING
-========================================================= */
+/* 카메라 */
 
-const sun =
-    new BABYLON.DirectionalLight(
+const camera =
+    new BABYLON.ArcRotateCamera(
+        "overview",
+        -Math.PI / 2,
+        Math.PI / 3,
+        260,
+        new BABYLON.Vector3(
+            0,0,0
+        ),
+        scene
+    );
+
+camera.attachControl(
+    canvas,
+    true
+);
+
+
+/* 빛 */
+
+const light =
+    new BABYLON.HemisphericLight(
         "sun",
         new BABYLON.Vector3(
-            -.45,
-            -1,
-            -.35
+            0,1,0
         ),
         scene
     );
 
-sun.position =
-    new BABYLON.Vector3(
-        250,
-        300,
-        180
-    );
-
-sun.intensity=2.0;
+light.intensity = .9;
 
 
-const skyLight =
-    new BABYLON.HemisphericLight(
-        "skyLight",
-        new BABYLON.Vector3(
-            0,
-            1,
-            0
-        ),
+/* 바닥 */
+
+const ground =
+    BABYLON.MeshBuilder.CreateGround(
+        "ground",
+        {
+            width:500,
+            height:500
+        },
         scene
     );
 
-skyLight.intensity=.75;
-
-
-/* =========================================================
-   SHADOW
-========================================================= */
-
-const shadowGenerator =
-    new BABYLON.ShadowGenerator(
-        2048,
-        sun
+const groundMat =
+    new BABYLON.StandardMaterial(
+        "groundMat",
+        scene
     );
 
-shadowGenerator.useBlurExponentialShadowMap=true;
+groundMat.diffuseColor =
+    new BABYLON.Color3(
+        .52,.61,.55
+    );
 
-shadowGenerator.blurKernel=24;
+ground.material =
+    groundMat;
 
 
-/* =========================================================
-   MATERIAL
-========================================================= */
+let cityMeshes = [];
 
-function material(
-    name,
-    color,
-    roughness=.75,
-    metallic=0
-){
+
+/* =====================================================
+   9. 도시 생성
+===================================================== */
+
+function clearCity(){
+
+    cityMeshes.forEach(
+        mesh => mesh.dispose()
+    );
+
+    cityMeshes = [];
+
+}
+
+
+function material(name,color){
 
     const m =
-        new BABYLON.PBRMaterial(
+        new BABYLON.StandardMaterial(
             name,
             scene
         );
 
-    m.albedoColor =
-        BABYLON.Color3.FromHexString(
-            color
+    m.diffuseColor =
+        new BABYLON.Color3(
+            color[0],
+            color[1],
+            color[2]
         );
 
-    m.roughness=roughness;
-
-    m.metallic=metallic;
-
     return m;
+
 }
 
-
-const MAT={
-
-    asphalt:
-        material(
-            "asphalt",
-            "#34383B",
-            .95
-        ),
-
-    sidewalk:
-        material(
-            "sidewalk",
-            "#9B9D9B",
-            .9
-        ),
-
-    grass:
-        material(
-            "grass",
-            "#55794E",
-            1
-        ),
-
-    soil:
-        material(
-            "soil",
-            "#756148",
-            1
-        ),
-
-    public:
-        material(
-            "public",
-            "#687D8D",
-            .48
-        ),
-
-    office:
-        material(
-            "office",
-            "#737D82",
-            .5
-        ),
-
-    glass:
-        material(
-            "glass",
-            "#4E819C",
-            .08
-        ),
-
-    old:
-        material(
-            "old",
-            "#88776A",
-            .85
-        ),
-
-    brick:
-        material(
-            "brick",
-            "#835C4E",
-            .9
-        ),
-
-    residential:
-        material(
-            "residential",
-            "#A2A7A5",
-            .78
-        ),
-
-    commercial:
-        material(
-            "commercial",
-            "#A17D5C",
-            .65
-        ),
-
-    industrial:
-        material(
-            "industrial",
-            "#6D7475",
-            .9
-        ),
-
-    roof:
-        material(
-            "roof",
-            "#292D2F",
-            .9
-        ),
-
-    tree:
-        material(
-            "tree",
-            "#3D6840",
-            1
-        ),
-
-    trunk:
-        material(
-            "trunk",
-            "#61452F",
-            1
-        ),
-
-    white:
-        material(
-            "white",
-            "#E2E1DD",
-            .72
-        ),
-
-    yellow:
-        material(
-            "yellow",
-            "#D1B64D",
-            .6
-        )
-};
-
-
-/* =========================================================
-   CITY STORAGE
-========================================================= */
-
-const buildings=[];
-
-const cityObjects=[];
-
-
-/* =========================================================
-   REGISTER OBJECT
-========================================================= */
-
-function registerCityObject(mesh){
-
-    cityObjects.push(mesh);
-
-    return mesh;
-}
-
-
-/* =========================================================
-   CLEAR CITY
-========================================================= */
-
-function clearCity(){
-
-    buildings.length=0;
-
-    cityObjects.forEach(
-        mesh=>{
-
-            if(
-                mesh &&
-                !mesh.isDisposed()
-            ){
-                mesh.dispose();
-            }
-
-        }
-    );
-
-    cityObjects.length=0;
-}
-
-
-/* =========================================================
-   BUILDING
-========================================================= */
 
 function createBuilding(
     x,
@@ -894,13 +1535,12 @@ function createBuilding(
     width,
     depth,
     height,
-    type,
-    name
+    mat
 ){
 
-    const body =
+    const building =
         BABYLON.MeshBuilder.CreateBox(
-            name,
+            "building",
             {
                 width,
                 depth,
@@ -909,2547 +1549,543 @@ function createBuilding(
             scene
         );
 
-    body.position.set(
-        x,
-        height/2,
-        z
-    );
-
-    body.material =
-        MAT[type] ||
-        MAT.office;
-
-
-    registerCityObject(body);
-
-    shadowGenerator
-        .addShadowCaster(body);
-
-
-    buildings.push({
-
-        mesh:body,
-
-        x,
-        z,
-
-        width,
-        depth,
-        height,
-
-        type,
-        name
-
-    });
-
-
-    /* =====================
-       ROOF
-    ===================== */
-
-    const roof =
-        BABYLON.MeshBuilder.CreateBox(
-            "roof",
-            {
-                width:width+1,
-                depth:depth+1,
-                height:.35
-            },
-            scene
+    building.position =
+        new BABYLON.Vector3(
+            x,
+            height / 2,
+            z
         );
 
-    roof.position.set(
-        x,
-        height+.17,
-        z
+    building.material =
+        mat;
+
+    cityMeshes.push(
+        building
     );
 
-    roof.material=MAT.roof;
-
-    registerCityObject(roof);
-
-
-    /* =====================
-       WINDOWS
-    ===================== */
-
-    if(
-        width>10 &&
-        depth>10
-    ){
-
-        const floors=
-            Math.max(
-                1,
-                Math.floor(
-                    height/4
-                )
-            );
-
-        const cols=
-            Math.max(
-                2,
-                Math.floor(
-                    width/4
-                )
-            );
-
-
-        for(
-            let f=0;
-            f<floors;
-            f++
-        ){
-
-            const y=
-                2+
-                f*
-                (
-                    (height-4)/
-                    Math.max(
-                        1,
-                        floors-1
-                    )
-                );
-
-
-            for(
-                let c=0;
-                c<cols;
-                c++
-            ){
-
-                const wx=
-                    x-width/2+2+
-                    c*
-                    (
-                        (width-4)/
-                        Math.max(
-                            1,
-                            cols-1
-                        )
-                    );
-
-
-                const window =
-                    BABYLON.MeshBuilder.CreateBox(
-                        "window",
-                        {
-                            width:1.25,
-                            height:1.45,
-                            depth:.06
-                        },
-                        scene
-                    );
-
-                window.position.set(
-                    wx,
-                    y,
-                    z-depth/2-.04
-                );
-
-                window.material=
-                    MAT.glass;
-
-                registerCityObject(window);
-            }
-        }
-    }
-
-
-    return body;
 }
 
 
-/* =========================================================
-   ROAD NETWORK
-========================================================= */
+function buildCity(){
 
-function generateRoadNetwork(){
+    clearCity();
 
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=getValues();
+    const p =
+        state.policies;
+
+
+    const publicMat =
+        material(
+            "public",
+            [.70,.75,.80]
+        );
+
+    const industryMat =
+        material(
+            "industry",
+            [.45,.50,.55]
+        );
+
+    const residentialMat =
+        material(
+            "residential",
+            [.76,.72,.64]
+        );
+
+    const universityMat =
+        material(
+            "university",
+            [.55,.65,.70]
+        );
+
+    const commercialMat =
+        material(
+            "commercial",
+            [.70,.60,.48]
+        );
 
 
     /*
-       교통 접근성이 높을수록
-       도로 간격이 좁아진다.
+      공공기관 집적도가 높을수록
+      중앙 공공업무지구가 밀집한다.
     */
 
-    const spacing =
-        72-
-        transport*.34;
-
-
-    const roadCount =
-        Math.ceil(
-            430/spacing
-        );
-
-
-    for(
-        let i=-roadCount;
-        i<=roadCount;
-        i++
-    ){
-
-        const p=i*spacing;
-
-
-        /* horizontal */
-
-        const roadH =
-            BABYLON.MeshBuilder.CreateBox(
-                "dynamicRoadH",
-                {
-                    width:860,
-                    depth:11,
-                    height:.12
-                },
-                scene
-            );
-
-        roadH.position.set(
-            0,
-            .06,
-            p
-        );
-
-        roadH.material=
-            MAT.asphalt;
-
-        registerCityObject(roadH);
-
-
-        /* vertical */
-
-        const roadV =
-            BABYLON.MeshBuilder.CreateBox(
-                "dynamicRoadV",
-                {
-                    width:11,
-                    depth:860,
-                    height:.12
-                },
-                scene
-            );
-
-        roadV.position.set(
-            p,
-            .06,
-            0
-        );
-
-        roadV.material=
-            MAT.asphalt;
-
-        registerCityObject(roadV);
-
-
-        /* sidewalks */
-
-        const sw1 =
-            BABYLON.MeshBuilder.CreateBox(
-                "sidewalk",
-                {
-                    width:860,
-                    depth:2,
-                    height:.18
-                },
-                scene
-            );
-
-        sw1.position.set(
-            0,
-            .14,
-            p-7
-        );
-
-        sw1.material=
-            MAT.sidewalk;
-
-        registerCityObject(sw1);
-
-
-        const sw2 =
-            BABYLON.MeshBuilder.CreateBox(
-                "sidewalk",
-                {
-                    width:2,
-                    depth:860,
-                    height:.18
-                },
-                scene
-            );
-
-        sw2.position.set(
-            p-7,
-            .14,
-            0
-        );
-
-        sw2.material=
-            MAT.sidewalk;
-
-        registerCityObject(sw2);
-    }
-}
-
-
-/* =========================================================
-   ROAD MARKING
-========================================================= */
-
-function generateRoadMarkings(){
-
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=getValues();
-
-
-    const spacing =
-        72-
-        transport*.34;
-
-
-    const roadCount =
-        Math.ceil(
-            430/spacing
-        );
-
-
-    for(
-        let i=-roadCount;
-        i<=roadCount;
-        i++
-    ){
-
-        const p=i*spacing;
-
-
-        for(
-            let x=-420;
-            x<420;
-            x+=14
-        ){
-
-            const mark =
-                BABYLON.MeshBuilder.CreateBox(
-                    "roadMark",
-                    {
-                        width:6,
-                        depth:.18,
-                        height:.035
-                    },
-                    scene
-                );
-
-            mark.position.set(
-                x,
-                .14,
-                p
-            );
-
-            mark.material=
-                MAT.white;
-
-            registerCityObject(mark);
-        }
-
-
-        for(
-            let z=-420;
-            z<420;
-            z+=14
-        ){
-
-            const mark =
-                BABYLON.MeshBuilder.CreateBox(
-                    "roadMark",
-                    {
-                        width:.18,
-                        depth:6,
-                        height:.035
-                    },
-                    scene
-                );
-
-            mark.position.set(
-                p,
-                .14,
-                z
-            );
-
-            mark.material=
-                MAT.white;
-
-            registerCityObject(mark);
-        }
-    }
-}
-
-
-/* =========================================================
-   RANDOM BUILDING HELPER
-========================================================= */
-
-function randomBuilding(
-    x,
-    z,
-    type,
-    name,
-    minHeight,
-    maxHeight
-){
-
-    const width=
-        11+
-        Math.random()*18;
-
-    const depth=
-        10+
-        Math.random()*17;
-
-    const height=
-        minHeight+
-        Math.random()*
-        (
-            maxHeight-
-            minHeight
-        );
-
-
-    return createBuilding(
-        x,
-        z,
-        width,
-        depth,
-        height,
-        type,
-        name
-    );
-}
-
-
-/* =========================================================
-   DOWNTOWN
-========================================================= */
-
-function generateDowntown(){
-
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=getValues();
-
-
-    const count=
+    const publicCount =
         Math.round(
-            20+
-            institution*.15+
-            firms*.20
+            8 +
+            p.institution / 8
         );
 
 
-    for(
-        let i=0;
-        i<count;
-        i++
-    ){
+    for(let i=0;i<publicCount;i++){
 
-        const angle=
-            Math.random()*
-            Math.PI*2;
+        const angle =
+            i / publicCount *
+            Math.PI * 2;
 
-        const radius=
-            65+
-            Math.random()*105;
+        const radius =
+            25 -
+            p.institution * .12;
 
+        createBuilding(
 
-        const x=
-            Math.cos(angle)*
-            radius;
+            Math.cos(angle) *
+            radius,
 
-        const z=
-            Math.sin(angle)*
-            radius;
+            Math.sin(angle) *
+            radius,
 
+            10,
+            10,
 
-        randomBuilding(
-            x,
-            z,
-            "office",
-            "도심 업무시설",
-            30,
-            105
+            12 +
+            p.institution * .12,
+
+            publicMat
+
         );
+
     }
-}
 
 
-/* =========================================================
-   PUBLIC CLUSTER
-========================================================= */
+    /*
+      산업 연계성이 높을수록
+      공공기관 주변 산업시설 증가
+    */
 
-function generatePublicCluster(){
-
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=getValues();
-
-
-    const count=
-        Math.max(
-            2,
-            Math.round(
-                2+
-                institution*.14
-            )
+    const industryCount =
+        Math.round(
+            8 +
+            p.industry / 5
         );
 
 
-    for(
-        let i=0;
-        i<count;
-        i++
-    ){
+    for(let i=0;i<industryCount;i++){
 
-        const angle=
-            i/count*
-            Math.PI*2;
+        const x =
+            -110 +
+            (i % 8) * 22;
 
-
-        const radius=
-            25+
-            Math.random()*75;
-
-
-        const x=
-            Math.cos(angle)*
-            radius;
-
-        const z=
-            Math.sin(angle)*
-            radius;
-
-
-        const height=
-            30+
-            institution*.45+
-            Math.random()*35;
-
+        const z =
+            70 +
+            Math.floor(i / 8) * 22;
 
         createBuilding(
             x,
             z,
-            22+
-                Math.random()*22,
-            18+
-                Math.random()*15,
-            height,
-            "public",
-            "공공기관 "+(i+1)
-        );
-    }
-}
-
-
-/* =========================================================
-   RESEARCH
-========================================================= */
-
-function generateResearch(){
-
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=getValues();
-
-
-    const count=
-        Math.round(
-            4+
-            research*.18
-        );
-
-
-    for(
-        let i=0;
-        i<count;
-        i++
-    ){
-
-        const x=
-            -230+
-            Math.random()*120;
-
-        const z=
-            120+
-            Math.random()*140;
-
-
-        randomBuilding(
-            x,
-            z,
-            "office",
-            "대학·연구시설",
+            16,
             14,
-            42
+            8 +
+            p.industry * .06,
+            industryMat
         );
+
     }
-}
 
 
-/* =========================================================
-   RESIDENTIAL
-========================================================= */
+    /*
+      대학·연구
+    */
 
-function generateResidential(){
-
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=getValues();
-
-
-    const count=
+    const universityCount =
         Math.round(
-            12+
-            settlement*.52+
-            transport*.12
+            5 +
+            p.university / 10
         );
 
 
-    for(
-        let i=0;
-        i<count;
-        i++
-    ){
+    for(let i=0;i<universityCount;i++){
 
-        const x=
-            110+
-            Math.random()*175;
+        createBuilding(
 
-        const z=
-            -175+
-            Math.random()*350;
+            -80 +
+            i * 18,
 
+            -70,
 
-        randomBuilding(
-            x,
-            z,
-            "residential",
-            "주거시설",
-            20,
-            80
+            14,
+            14,
+
+            7 +
+            p.university * .05,
+
+            universityMat
+
         );
+
     }
-}
 
 
-/* =========================================================
-   INDUSTRIAL
-========================================================= */
+    /*
+      정주환경
+    */
 
-function generateIndustrial(){
-
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=getValues();
-
-
-    const count=
+    const housingCount =
         Math.round(
-            7+
-            industry*.62+
-            firms*.25
+            15 +
+            p.living / 3
         );
 
 
-    for(
-        let i=0;
-        i<count;
-        i++
-    ){
+    for(let i=0;i<housingCount;i++){
 
-        const x=
-            250+
-            Math.random()*170;
+        const row =
+            Math.floor(i / 8);
 
-        const z=
-            -220+
-            Math.random()*440;
+        const col =
+            i % 8;
+
+        createBuilding(
+
+            50 +
+            col * 16,
+
+            -90 +
+            row * 18,
+
+            11,
+            11,
+
+            8 +
+            p.living * .04,
+
+            residentialMat
+
+        );
+
+    }
 
 
-        randomBuilding(
-            x,
-            z,
-            "industrial",
-            "연계기업·산업시설",
+    /*
+      상업시설
+    */
+
+    const commercialCount =
+        Math.round(
+            5 +
+            p.firms / 8 +
+            p.industry / 10
+        );
+
+
+    for(let i=0;i<commercialCount;i++){
+
+        createBuilding(
+
+            -20 +
+            i * 15,
+
+            15,
+
             10,
-            32
+            10,
+
+            6,
+
+            commercialMat
+
         );
+
     }
+
 }
 
 
-/* =========================================================
-   COMMERCIAL
-========================================================= */
-
-function generateCommercial(){
-
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=getValues();
-
-
-    const count=
-        Math.round(
-            15+
-            settlement*.28+
-            firms*.42+
-            transport*.20
-        );
-
-
-    for(
-        let i=0;
-        i<count;
-        i++
-    ){
-
-        const angle=
-            Math.random()*
-            Math.PI*2;
-
-
-        const radius=
-            115+
-            Math.random()*250;
-
-
-        const x=
-            Math.cos(angle)*
-            radius;
-
-        const z=
-            Math.sin(angle)*
-            radius;
-
-
-        randomBuilding(
-            x,
-            z,
-            "commercial",
-            "지역 상업시설",
-            8,
-            25
-        );
-    }
-}
-
-
-/* =========================================================
-   OLD TOWN
-========================================================= */
-
-function generateOldTown(){
-
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=getValues();
-
-
-    const count=
-        Math.round(
-            25+
-            (100-settlement)*.18
-        );
-
-
-    for(
-        let i=0;
-        i<count;
-        i++
-    ){
-
-        const x=
-            -230+
-            Math.random()*125;
-
-        const z=
-            -100+
-            Math.random()*200;
-
-
-        const type=
-            Math.random()>.5
-            ?"old"
-            :"brick";
-
-
-        randomBuilding(
-            x,
-            z,
-            type,
-            "구도심 건물",
-            7,
-            22
-        );
-    }
-}
-
-
-/* =========================================================
-   RURAL
-========================================================= */
-
-function generateRural(){
-
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=getValues();
-
-
-    const count=
-        Math.round(
-            30+
-            (100-settlement)*.15
-        );
-
-
-    for(
-        let i=0;
-        i<count;
-        i++
-    ){
-
-        const x=
-            -420+
-            Math.random()*170;
-
-        const z=
-            -300+
-            Math.random()*600;
-
-
-        randomBuilding(
-            x,
-            z,
-            "old",
-            "농촌 주택",
-            5,
-            10
-        );
-    }
-
-
-    /* fields */
-
-    for(
-        let i=0;
-        i<30;
-        i++
-    ){
-
-        const x=
-            -420+
-            Math.random()*150;
-
-        const z=
-            -300+
-            Math.random()*600;
-
-
-        const field =
-            BABYLON.MeshBuilder.CreateBox(
-                "field",
-                {
-                    width:25,
-                    depth:18,
-                    height:.08
-                },
-                scene
-            );
-
-        field.position.set(
-            x,
-            .04,
-            z
-        );
-
-        field.material=
-            MAT.soil;
-
-        registerCityObject(field);
-    }
-}
-
-
-/* =========================================================
-   TREE
-========================================================= */
-
-function tree(
-    x,
-    z
-){
-
-    const trunk =
-        BABYLON.MeshBuilder.CreateCylinder(
-            "treeTrunk",
-            {
-                diameter:.65,
-                height:4
-            },
-            scene
-        );
-
-    trunk.position.set(
-        x,
-        2,
-        z
-    );
-
-    trunk.material=
-        MAT.trunk;
-
-    registerCityObject(trunk);
-
-
-    const crown =
-        BABYLON.MeshBuilder.CreateSphere(
-            "treeCrown",
-            {
-                diameter:5,
-                segments:12
-            },
-            scene
-        );
-
-    crown.position.set(
-        x,
-        5,
-        z
-    );
-
-    crown.material=
-        MAT.tree;
-
-    registerCityObject(crown);
-
-
-    shadowGenerator
-        .addShadowCaster(crown);
-}
-
-
-/* =========================================================
-   PARK
-========================================================= */
-
-function park(
-    x,
-    z,
-    width,
-    depth
-){
-
-    const p =
-        BABYLON.MeshBuilder.CreateBox(
-            "park",
-            {
-                width,
-                depth,
-                height:.15
-            },
-            scene
-        );
-
-    p.position.set(
-        x,
-        .075,
-        z
-    );
-
-    p.material=
-        MAT.grass;
-
-    registerCityObject(p);
-
-
-    for(
-        let i=0;
-        i<20;
-        i++
-    ){
-
-        tree(
-            x+
-            (
-                Math.random()-.5
-            )*
-            Math.max(
-                5,
-                width-5
-            ),
-
-            z+
-            (
-                Math.random()-.5
-            )*
-            Math.max(
-                5,
-                depth-5
-            )
-        );
-    }
-}
-
-
-/* =========================================================
-   DYNAMIC CITY GENERATOR
-========================================================= */
-
-function rebuildCity(){
-
-    clearCity();
-
-
-    /*
-       정책변수를 읽고
-       도시의 구조 자체를 다시 만든다.
-    */
-
-    generateRoadNetwork();
-
-    generateRoadMarkings();
-
-    generateRural();
-
-    generateOldTown();
-
-    generateResidential();
-
-    generateDowntown();
-
-    generatePublicCluster();
-
-    generateResearch();
-
-    generateIndustrial();
-
-    generateCommercial();
-
-
-    /*
-       정주환경이 좋을수록
-       공원 증가
-    */
-
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=getValues();
-
-
-    const parkCount=
-        Math.round(
-            2+
-            settlement/13
-        );
-
-
-    for(
-        let i=0;
-        i<parkCount;
-        i++
-    ){
-
-        park(
-            -180+
-            Math.random()*360,
-
-            -180+
-            Math.random()*360,
-
-            30+
-            Math.random()*40,
-
-            25+
-            Math.random()*35
-        );
-    }
-
-
-    /*
-       도시 재구성 후
-       정보창 닫기
-    */
-
-    document.getElementById(
-        "buildingInfo"
-    ).style.display="none";
-}
-
-
-/* =========================================================
-   WALK CAMERA
-========================================================= */
-
-const walkCamera =
-    new BABYLON.UniversalCamera(
-        "walkCamera",
-        new BABYLON.Vector3(
-            0,
-            1.7,
-            120
-        ),
-        scene
-    );
-
-
-walkCamera.minZ=.05;
-
-walkCamera.maxZ=1200;
-
-
-/*
-   현실 보행보다 약간 빠른 속도
-*/
-
-walkCamera.speed=.30;
-
-
-/*
-   FPS keyboard
-*/
-
-walkCamera.keysUp=[
-    87,
-    38
-];
-
-walkCamera.keysDown=[
-    83,
-    40
-];
-
-walkCamera.keysLeft=[
-    65,
-    37
-];
-
-walkCamera.keysRight=[
-    68,
-    39
-];
-
-
-walkCamera.angularSensibility=7000;
-
-
-walkCamera.ellipsoid=
-    new BABYLON.Vector3(
-        .45,
-        .85,
-        .45
-    );
-
-walkCamera.ellipsoidOffset=
-    new BABYLON.Vector3(
-        0,
-        .85,
-        0
-    );
-
-walkCamera.checkCollisions=true;
-
-walkCamera.applyGravity=true;
-
-
-/* =========================================================
-   OVERVIEW
-========================================================= */
-
-const overviewCamera =
-    new BABYLON.ArcRotateCamera(
-        "overviewCamera",
-
-        -Math.PI/2,
-
-        Math.PI/3.2,
-
-        520,
-
-        new BABYLON.Vector3(
-            0,
-            0,
-            0
-        ),
-
-        scene
-    );
-
-
-overviewCamera.lowerRadiusLimit=100;
-
-overviewCamera.upperRadiusLimit=800;
-
-overviewCamera.wheelPrecision=3;
-
-
-/* =========================================================
-   VIEW SWITCH
-========================================================= */
-
-function setWalk(){
-
-    scene.activeCamera=
-        walkCamera;
-
-
-    walkCamera.attachControl(
-        canvas,
-        true
-    );
-
-
-    overviewCamera.detachControl(
-        canvas
-    );
-
-
-    document.getElementById(
-        "mode"
-    ).textContent=
-        "사람 시점";
-
-
-    document.getElementById(
-        "joystick"
-    ).style.display=
-        "block";
-
-
-    toast(
-        "도시 안으로 들어왔습니다"
-    );
-}
-
-
-function setOverview(){
-
-    scene.activeCamera=
-        overviewCamera;
-
-
-    walkCamera.detachControl(
-        canvas
-    );
-
-
-    overviewCamera.attachControl(
-        canvas,
-        true
-    );
-
-
-    document.getElementById(
-        "mode"
-    ).textContent=
-        "조감도";
-
-
-    document.getElementById(
-        "joystick"
-    ).style.display=
-        "none";
-
-
-    toast(
-        "조감도 모드"
-    );
-}
-
-
-/* =========================================================
-   JOYSTICK
-========================================================= */
-
-const joystick =
-    document.getElementById(
-        "joystick"
-    );
-
-const stick =
-    document.getElementById(
-        "stick"
-    );
-
-
-let joystickX=0;
-
-let joystickY=0;
-
-let joystickActive=false;
-
-
-joystick.addEventListener(
-    "pointerdown",
-    e=>{
-
-        joystickActive=true;
-
-        joystick.setPointerCapture(
-            e.pointerId
-        );
-
-        moveJoystick(e);
-    }
-);
-
-
-joystick.addEventListener(
-    "pointermove",
-    e=>{
-
-        if(
-            joystickActive
-        ){
-
-            moveJoystick(e);
-
-        }
-
-    }
-);
-
-
-joystick.addEventListener(
-    "pointerup",
-    resetJoystick
-);
-
-
-joystick.addEventListener(
-    "pointercancel",
-    resetJoystick
-);
-
-
-function moveJoystick(e){
-
-    const rect=
-        joystick.getBoundingClientRect();
-
-
-    let x=
-        e.clientX-
-        (
-            rect.left+
-            rect.width/2
-        );
-
-
-    let y=
-        e.clientY-
-        (
-            rect.top+
-            rect.height/2
-        );
-
-
-    const max=38;
-
-
-    const distance=
-        Math.hypot(
-            x,
-            y
-        );
-
-
-    if(
-        distance>max
-    ){
-
-        x=
-            x/distance*
-            max;
-
-        y=
-            y/distance*
-            max;
-    }
-
-
-    joystickX=
-        x/max;
-
-    joystickY=
-        y/max;
-
-
-    stick.style.left=
-        (42+x)+"px";
-
-    stick.style.top=
-        (42+y)+"px";
-}
-
-
-function resetJoystick(){
-
-    joystickActive=false;
-
-    joystickX=0;
-
-    joystickY=0;
-
-    stick.style.left="42px";
-
-    stick.style.top="42px";
-}
-
-
-/* =========================================================
-   JOYSTICK MOVEMENT
-========================================================= */
-
-scene.onBeforeRenderObservable.add(
-    ()=>{
-
-        if(
-            scene.activeCamera !==
-            walkCamera
-        )
-            return;
-
-
-        const forward=
-            new BABYLON.Vector3(
-                Math.sin(
-                    walkCamera.rotation.y
-                ),
-                0,
-                Math.cos(
-                    walkCamera.rotation.y
-                )
-            );
-
-
-        const right=
-            new BABYLON.Vector3(
-                Math.cos(
-                    walkCamera.rotation.y
-                ),
-                0,
-                -Math.sin(
-                    walkCamera.rotation.y
-                )
-            );
-
-
-        /*
-           위 = 전진
-           아래 = 후진
-        */
-
-        const movement=
-            forward.scale(
-                -joystickY*.22
-            );
-
-
-        movement.addInPlace(
-            right.scale(
-                joystickX*.22
-            )
-        );
-
-
-        walkCamera.position
-            .addInPlace(
-                movement
-            );
-
-
-        walkCamera.position.y=
-            1.7;
-    }
-);
-
-
-/* =========================================================
-   BUILDING PICK
-========================================================= */
-
-scene.onPointerObservable.add(
-    pointerInfo=>{
-
-        if(
-            pointerInfo.type !==
-            BABYLON.PointerEventTypes
-                .POINTERPICK
-        )
-            return;
-
-
-        if(
-            !pointerInfo.pickInfo.hit
-        )
-            return;
-
-
-        const picked=
-            pointerInfo
-                .pickInfo
-                .pickedMesh;
-
-
-        const found=
-            buildings.find(
-                b=>
-                    b.mesh===
-                    picked
-            );
-
-
-        if(
-            !found
-        )
-            return;
-
-
-        showBuilding(found);
-    }
-);
-
-
-/* =========================================================
-   BUILDING INFO
-========================================================= */
-
-function showBuilding(
-    building
-){
-
-    const types={
-
-        public:
-            "공공기관",
-
-        office:
-            "업무시설",
-
-        research:
-            "연구시설",
-
-        residential:
-            "주거",
-
-        commercial:
-            "상업시설",
-
-        industrial:
-            "산업시설",
-
-        old:
-            "구도심·농촌",
-
-        brick:
-            "구도심"
-    };
-
-
-    document.getElementById(
-        "buildingInfo"
-    ).style.display=
-        "block";
-
-
-    document.getElementById(
-        "buildingName"
-    ).textContent=
-        building.name;
-
-
-    document.getElementById(
-        "buildingType"
-    ).textContent=
-        types[
-            building.type
-        ] ||
-        "도시시설";
-
-
-    document.getElementById(
-        "buildingDescription"
-    ).textContent=
-
-        "정책변수에 따라 도시 내부의 기능적 배치와 규모가 변화하는 디지털 트윈 구성요소입니다.";
-}
-
-
-/* =========================================================
-   POLICY VARIABLES
-========================================================= */
-
-const sliders=[
-
-    ["s1","v1"],
-
-    ["s2","v2"],
-
-    ["s3","v3"],
-
-    ["s4","v4"],
-
-    ["s5","v5"],
-
-    ["s6","v6"]
-
-];
-
-
-let rebuildTimer=null;
-
-
-sliders.forEach(
-    pair=>{
-
-        const input=
-            document.getElementById(
-                pair[0]
-            );
-
-        const value=
-            document.getElementById(
-                pair[1]
-            );
-
-
-        input.addEventListener(
-            "input",
-            ()=>{
-
-                value.textContent=
-                    input.value;
-
-
-                calculateMetrics();
-
-
-                /*
-                   너무 빠르게 슬라이더를
-                   움직일 때 매 프레임마다
-                   도시를 재생성하지 않도록
-                   짧게 지연한다.
-                */
-
-                clearTimeout(
-                    rebuildTimer
+/* =====================================================
+   10. 도시 진입
+===================================================== */
+
+let walking = false;
+let walkCamera = null;
+
+
+document.getElementById(
+    "walkBtn"
+).addEventListener(
+    "click",
+    () => {
+
+        walking =
+            !walking;
+
+        if(walking){
+
+            if(!walkCamera){
+
+                walkCamera =
+                    new BABYLON.UniversalCamera(
+                        "walkCamera",
+                        new BABYLON.Vector3(
+                            0,
+                            2,
+                            -30
+                        ),
+                        scene
+                    );
+
+                walkCamera.attachControl(
+                    canvas,
+                    true
                 );
 
+                walkCamera.speed = .7;
 
-                rebuildTimer=
-                    setTimeout(
-                        ()=>{
-
-                            rebuildCity();
-
-                            toast(
-                                "정책 변화가 도시 공간에 반영되었습니다"
-                            );
-
-                        },
-                        180
-                    );
             }
-        );
+
+            scene.activeCamera =
+                walkCamera;
+
+            document.getElementById(
+                "mode"
+            ).textContent =
+                "도시 진입 모드";
+
+            document.getElementById(
+                "walkBtn"
+            ).textContent =
+                "🛰 항공 보기";
+
+        }else{
+
+            scene.activeCamera =
+                camera;
+
+            document.getElementById(
+                "mode"
+            ).textContent =
+                "관찰 모드";
+
+            document.getElementById(
+                "walkBtn"
+            ).textContent =
+                "🚶 도시 진입";
+
+        }
+
     }
 );
 
 
-/* =========================================================
-   GET POLICY VALUES
-========================================================= */
+/* =====================================================
+   11. 버튼
+===================================================== */
 
-function getValues(){
+document.getElementById(
+    "apply"
+).addEventListener(
+    "click",
+    () => {
 
-    return sliders.map(
-        pair=>
-            Number(
-                document
-                    .getElementById(
-                        pair[0]
-                    )
-                    .value
-            )
-    );
-}
+        readPolicies();
 
+        state.year =
+            2026;
 
-/* =========================================================
-   METRICS
-========================================================= */
-
-const metrics={
-
-    population:52,
-
-    companies:350,
-
-    jobs:12.4,
-
-    commercial:63,
-
-    cooperation:48,
-
-    settlement:61,
-
-    coexistence:null,
-
-    year:0
-
-};
-
-
-/* =========================================================
-   CALCULATE METRICS
-========================================================= */
-
-function calculateMetrics(){
-
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=
-        getValues();
-
-
-    /*
-       정책변수 가중합
-    */
-
-    const strength=
-
-        institution*.18+
-
-        industry*.22+
-
-        research*.15+
-
-        settlement*.18+
-
-        transport*.15+
-
-        firms*.12;
-
-
-    metrics.population=
-        30+
-        strength*.44;
-
-
-    metrics.companies=
-        120+
-        industry*3+
-        research*1.4+
-        firms*2;
-
-
-    metrics.jobs=
-        5+
-        metrics.companies*.17+
-        strength*.12;
-
-
-    metrics.commercial=
-        settlement*.38+
-        transport*.22+
-        industry*.20+
-        institution*.10+
-        research*.10;
-
-
-    metrics.cooperation=
-        research*.55+
-        industry*.25+
-        institution*.20;
-
-
-    metrics.settlement=
-        settlement*.55+
-        transport*.20+
-        institution*.10+
-        research*.15;
-
-
-    updateMetrics();
-}
-
-
-/* =========================================================
-   UPDATE METRICS
-========================================================= */
-
-function updateMetrics(){
-
-    document.getElementById(
-        "population"
-    ).textContent=
-        metrics.population.toFixed(1)+
-        "만";
-
-
-    document.getElementById(
-        "companies"
-    ).textContent=
-        Math.round(
-            metrics.companies
-        );
-
-
-    document.getElementById(
-        "jobs"
-    ).textContent=
-        metrics.jobs.toFixed(1)+
-        "만";
-
-
-    document.getElementById(
-        "commercial"
-    ).textContent=
-        Math.round(
-            metrics.commercial
-        )+
-        "%";
-
-
-    document.getElementById(
-        "cooperation"
-    ).textContent=
-        Math.round(
-            metrics.cooperation
-        )+
-        "%";
-
-
-    document.getElementById(
-        "settlement"
-    ).textContent=
-        Math.round(
-            metrics.settlement
-        )+
-        "%";
-
-
-    document.getElementById(
-        "year"
-    ).textContent=
-        metrics.year+
-        "년";
-
-
-    document.getElementById(
-        "coexistence"
-    ).textContent=
-
-        metrics.coexistence===null
-
-        ? "—"
-
-        :
-
-        metrics.coexistence
-            .toFixed(1);
-}
-
-
-/* =========================================================
-   PRESETS
-========================================================= */
-
-function applyPreset(
-    a,
-    b,
-    c,
-    d,
-    e,
-    f
-){
-
-    const values=[
-        a,b,c,d,e,f
-    ];
-
-
-    sliders.forEach(
-        (pair,i)=>{
-
-            document
-                .getElementById(
-                    pair[0]
-                )
-                .value=
-                values[i];
-
-
-            document
-                .getElementById(
-                    pair[1]
-                )
-                .textContent=
-                values[i];
-        }
-    );
-
-
-    calculateMetrics();
-
-
-    rebuildCity();
-
-
-    toast(
-        "도시 전략이 3D 공간에 반영되었습니다"
-    );
-}
-
-
-/* =========================================================
-   SIMULATION
-========================================================= */
-
-let simulationTimer=null;
-
-
-function runSimulation(){
-
-    if(simulationTimer){
-
-        clearInterval(
-            simulationTimer
-        );
-
-        simulationTimer=null;
-    }
-
-
-    /*
-       시뮬레이션 시작 시
-       현재 정책을 도시 초기조건으로 반영
-    */
-
-    rebuildCity();
-
-
-    let year=0;
-
-
-    metrics.year=0;
-
-    metrics.coexistence=null;
-
-    updateMetrics();
-
-
-    simulationTimer=
-        setInterval(
-            ()=>{
-
-                year++;
-
-                metrics.year=
-                    year;
-
-
-                const [
-                    a,
-                    b,
-                    c,
-                    d,
-                    e,
-                    f
-                ]=
-                    getValues();
-
-
-                /*
-                   각 정책변수가
-                   시간에 따라 누적되는 구조
-                */
-
-                const policyStrength=
-
-                    a*.18+
-                    b*.22+
-                    c*.15+
-                    d*.18+
-                    e*.15+
-                    f*.12;
-
-
-                const growth=
-                    policyStrength/100;
-
-
-                /*
-                   인구
-                */
-
-                metrics.population=
-                    42+
-                    growth*18+
-                    year*
-                    growth*.45;
-
-
-                /*
-                   기업
-                */
-
-                metrics.companies=
-                    180+
-                    growth*220+
-                    year*
-                    growth*14;
-
-
-                /*
-                   일자리
-                */
-
-                metrics.jobs=
-                    7+
-                    growth*4+
-                    year*
-                    growth*.18;
-
-
-                /*
-                   상권
-                */
-
-                metrics.commercial=
-                    Math.min(
-                        100,
-                        45+
-                        growth*35+
-                        year*
-                        growth*.8
-                    );
-
-
-                /*
-                   산학협력
-                */
-
-                metrics.cooperation=
-                    Math.min(
-                        100,
-                        40+
-                        growth*35+
-                        year*.9
-                    );
-
-
-                /*
-                   정착률
-                */
-
-                metrics.settlement=
-                    Math.min(
-                        100,
-                        45+
-                        growth*30+
-                        year*.55
-                    );
-
-
-                updateMetrics();
-
-
-                /*
-                   ★★★
-
-                   매 5년마다
-                   실제 도시 공간도
-                   성장하도록 재구성
-
-                */
-
-                if(
-                    year%5===0
-                ){
-
-                    rebuildSimulationCity(
-                        year
-                    );
-
-                }
-
-
-                /*
-                   20년 완료
-                */
-
-                if(
-                    year>=20
-                ){
-
-                    clearInterval(
-                        simulationTimer
-                    );
-
-                    simulationTimer=null;
-
-
-                    metrics.coexistence=
-                        calculateCoexistenceIndex(
-                            metrics
-                        );
-
-
-                    updateMetrics();
-
-
-                    toast(
-                        "20년 도시 시뮬레이션 완료"
-                    );
-                }
-
-            },
-            300
-        );
-}
-
-
-/* =========================================================
-   SIMULATION CITY GROWTH
-========================================================= */
-
-function rebuildSimulationCity(
-    year
-){
-
-    /*
-       기존 도시를 제거하고
-       현재 정책 + 시간에 따라
-       더 성장한 도시를 만든다.
-    */
-
-    clearCity();
-
-
-    const [
-        institution,
-        industry,
-        research,
-        settlement,
-        transport,
-        firms
-    ]=
-        getValues();
-
-
-    /*
-       시간이 지날수록
-       각 기능의 효과가 증가
-    */
-
-    const growth=
-        1+
-        year*.025;
-
-
-    /*
-       도로
-    */
-
-    generateRoadNetwork();
-
-    generateRoadMarkings();
-
-
-    /*
-       농촌
-    */
-
-    generateRural();
-
-
-    /*
-       구도심
-    */
-
-    generateOldTown();
-
-
-    /*
-       주거
-
-       정주환경 + 시간
-    */
-
-    const residentialExtra=
-        Math.round(
-            year*
-            settlement/
-            160
-        );
-
-
-    for(
-        let i=0;
-        i<residentialExtra;
-        i++
-    ){
-
-        const x=
-            110+
-            Math.random()*175;
-
-        const z=
-            -175+
-            Math.random()*350;
-
-
-        randomBuilding(
-            x,
-            z,
-            "residential",
-            "신규 주거시설",
-            20,
-            85
-        );
-    }
-
-
-    generateResidential();
-
-
-    /*
-       도심
-    */
-
-    generateDowntown();
-
-
-    /*
-       공공기관
-    */
-
-    generatePublicCluster();
-
-
-    /*
-       연구시설
-    */
-
-    generateResearch();
-
-
-    /*
-       산업시설
-
-       산업연계성 + 초기기업
-    */
-
-    const industrialExtra=
-        Math.round(
-            year*
-            (
-                industry+
-                firms
-            )/
-            180
-        );
-
-
-    for(
-        let i=0;
-        i<industrialExtra;
-        i++
-    ){
-
-        const x=
-            250+
-            Math.random()*170;
-
-        const z=
-            -220+
-            Math.random()*440;
-
-
-        randomBuilding(
-            x,
-            z,
-            "industrial",
-            "신규 연계기업",
-            10,
-            35
-        );
-    }
-
-
-    generateIndustrial();
-
-
-    /*
-       상업
-    */
-
-    generateCommercial();
-
-
-    /*
-       공원
-    */
-
-    const parkCount=
-        Math.round(
-            2+
-            settlement/13+
-            year/5
-        );
-
-
-    for(
-        let i=0;
-        i<parkCount;
-        i++
-    ){
-
-        park(
-
-            -180+
-            Math.random()*360,
-
-            -180+
-            Math.random()*360,
-
-            30+
-            Math.random()*40,
-
-            25+
-            Math.random()*35
-        );
-    }
-}
-
-
-/* =========================================================
-   COEXISTENCE INDEX
-========================================================= */
-
-function calculateCoexistenceIndex(
-    m
-){
-
-    /*
-       현재는 임시 계산식.
-
-       나중에 사용자가 제시하는
-       실제 상생지수 공식으로 교체한다.
-    */
-
-    const value=
-
-        m.commercial*.20+
-
-        m.cooperation*.30+
-
-        m.settlement*.20+
-
-        Math.min(
-            100,
-            m.companies/6
-        )*.15+
-
-        Math.min(
-            100,
-            m.jobs*5
-        )*.15;
-
-
-    return Math.max(
-        0,
-        Math.min(
-            100,
-            value
-        )
-    );
-}
-
-
-/* =========================================================
-   RESET
-========================================================= */
-
-function resetCity(){
-
-    if(simulationTimer){
-
-        clearInterval(
-            simulationTimer
-        );
-
-        simulationTimer=null;
-    }
-
-
-    applyPreset(
-        70,
-        65,
-        55,
-        60,
-        60,
-        35
-    );
-
-
-    metrics.year=0;
-
-    metrics.coexistence=null;
-
-    updateMetrics();
-
-
-    rebuildCity();
-
-
-    setOverview();
-}
-
-
-/* =========================================================
-   TOAST
-========================================================= */
-
-function toast(
-    text
-){
-
-    const el=
         document.getElementById(
-            "toast"
+            "year"
+        ).textContent =
+            "2026";
+
+        buildCity();
+
+        state.performance =
+            simulateYear(2026);
+
+        updateMetrics();
+
+        compareStrategies();
+
+    }
+);
+
+
+document.getElementById(
+    "scenario"
+).addEventListener(
+    "change",
+    e => {
+
+        applyScenario(
+            e.target.value
         );
 
-
-    el.textContent=text;
-
-    el.style.display=
-        "block";
+    }
+);
 
 
-    clearTimeout(
-        el._timer
-    );
+document.getElementById(
+    "run"
+).addEventListener(
+    "click",
+    () => {
+
+        readPolicies();
+
+        state.year =
+            2046;
+
+        state.performance =
+            simulateYear(2046);
+
+        updateMetrics();
+
+        document.getElementById(
+            "year"
+        ).textContent =
+            "2046";
+
+        document.getElementById(
+            "progress"
+        ).style.width =
+            "100%";
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "2046년 · 20년 시뮬레이션 완료";
+
+    }
+);
 
 
-    el._timer=
-        setTimeout(
-            ()=>{
-                el.style.display=
-                    "none";
-            },
-            1700
-        );
-}
+document.getElementById(
+    "plus"
+).addEventListener(
+    "click",
+    () => {
+
+        if(state.year < 2046){
+
+            state.year++;
+
+            state.performance =
+                simulateYear(
+                    state.year
+                );
+
+            updateMetrics();
+
+            document.getElementById(
+                "year"
+            ).textContent =
+                state.year;
+
+            document.getElementById(
+                "progress"
+            ).style.width =
+                (
+                    (state.year - 2026)
+                    / 20 *
+                    100
+                ) + "%";
+
+        }
+
+    }
+);
 
 
-/* =========================================================
-   START
-========================================================= */
+document.getElementById(
+    "minus"
+).addEventListener(
+    "click",
+    () => {
 
-rebuildCity();
+        if(state.year > 2026){
 
-calculateMetrics();
+            state.year--;
 
-setOverview();
+            state.performance =
+                simulateYear(
+                    state.year
+                );
+
+            updateMetrics();
+
+            document.getElementById(
+                "year"
+            ).textContent =
+                state.year;
+
+            document.getElementById(
+                "progress"
+            ).style.width =
+                (
+                    (state.year - 2026)
+                    / 20 *
+                    100
+                ) + "%";
+
+        }
+
+    }
+);
 
 
-/* =========================================================
-   RENDER
-========================================================= */
+document.getElementById(
+    "optimize"
+).addEventListener(
+    "click",
+    () => {
+
+        optimizeModel();
+
+    }
+);
+
+
+document.getElementById(
+    "resetBtn"
+).addEventListener(
+    "click",
+    () => {
+
+        location.reload();
+
+    }
+);
+
+
+/* =====================================================
+   12. 렌더링
+===================================================== */
 
 engine.runRenderLoop(
-    ()=>{
+    () => {
+
         scene.render();
+
     }
 );
 
-
-/* =========================================================
-   RESIZE
-========================================================= */
 
 window.addEventListener(
     "resize",
-    ()=>{
+    () => {
+
         engine.resize();
+
     }
 );
+
+
+/* =====================================================
+   13. 초기 실행
+===================================================== */
+
+buildCity();
+
+state.performance =
+    simulateYear(2026);
+
+updateMetrics();
+
+compareStrategies();
+
+document.getElementById(
+    "loading"
+).style.display =
+    "none";
 
 </script>
 
