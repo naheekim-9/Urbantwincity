@@ -1,31 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-
 <head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<meta charset="UTF-8">
+<meta name="theme-color" content="#eef4f8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
->
-
-<meta
-    name="theme-color"
-    content="#10191e"
->
-
-<title>
-    PUBLIC CITY TWIN
-</title>
-
+<title>2차 공공기관 이전 · Urban Twin</title>
 
 <style>
-
-/* =========================================================
-   기본
-========================================================= */
-
 *{
     box-sizing:border-box;
 }
@@ -36,16 +19,14 @@ body{
     width:100%;
     height:100%;
     overflow:hidden;
-
     font-family:
         -apple-system,
         BlinkMacSystemFont,
         "Pretendard",
         "Noto Sans KR",
         sans-serif;
-
     background:#10191e;
-    color:#ffffff;
+    color:#fff;
 }
 
 button,
@@ -58,67 +39,40 @@ button{
     cursor:pointer;
 }
 
-
-/* =========================================================
-   전체 앱
-========================================================= */
-
 #app{
     width:100%;
     height:100%;
 }
 
-
-/* =========================================================
-   상단
-========================================================= */
-
 header{
     position:absolute;
-
-    z-index:100;
-
+    z-index:50;
+    top:0;
     left:0;
     right:0;
-    top:0;
-
     height:68px;
-
     display:flex;
     align-items:center;
     justify-content:space-between;
-
-    padding:
-        0 20px;
-
+    padding:0 20px;
     background:
         linear-gradient(
-            rgba(8,15,19,.95),
+            rgba(8,15,19,.94),
             rgba(8,15,19,.58)
         );
-
-    backdrop-filter:
-        blur(12px);
-
-    pointer-events:auto;
+    backdrop-filter:blur(12px);
 }
 
 header b{
     display:block;
-
     font-size:18px;
-
-    letter-spacing:
-        2px;
+    letter-spacing:2px;
 }
 
 header span{
     display:block;
-
-    margin-top:4px;
-
+    margin-top:3px;
     font-size:11px;
-
     opacity:.65;
 }
 
@@ -128,391 +82,180 @@ header span{
 }
 
 .top button{
-    min-height:40px;
-
-    padding:
-        8px 13px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.15);
-
+    border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    padding:9px 12px;
     border-radius:9px;
-
-    background:
-        rgba(255,255,255,.08);
-
-    color:#ffffff;
 }
 
-.top button:active{
-    transform:
-        scale(.97);
+.top button:hover{
+    background:rgba(255,255,255,.14);
 }
 
-
-/* =========================================================
-   3D 화면
-========================================================= */
+main{
+    width:100%;
+    height:100%;
+}
 
 #viewport{
     position:absolute;
-
-    z-index:1;
-
     inset:0;
-
     overflow:hidden;
-
-    background:#9eb8c2;
-
-    touch-action:none;
 }
 
 #viewport canvas{
     position:absolute;
-
-    z-index:1;
-
-    left:0;
-    top:0;
-
+    inset:0;
     width:100%;
     height:100%;
-
     display:block;
 }
 
-
-/* =========================================================
-   로딩
-========================================================= */
-
 #loading{
     position:absolute;
-
-    z-index:200;
-
+    z-index:40;
     inset:0;
-
     display:flex;
-
     align-items:center;
     justify-content:center;
-
     flex-direction:column;
-
     background:#9eb8c2;
-
     color:#fff;
-
     font-size:15px;
 }
 
 #loading small{
-    margin-top:8px;
-
+    margin-top:7px;
+    opacity:.65;
     font-size:11px;
-
-    opacity:.7;
 }
-
-
-/* =========================================================
-   HUD
-========================================================= */
 
 #hud{
     position:absolute;
-
     z-index:20;
-
     right:18px;
     bottom:18px;
-
-    padding:
-        8px 11px;
-
+    padding:8px 11px;
     border-radius:8px;
-
-    background:
-        rgba(8,15,19,.65);
-
-    backdrop-filter:
-        blur(8px);
-
+    background:rgba(8,15,19,.65);
+    backdrop-filter:blur(8px);
     font-size:11px;
-
-    pointer-events:none;
 }
-
-
-/* =========================================================
-   십자선
-========================================================= */
 
 #crosshair{
     display:none;
-
     position:absolute;
-
-    z-index:25;
-
+    z-index:20;
     left:50%;
     top:50%;
-
-    transform:
-        translate(-50%,-50%);
-
+    transform:translate(-50%,-50%);
     font-size:24px;
-
-    text-shadow:
-        0 1px 5px #000;
-
-    pointer-events:none;
+    text-shadow:0 1px 4px #000;
 }
-
-
-/* =========================================================
-   안내
-========================================================= */
 
 #hint{
     position:absolute;
-
-    z-index:20;
-
+    z-index:15;
     left:50%;
-    bottom:18px;
-
-    transform:
-        translateX(-50%);
-
-    padding:
-        8px 12px;
-
+    bottom:20px;
+    transform:translateX(-50%);
+    padding:8px 12px;
     border-radius:8px;
-
-    background:
-        rgba(8,15,19,.58);
-
+    background:rgba(8,15,19,.58);
     font-size:10px;
-
     opacity:.7;
-
     pointer-events:none;
-
-    white-space:nowrap;
 }
-
-
-/* =========================================================
-   왼쪽 패널
-========================================================= */
 
 aside{
     position:absolute;
-
-    z-index:80;
-
+    z-index:30;
     left:14px;
     top:82px;
     bottom:14px;
-
     width:330px;
-
     overflow-y:auto;
-    overflow-x:hidden;
-
     padding-right:5px;
-
-    /*
-     * 중요:
-     * 3D canvas가 아니라 UI가 터치를 가져감
-     */
-    pointer-events:auto;
-
-    touch-action:pan-y;
-
     scrollbar-width:thin;
+    touch-action:pan-y;
 }
 
 .panel{
     margin-bottom:10px;
-
     padding:15px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.1);
-
+    border:1px solid rgba(255,255,255,.1);
     border-radius:14px;
-
-    background:
-        rgba(11,21,27,.92);
-
-    backdrop-filter:
-        blur(15px);
-
-    box-shadow:
-        0 12px 30px
-        rgba(0,0,0,.18);
-
-    pointer-events:auto;
+    background:rgba(11,21,27,.91);
+    backdrop-filter:blur(15px);
+    box-shadow:0 12px 30px rgba(0,0,0,.18);
 }
 
 .panel h3{
-    margin:
-        0 0 14px;
-
+    margin:0 0 14px;
     font-size:14px;
 }
 
-
-/* =========================================================
-   슬라이더
-========================================================= */
-
 .panel label{
     display:flex;
-
-    align-items:center;
     justify-content:space-between;
-
-    margin-top:12px;
-    margin-bottom:7px;
-
+    align-items:center;
+    margin-top:11px;
+    margin-bottom:6px;
     font-size:11px;
 }
 
 .panel label output{
     color:#78aaff;
-
     font-weight:700;
 }
 
-input[type="range"]{
-
-    display:block;
-
+input[type=range]{
     width:100%;
-
-    height:22px;
-
-    margin:0;
-
-    padding:0;
-
+    height:5px;
     appearance:none;
     -webkit-appearance:none;
-
-    background:transparent;
-
-    cursor:pointer;
-
-    pointer-events:auto;
-
+    border-radius:20px;
+    background:rgba(255,255,255,.14);
+    outline:none;
     touch-action:none;
 }
 
-input[type="range"]::-webkit-slider-runnable-track{
-
-    height:5px;
-
-    border-radius:10px;
-
-    background:
-        rgba(255,255,255,.16);
-}
-
-input[type="range"]::-webkit-slider-thumb{
-
+input[type=range]::-webkit-slider-thumb{
     appearance:none;
     -webkit-appearance:none;
-
-    width:18px;
-    height:18px;
-
-    margin-top:-6.5px;
-
-    border:
-        3px solid #ffffff;
-
+    width:17px;
+    height:17px;
     border-radius:50%;
-
+    border:3px solid #fff;
     background:#5c96ff;
-
-    box-shadow:
-        0 0 0 4px
-        rgba(92,150,255,.18);
+    box-shadow:0 0 0 4px rgba(92,150,255,.18);
 }
 
-input[type="range"]::-moz-range-track{
-
-    height:5px;
-
-    border-radius:10px;
-
-    background:
-        rgba(255,255,255,.16);
-}
-
-input[type="range"]::-moz-range-thumb{
-
-    width:18px;
-    height:18px;
-
-    border:
-        3px solid #ffffff;
-
+input[type=range]::-moz-range-thumb{
+    width:17px;
+    height:17px;
     border-radius:50%;
-
+    border:3px solid #fff;
     background:#5c96ff;
 }
-
-
-/* =========================================================
-   선택창
-========================================================= */
 
 .row{
     display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
+    grid-template-columns:1fr 1fr;
     gap:7px;
-
     margin-top:14px;
 }
 
 select{
-
     width:100%;
-
-    min-height:40px;
-
-    padding:
-        8px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.12);
-
+    padding:9px 8px;
+    border:1px solid rgba(255,255,255,.12);
     border-radius:8px;
-
-    background:
-        rgba(255,255,255,.07);
-
+    background:rgba(255,255,255,.07);
     color:#fff;
-
     outline:none;
-
     font-size:10px;
-
-    pointer-events:auto;
-
-    touch-action:manipulation;
 }
 
 select option{
@@ -520,379 +263,223 @@ select option{
     color:#fff;
 }
 
-
-/* =========================================================
-   버튼
-========================================================= */
-
 .primary{
-
     width:100%;
-
-    min-height:42px;
-
     margin-top:9px;
-
-    padding:
-        10px;
-
+    padding:12px;
     border:0;
-
     border-radius:9px;
-
     background:#4f8cff;
-
     color:#fff;
-
     font-size:12px;
-
     font-weight:700;
-
-    pointer-events:auto;
-
-    touch-action:manipulation;
 }
 
 .primary:active{
-    transform:
-        scale(.985);
+    transform:scale(.985);
 }
 
-
-/* =========================================================
+/* ===============================
    상생연계지수
-========================================================= */
+================================ */
 
 .coexist-main{
-
     display:flex;
-
-    align-items:
-        baseline;
-
+    align-items:baseline;
     gap:5px;
 }
 
 #coexistence{
-
     font-size:37px;
-
     font-weight:800;
-
     letter-spacing:-1px;
 }
 
 .coexist-main span{
-
     font-size:12px;
-
     opacity:.6;
 }
 
 .bar{
-
     width:100%;
-
     height:7px;
-
-    margin:
-        10px 0 9px;
-
+    margin:10px 0 9px;
     overflow:hidden;
-
     border-radius:20px;
-
-    background:
-        rgba(255,255,255,.1);
+    background:rgba(255,255,255,.1);
 }
 
 .bar i{
-
     display:block;
-
-    width:0%;
-
     height:100%;
-
+    width:0%;
     border-radius:20px;
-
-    background:
-        linear-gradient(
-            90deg,
-            #477fff,
-            #65c9ff
-        );
-
-    transition:
-        width .15s ease;
+    background:linear-gradient(90deg,#477fff,#65c9ff);
+    transition:width .18s ease;
 }
 
 #coexistenceStatus{
-
-    margin:
-        0 0 12px;
-
+    margin:0 0 12px;
     font-size:10px;
-
     opacity:.65;
 }
 
 .coexist-grid{
-
     display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
+    grid-template-columns:1fr 1fr;
     gap:7px;
 }
 
-.coexist-grid > div{
-
+.coexist-grid>div{
     min-width:0;
-
     padding:9px;
-
     border-radius:8px;
-
-    background:
-        rgba(255,255,255,.045);
+    background:rgba(255,255,255,.045);
 }
 
 .coexist-grid span{
-
     display:block;
-
     margin-bottom:4px;
-
     font-size:9px;
-
-    line-height:1.35;
-
+    line-height:1.3;
     opacity:.6;
 }
 
 .coexist-grid b{
-
     font-size:13px;
 }
 
 .coexist-grid em{
-
     margin-left:2px;
-
     font-size:9px;
-
     font-style:normal;
-
     opacity:.4;
 }
 
 .coexist-note{
-
     display:block;
-
     margin-top:11px;
-
     font-size:8px;
-
     line-height:1.5;
-
     opacity:.42;
 }
 
-
-/* =========================================================
+/* ===============================
    전망
-========================================================= */
+================================ */
 
 .metrics{
-
     display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
+    grid-template-columns:1fr 1fr;
     gap:7px;
-
     margin-bottom:10px;
 }
 
-.metrics > div{
-
+.metrics>div{
     padding:10px;
-
     border-radius:8px;
-
-    background:
-        rgba(255,255,255,.045);
+    background:rgba(255,255,255,.045);
 }
 
 .metrics b{
-
     display:block;
-
-    margin-bottom:3px;
-
     font-size:17px;
+    margin-bottom:3px;
 }
 
 .metrics small{
-
     font-size:9px;
-
     opacity:.55;
 }
 
-
-/* =========================================================
+/* ===============================
    연도
-========================================================= */
+================================ */
 
 .yearrow{
-
     display:grid;
-
-    grid-template-columns:
-        1fr 1fr 1.3fr;
-
+    grid-template-columns:1fr 1fr 1.3fr;
     gap:6px;
 }
 
 .yearrow button{
-
     min-height:38px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.1);
-
+    border:1px solid rgba(255,255,255,.1);
     border-radius:8px;
-
-    background:
-        rgba(255,255,255,.07);
-
+    background:rgba(255,255,255,.07);
     color:#fff;
-
     font-size:10px;
-
-    pointer-events:auto;
-
-    touch-action:manipulation;
 }
 
 .timeline{
-
     width:100%;
-
     height:5px;
-
     margin-top:12px;
-
     overflow:hidden;
-
     border-radius:20px;
-
-    background:
-        rgba(255,255,255,.1);
+    background:rgba(255,255,255,.1);
 }
 
 .timeline i{
-
     display:block;
-
     width:0%;
-
     height:100%;
-
     background:#5c96ff;
-
-    transition:
-        width .2s ease;
+    transition:width .2s ease;
 }
 
 #status{
-
-    margin:
-        7px 0 0;
-
+    margin:7px 0 0;
     font-size:9px;
-
-    line-height:1.5;
-
     opacity:.6;
 }
 
+.info p{
+    margin:7px 0;
+    font-size:9px;
+    line-height:1.6;
+    opacity:.65;
+}
 
-/* =========================================================
+/* ===============================
    조이스틱
-========================================================= */
+================================ */
 
 #joystick{
-
     display:none;
-
     position:absolute;
-
-    z-index:40;
-
-    left:365px;
-
+    z-index:30;
+    left:370px;
     bottom:35px;
-
     width:105px;
     height:105px;
-
-    border:
-        1px solid
-        rgba(255,255,255,.16);
-
     border-radius:50%;
-
-    background:
-        rgba(255,255,255,.09);
-
+    background:rgba(255,255,255,.09);
+    border:1px solid rgba(255,255,255,.16);
     touch-action:none;
 }
 
 #stick{
-
     position:absolute;
-
     left:50%;
     top:50%;
-
     width:43px;
     height:43px;
-
-    margin:
-        -21.5px 0 0 -21.5px;
-
+    margin:-21.5px 0 0 -21.5px;
     border-radius:50%;
-
-    background:
-        rgba(255,255,255,.78);
-
-    box-shadow:
-        0 3px 12px
-        rgba(0,0,0,.35);
-
-    pointer-events:none;
+    background:rgba(255,255,255,.75);
+    box-shadow:0 3px 12px rgba(0,0,0,.35);
 }
 
-
-/* =========================================================
+/* ===============================
    모바일
-========================================================= */
+================================ */
 
 @media(max-width:700px){
 
     header{
-
         height:60px;
-
-        padding:
-            0 10px;
+        padding:0 10px;
     }
 
     header b{
@@ -904,74 +491,45 @@ select option{
     }
 
     .top button{
-
-        min-height:36px;
-
-        padding:
-            7px 9px;
-
+        padding:7px 9px;
         font-size:10px;
     }
 
     aside{
-
-        width:280px;
-
+        width:278px;
         left:8px;
-
         top:70px;
     }
 
     .panel{
-
         padding:13px;
     }
 
     #joystick{
-
         left:300px;
-
-        bottom:25px;
     }
 
     #hint{
-
-        bottom:10px;
-
+        bottom:12px;
         font-size:8px;
     }
-
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
 <div id="app">
-
-
-<!-- =======================================================
-     HEADER
-======================================================= -->
 
 <header>
 
     <div>
-
-        <b>
-            PUBLIC CITY TWIN
-        </b>
+        <b>URBAN TWIN</b>
 
         <span>
-            2차 공공기관 이전 · 기능·산업 중심 도시 디지털 트윈
+            2차 공공기관 이전 시뮬레이터
         </span>
-
     </div>
-
 
     <div class="top">
 
@@ -987,21 +545,14 @@ select option{
 
 </header>
 
-
-<!-- =======================================================
-     3D VIEW
-======================================================= -->
+<main>
 
 <section id="viewport">
 
     <div id="loading">
-
         도시를 만드는 중…
-
         <small id="loadError"></small>
-
     </div>
-
 
     <div id="hud">
 
@@ -1019,11 +570,9 @@ select option{
 
     </div>
 
-
     <div id="crosshair">
         +
     </div>
-
 
     <div id="joystick">
 
@@ -1031,28 +580,13 @@ select option{
 
     </div>
 
-
     <div id="hint">
-
-        조감도: 드래그로 시점 회전 · 휠로 확대/축소
-        &nbsp; | &nbsp;
-        도시 진입: 드래그로 시선 이동 · WASD 이동
-
+        화면을 드래그하면 시점 회전 · 두 손가락 확대/축소
     </div>
 
 </section>
 
-
-<!-- =======================================================
-     LEFT UI
-======================================================= -->
-
 <aside>
-
-
-<!-- =====================================================
-     도시 설계
-===================================================== -->
 
 <div class="panel">
 
@@ -1060,9 +594,7 @@ select option{
         도시 설계
     </h3>
 
-
     <label>
-
         <span>
             공공기관 집중도
         </span>
@@ -1070,7 +602,6 @@ select option{
         <output id="instO">
             70
         </output>
-
     </label>
 
     <input
@@ -1079,12 +610,9 @@ select option{
         min="20"
         max="100"
         value="70"
-        step="1"
     >
 
-
     <label>
-
         <span>
             산업 연계
         </span>
@@ -1092,7 +620,6 @@ select option{
         <output id="indO">
             65
         </output>
-
     </label>
 
     <input
@@ -1101,12 +628,9 @@ select option{
         min="10"
         max="100"
         value="65"
-        step="1"
     >
 
-
     <label>
-
         <span>
             대학·연구 역량
         </span>
@@ -1114,7 +638,6 @@ select option{
         <output id="uniO">
             60
         </output>
-
     </label>
 
     <input
@@ -1123,12 +646,9 @@ select option{
         min="10"
         max="100"
         value="60"
-        step="1"
     >
 
-
     <label>
-
         <span>
             정주 여건
         </span>
@@ -1136,7 +656,6 @@ select option{
         <output id="liveO">
             55
         </output>
-
     </label>
 
     <input
@@ -1145,12 +664,9 @@ select option{
         min="10"
         max="100"
         value="55"
-        step="1"
     >
 
-
     <label>
-
         <span>
             교통 접근성
         </span>
@@ -1158,7 +674,6 @@ select option{
         <output id="transO">
             60
         </output>
-
     </label>
 
     <input
@@ -1167,31 +682,25 @@ select option{
         min="10"
         max="100"
         value="60"
-        step="1"
     >
 
-
     <label>
-
         <span>
-            초기 기업 기반
+            초기 기업 수
         </span>
 
         <output id="firmO">
-            80
+            216
         </output>
-
     </label>
 
     <input
         id="firm"
         type="range"
-        min="20"
-        max="150"
-        value="80"
-        step="1"
+        min="50"
+        max="400"
+        value="216"
     >
-
 
     <div class="row">
 
@@ -1206,7 +715,7 @@ select option{
             </option>
 
             <option value="living">
-                정주 우선형
+                정주 중심형
             </option>
 
             <option value="talent">
@@ -1218,7 +727,6 @@ select option{
             </option>
 
         </select>
-
 
         <select id="form">
 
@@ -1242,7 +750,6 @@ select option{
 
     </div>
 
-
     <button
         class="primary"
         id="apply"
@@ -1252,12 +759,7 @@ select option{
 
 </div>
 
-
-<!-- =====================================================
-     상생연계지수
-===================================================== -->
-
-<div class="panel">
+<div class="panel coexist-panel">
 
     <h3>
 
@@ -1265,15 +767,14 @@ select option{
 
         <small
             style="
-                opacity:.55;
-                font-weight:400;
+            opacity:.55;
+            font-weight:400;
             "
         >
             / 250점
         </small>
 
     </h3>
-
 
     <div class="coexist-main">
 
@@ -1287,28 +788,21 @@ select option{
 
     </div>
 
-
     <div class="bar">
 
         <i id="coexistenceBar"></i>
 
     </div>
 
-
     <p id="coexistenceStatus">
-
         정책변수에 따라 실시간 재계산
-
     </p>
-
 
     <div class="coexist-grid">
 
-
         <div>
-
             <span>
-                1-1 산학연 공동 R&amp;D
+                1-1 기술·지식 공유
             </span>
 
             <b id="c11">
@@ -1318,14 +812,11 @@ select option{
             <em>
                 /40
             </em>
-
         </div>
 
-
         <div>
-
             <span>
-                1-2 특허·IP 이전
+                1-2 IP 이전
             </span>
 
             <b id="c12">
@@ -1335,14 +826,11 @@ select option{
             <em>
                 /30
             </em>
-
         </div>
 
-
         <div>
-
             <span>
-                2-1 인프라·데이터
+                2-1 혁신 인프라
             </span>
 
             <b id="c21">
@@ -1352,14 +840,11 @@ select option{
             <em>
                 /35
             </em>
-
         </div>
 
-
         <div>
-
             <span>
-                2-2 기술상용화
+                2-2 기술사업화
             </span>
 
             <b id="c22">
@@ -1369,14 +854,11 @@ select option{
             <em>
                 /25
             </em>
-
         </div>
 
-
         <div>
-
             <span>
-                3-1 딥테크 창업
+                3-1 기술창업
             </span>
 
             <b id="c31">
@@ -1386,12 +868,9 @@ select option{
             <em>
                 /30
             </em>
-
         </div>
 
-
         <div>
-
             <span>
                 3-2 투자·육성
             </span>
@@ -1403,14 +882,11 @@ select option{
             <em>
                 /30
             </em>
-
         </div>
 
-
         <div>
-
             <span>
-                4-1 산학연 CoP
+                4-1 융합 거버넌스
             </span>
 
             <b id="c41">
@@ -1420,26 +896,17 @@ select option{
             <em>
                 /60
             </em>
-
         </div>
 
     </div>
 
-
     <small class="coexist-note">
-
-        ※ 실제 관측값을 기준점으로 두고,
-        도시 정책변수가 성과 수준에 미치는 영향을
-        시뮬레이션한 값입니다.
-
+        ※ 나주 혁신도시의 실제 관측값을 기준으로
+        정책변수가 성과 수준을 조정하는
+        시뮬레이션 지표입니다.
     </small>
 
 </div>
-
-
-<!-- =====================================================
-     2046 전망
-===================================================== -->
 
 <div class="panel">
 
@@ -1447,9 +914,7 @@ select option{
         2046 전망
     </h3>
 
-
     <div class="metrics">
-
 
         <div>
 
@@ -1463,7 +928,6 @@ select option{
 
         </div>
 
-
         <div>
 
             <b id="firms">
@@ -1476,7 +940,6 @@ select option{
 
         </div>
 
-
         <div>
 
             <b id="jobs">
@@ -1488,7 +951,6 @@ select option{
             </small>
 
         </div>
-
 
         <div>
 
@@ -1504,39 +966,27 @@ select option{
 
     </div>
 
-
     <div class="bar">
 
         <i id="score"></i>
 
     </div>
 
-
     <small>
-
         도시 지속가능성
-
         <b id="scoreT">
             0
         </b>
-
         /100
-
     </small>
 
 </div>
-
-
-<!-- =====================================================
-     연도
-===================================================== -->
 
 <div class="panel">
 
     <h3>
         연도
     </h3>
-
 
     <div class="yearrow">
 
@@ -1554,13 +1004,11 @@ select option{
 
     </div>
 
-
     <div class="timeline">
 
         <i id="progress"></i>
 
     </div>
-
 
     <p id="status">
         2026년 · 이전 준비 단계
@@ -1568,27 +1016,13 @@ select option{
 
 </div>
 
-
-<!-- =====================================================
-     도시 설명
-===================================================== -->
-
-<div class="panel">
+<div class="panel info">
 
     <h3>
         도시 구성
     </h3>
 
-
-    <p
-        style="
-            margin:0 0 8px;
-            font-size:10px;
-            line-height:1.6;
-            opacity:.7;
-        "
-    >
-
+    <p>
         🏛 공공기관 ·
         🏢 업무·상업 ·
         🏠 주거 ·
@@ -1596,39 +1030,22 @@ select option{
         🏭 산업 ·
         🌳 공원 ·
         🚉 광역교통
-
     </p>
 
-
-    <p
-        style="
-            margin:0;
-            font-size:9px;
-            line-height:1.6;
-            opacity:.55;
-        "
-    >
-
-        건물을 클릭하면 기능과 규모를 확인할 수 있습니다.
-        ‘도시 진입’을 누르면 사람 눈높이에서 도시를 직접
-        둘러볼 수 있습니다.
-
+    <p>
+        건물을 탭하면 기능과 규모를 확인할 수 있습니다.
+        ‘도시 진입’을 누르면 1인칭으로 직접 걸어볼 수 있습니다.
     </p>
 
 </div>
-
 
 </aside>
 
+</main>
+
 </div>
 
-
-<!-- =======================================================
-     THREE.JS
-======================================================= -->
-
 <script type="module">
-
 
 /* =========================================================
    THREE.JS
@@ -1639,7 +1056,7 @@ import * as THREE from
 
 
 /* =========================================================
-   DOM SHORTCUT
+   DOM
 ========================================================= */
 
 const $ =
@@ -1687,6 +1104,12 @@ camera.position.set(
     150
 );
 
+camera.up.set(
+    0,
+    1,
+    0
+);
+
 
 /* =========================================================
    RENDERER
@@ -1710,26 +1133,20 @@ renderer.setPixelRatio(
     )
 );
 
-
 renderer.shadowMap.enabled =
     true;
-
 
 renderer.shadowMap.type =
     THREE.PCFSoftShadowMap;
 
-
 renderer.outputColorSpace =
     THREE.SRGBColorSpace;
-
 
 renderer.toneMapping =
     THREE.ACESFilmicToneMapping;
 
-
 renderer.toneMappingExposure =
     1.05;
-
 
 $("viewport")
     .appendChild(
@@ -1738,17 +1155,8 @@ $("viewport")
 
 
 /* =========================================================
-   조감도 카메라
+   ORBIT
 ========================================================= */
-
-let orbitTheta =
-    .72;
-
-let orbitPhi =
-    .92;
-
-let orbitRadius =
-    275;
 
 let orbitDown =
     false;
@@ -1759,15 +1167,26 @@ let orbitX =
 let orbitY =
     0;
 
+let orbitTheta =
+    .72;
+
+let orbitPhi =
+    .92;
+
+let orbitRadius =
+    275;
+
 
 function updateOrbit(){
+
+    if(walking)
+        return;
 
     const t =
         orbitTheta;
 
     const p =
         orbitPhi;
-
 
     camera.position.set(
 
@@ -1784,13 +1203,11 @@ function updateOrbit(){
 
     );
 
-
     camera.up.set(
         0,
         1,
         0
     );
-
 
     camera.lookAt(
         0,
@@ -1804,10 +1221,6 @@ function updateOrbit(){
 updateOrbit();
 
 
-/* =========================================================
-   조감도 마우스 / 터치
-========================================================= */
-
 renderer.domElement.addEventListener(
     "pointerdown",
     event => {
@@ -1815,18 +1228,14 @@ renderer.domElement.addEventListener(
         if(walking)
             return;
 
-
         orbitDown =
             true;
-
 
         orbitX =
             event.clientX;
 
-
         orbitY =
             event.clientY;
-
 
         renderer.domElement
             .setPointerCapture?.(
@@ -1842,42 +1251,37 @@ renderer.domElement.addEventListener(
     event => {
 
         if(
-            walking ||
-            !orbitDown
+            !orbitDown ||
+            walking
         )
             return;
-
 
         const dx =
             event.clientX -
             orbitX;
 
-
         const dy =
             event.clientY -
             orbitY;
 
-
         orbitX =
             event.clientX;
-
 
         orbitY =
             event.clientY;
 
-
         orbitTheta -=
             dx*.006;
 
-
         orbitPhi =
-            THREE.MathUtils.clamp(
-                orbitPhi +
-                dy*.005,
+            Math.max(
                 .25,
-                1.42
+                Math.min(
+                    1.42,
+                    orbitPhi +
+                    dy*.005
+                )
             );
-
 
         updateOrbit();
 
@@ -1887,15 +1291,10 @@ renderer.domElement.addEventListener(
 
 renderer.domElement.addEventListener(
     "pointerup",
-    event => {
+    () => {
 
         orbitDown =
             false;
-
-        renderer.domElement
-            .releasePointerCapture?.(
-                event.pointerId
-            );
 
     }
 );
@@ -1919,9 +1318,7 @@ renderer.domElement.addEventListener(
         if(walking)
             return;
 
-
         event.preventDefault();
-
 
         orbitRadius =
             THREE.MathUtils.clamp(
@@ -1930,7 +1327,6 @@ renderer.domElement.addEventListener(
                 90,
                 520
             );
-
 
         updateOrbit();
 
@@ -1948,10 +1344,8 @@ renderer.domElement.addEventListener(
 let walking =
     false;
 
-
 const keys =
     {};
-
 
 let joy =
     {
@@ -1988,16 +1382,13 @@ sun.position.set(
     90
 );
 
-
 sun.castShadow =
     true;
-
 
 sun.shadow.mapSize.set(
     2048,
     2048
 );
-
 
 sun.shadow.camera.left =
     -300;
@@ -2011,24 +1402,21 @@ sun.shadow.camera.top =
 sun.shadow.camera.bottom =
     -300;
 
-
 scene.add(
     sun
 );
 
 
 /* =========================================================
-   CITY GROUP
+   CITY
 ========================================================= */
 
 const city =
     new THREE.Group();
 
-
 scene.add(
     city
 );
-
 
 const pickables =
     [];
@@ -2110,42 +1498,37 @@ function box(
     sx,
     sy,
     sz,
-    material,
+    m,
     cast=true
 ){
 
-    const mesh =
+    const q =
         new THREE.Mesh(
             new THREE.BoxGeometry(
                 sx,
                 sy,
                 sz
             ),
-            material
+            m
         );
 
-
-    mesh.position.set(
+    q.position.set(
         x,
         y,
         z
     );
 
-
-    mesh.castShadow =
+    q.castShadow =
         cast;
 
-
-    mesh.receiveShadow =
+    q.receiveShadow =
         true;
 
-
     g.add(
-        mesh
+        q
     );
 
-
-    return mesh;
+    return q;
 
 }
 
@@ -2161,10 +1544,10 @@ function cyl(
     z,
     r,
     h,
-    material
+    m
 ){
 
-    const mesh =
+    const q =
         new THREE.Mesh(
             new THREE.CylinderGeometry(
                 r,
@@ -2172,31 +1555,23 @@ function cyl(
                 h,
                 10
             ),
-            material
+            m
         );
 
-
-    mesh.position.set(
+    q.position.set(
         x,
         y,
         z
     );
 
-
-    mesh.castShadow =
+    q.castShadow =
         true;
-
-
-    mesh.receiveShadow =
-        true;
-
 
     g.add(
-        mesh
+        q
     );
 
-
-    return mesh;
+    return q;
 
 }
 
@@ -2223,7 +1598,6 @@ function road(
         mats.road,
         false
     );
-
 
     for(
         let a =
@@ -2276,7 +1650,6 @@ function tree(
         mats.trunk
     );
 
-
     const crown =
         new THREE.Mesh(
             new THREE.IcosahedronGeometry(
@@ -2286,17 +1659,14 @@ function tree(
             mats.tree
         );
 
-
     crown.position.set(
         x,
         5*s,
         z
     );
 
-
     crown.castShadow =
         true;
-
 
     city.add(
         crown
@@ -2322,19 +1692,27 @@ function building(
     const g =
         new THREE.Group();
 
-
     g.userData = {
 
-        name:name,
+        name,
+        type,
 
-        type:type,
+        area:
+            w*d,
 
-        area:w*d,
+        height:
+            h,
 
-        height:h
+        baseW:
+            w,
+
+        baseD:
+            d,
+
+        baseH:
+            h
 
     };
-
 
     g.position.set(
         x,
@@ -2342,20 +1720,17 @@ function building(
         z
     );
 
-
     city.add(
         g
     );
 
-
-    let material;
-
+    let bodyMaterial;
 
     if(
         type === "public"
     ){
 
-        material =
+        bodyMaterial =
             mats.concrete;
 
     }
@@ -2364,7 +1739,7 @@ function building(
         type === "research"
     ){
 
-        material =
+        bodyMaterial =
             mats.glass;
 
     }
@@ -2373,21 +1748,20 @@ function building(
         type === "industry"
     ){
 
-        material =
+        bodyMaterial =
             mats.dark;
 
     }
 
     else{
 
-        material =
+        bodyMaterial =
             new THREE.MeshStandardMaterial({
                 color:0xd9d8d3,
                 roughness:.72
             });
 
     }
-
 
     const body =
         box(
@@ -2398,18 +1772,12 @@ function building(
             w,
             h,
             d,
-            material
+            bodyMaterial
         );
-
 
     pickables.push(
         body
     );
-
-
-    /* -----------------------------------------------
-       건물 외벽 창문
-    ------------------------------------------------ */
 
     const levels =
         Math.max(
@@ -2417,13 +1785,11 @@ function building(
             Math.floor(h/5)
         );
 
-
     const cols =
         Math.max(
             2,
             Math.floor(w/4)
         );
-
 
     for(
         let l=0;
@@ -2434,13 +1800,11 @@ function building(
         const yy =
             3+l*5;
 
-
         if(
             yy >
             h-1
         )
             break;
-
 
         for(
             let c=0;
@@ -2460,8 +1824,7 @@ function building(
                     )
                 );
 
-
-            const windowMaterial =
+            const wm =
                 new THREE.MeshStandardMaterial({
 
                     color:
@@ -2475,7 +1838,6 @@ function building(
 
                 });
 
-
             box(
                 g,
                 xx,
@@ -2484,10 +1846,9 @@ function building(
                 1.05,
                 1.7,
                 .08,
-                windowMaterial,
+                wm,
                 false
             );
-
 
             if(
                 c <
@@ -2503,7 +1864,7 @@ function building(
                     1.05,
                     1.7,
                     .08,
-                    windowMaterial,
+                    wm,
                     false
                 );
 
@@ -2512,11 +1873,6 @@ function building(
         }
 
     }
-
-
-    /* -----------------------------------------------
-       옥상
-    ------------------------------------------------ */
 
     box(
         g,
@@ -2528,7 +1884,6 @@ function building(
         d+.5,
         mats.roof
     );
-
 
     if(
         type === "public"
@@ -2548,11 +1903,6 @@ function building(
 
     }
 
-
-    /* -----------------------------------------------
-       저층부
-    ------------------------------------------------ */
-
     box(
         g,
         0,
@@ -2565,7 +1915,6 @@ function building(
             ? mats.dark
             : mats.concrete
     );
-
 
     return g;
 
@@ -2582,28 +1931,22 @@ function sign(
     text
 ){
 
-    const canvas =
+    const c =
         document.createElement(
             "canvas"
         );
 
-
-    canvas.width =
+    c.width =
         512;
 
-    canvas.height =
+    c.height =
         128;
 
-
     const ctx =
-        canvas.getContext(
-            "2d"
-        );
-
+        c.getContext("2d");
 
     ctx.fillStyle =
         "#f8fafb";
-
 
     ctx.fillRect(
         0,
@@ -2612,18 +1955,14 @@ function sign(
         128
     );
 
-
     ctx.fillStyle =
         "#183746";
-
 
     ctx.font =
         "bold 46px sans-serif";
 
-
     ctx.textAlign =
         "center";
-
 
     ctx.fillText(
         text,
@@ -2631,12 +1970,10 @@ function sign(
         82
     );
 
-
     const texture =
         new THREE.CanvasTexture(
-            canvas
+            c
         );
-
 
     const sprite =
         new THREE.Sprite(
@@ -2646,20 +1983,17 @@ function sign(
             })
         );
 
-
     sprite.scale.set(
         18,
         4.5,
         1
     );
 
-
     sprite.position.set(
         x,
         12,
         z
     );
-
 
     city.add(
         sprite
@@ -2682,23 +2016,14 @@ function car(
     const g =
         new THREE.Group();
 
-
     g.position.set(
         x,
         .8,
         z
     );
 
-
     g.rotation.y =
         rot;
-
-
-    const wheelMaterial =
-        new THREE.MeshStandardMaterial({
-            color:0x22272b
-        });
-
 
     box(
         g,
@@ -2711,7 +2036,6 @@ function car(
         mats.dark
     );
 
-
     box(
         g,
         0,
@@ -2723,6 +2047,10 @@ function car(
         mats.glass
     );
 
+    const wheelMaterial =
+        new THREE.MeshStandardMaterial({
+            color:0x22272b
+        });
 
     cyl(
         g,
@@ -2734,7 +2062,6 @@ function car(
         wheelMaterial
     );
 
-
     cyl(
         g,
         1.8*scale,
@@ -2744,7 +2071,6 @@ function car(
         .35*scale,
         wheelMaterial
     );
-
 
     cyl(
         g,
@@ -2756,7 +2082,6 @@ function car(
         wheelMaterial
     );
 
-
     cyl(
         g,
         1.8*scale,
@@ -2766,11 +2091,12 @@ function car(
         .35*scale,
         wheelMaterial
     );
-
 
     city.add(
         g
     );
+
+    return g;
 
 }
 
@@ -2787,13 +2113,11 @@ function person(
     const g =
         new THREE.Group();
 
-
     g.position.set(
         x,
         0,
         z
     );
-
 
     cyl(
         g,
@@ -2808,7 +2132,6 @@ function person(
         })
     );
 
-
     cyl(
         g,
         0,
@@ -2822,10 +2145,11 @@ function person(
         })
     );
 
-
     city.add(
         g
     );
+
+    return g;
 
 }
 
@@ -2846,9 +2170,207 @@ function clearCity(){
 
     }
 
-
     pickables.length =
         0;
+
+}
+
+
+/* =========================================================
+   ★ 정책변수에 따른 3D 변화
+========================================================= */
+
+function applyVisualPolicy(){
+
+    const I =
+        +$("inst").value;
+
+    const N =
+        +$("ind").value;
+
+    const U =
+        +$("uni").value;
+
+    const L =
+        +$("live").value;
+
+    const T =
+        +$("trans").value;
+
+    const F =
+        +$("firm").value;
+
+
+    /*
+    ---------------------------------------------------------
+    각 정책변수의 영향
+
+    공공기관 집중도
+    → 공공기관 규모
+
+    산업 연계
+    → 산업시설 규모
+
+    대학·연구
+    → R&D / 대학시설 규모
+
+    정주 여건
+    → 주거 및 생활SOC 규모
+
+    초기 기업 수
+    → 기업지원/상업시설 규모
+
+    교통 접근성
+    → 교통센터 규모
+    ---------------------------------------------------------
+    */
+
+
+    city.children.forEach(
+        object => {
+
+            if(
+                !object.userData ||
+                !object.userData.type
+            )
+                return;
+
+
+            const type =
+                object.userData.type;
+
+
+            let factor =
+                1;
+
+
+            if(
+                type === "public"
+            ){
+
+                factor =
+                    .78 +
+                    I/250;
+
+            }
+
+            else if(
+                type === "industry"
+            ){
+
+                factor =
+                    .70 +
+                    N/180;
+
+            }
+
+            else if(
+                type === "research"
+            ){
+
+                factor =
+                    .75 +
+                    U/220;
+
+            }
+
+            else if(
+                type === "res"
+            ){
+
+                factor =
+                    .78 +
+                    L/260;
+
+            }
+
+
+            /*
+            기업 기반이 높을수록
+            업무·상업 공간을 조금 확대
+            */
+
+            if(
+                object.userData.name ===
+                "기업지원센터"
+            ){
+
+                factor =
+                    .75 +
+                    F/300;
+
+            }
+
+
+            /*
+            교통 접근성이 높으면
+            광역교통센터 규모 확대
+            */
+
+            if(
+                object.userData.name ===
+                "광역교통센터"
+            ){
+
+                factor =
+                    .75 +
+                    T/250;
+
+            }
+
+
+            factor =
+                THREE.MathUtils.clamp(
+                    factor,
+                    .72,
+                    1.35
+                );
+
+
+            object.scale.set(
+                factor,
+                factor,
+                factor
+            );
+
+        }
+    );
+
+
+    /*
+    산업 연계성이 높으면
+    에너지 앵커기업 주변의
+    산업공간도 조금 더 강조
+    */
+
+    const industrialBuildings =
+        city.children.filter(
+            object =>
+                object.userData &&
+                object.userData.type ===
+                "industry"
+        );
+
+
+    industrialBuildings.forEach(
+        object => {
+
+            const extra =
+                THREE.MathUtils.clamp(
+                    .92 +
+                    N/700,
+                    .92,
+                    1.08
+                );
+
+            object.scale.x *=
+                extra;
+
+            object.scale.z *=
+                extra;
+
+        }
+    );
 
 }
 
@@ -2862,9 +2384,7 @@ function buildCity(){
     clearCity();
 
 
-    /* -----------------------------------------------
-       바닥
-    ------------------------------------------------ */
+    /* ground */
 
     box(
         city,
@@ -2879,9 +2399,7 @@ function buildCity(){
     );
 
 
-    /* -----------------------------------------------
-       도로
-    ------------------------------------------------ */
+    /* arterial grid */
 
     road(
         0,
@@ -2890,7 +2408,6 @@ function buildCity(){
         500
     );
 
-
     road(
         0,
         0,
@@ -2898,14 +2415,12 @@ function buildCity(){
         24
     );
 
-
     road(
         -145,
         0,
         14,
         500
     );
-
 
     road(
         145,
@@ -2914,7 +2429,6 @@ function buildCity(){
         500
     );
 
-
     road(
         0,
         -145,
@@ -2922,14 +2436,12 @@ function buildCity(){
         14
     );
 
-
     road(
         0,
         145,
         500,
         14
     );
-
 
     road(
         -75,
@@ -2937,7 +2449,6 @@ function buildCity(){
         10,
         500
     );
-
 
     road(
         75,
@@ -2946,14 +2457,12 @@ function buildCity(){
         500
     );
 
-
     road(
         0,
         -75,
         500,
         10
     );
-
 
     road(
         0,
@@ -2963,9 +2472,7 @@ function buildCity(){
     );
 
 
-    /* -----------------------------------------------
-       공원
-    ------------------------------------------------ */
+    /* parks */
 
     box(
         city,
@@ -2978,7 +2485,6 @@ function buildCity(){
         mats.grass,
         false
     );
-
 
     box(
         city,
@@ -3031,9 +2537,7 @@ function buildCity(){
     }
 
 
-    /* -----------------------------------------------
-       공공기관
-    ------------------------------------------------ */
+    /* public institutions */
 
     building(
         "광역교통센터",
@@ -3045,7 +2549,6 @@ function buildCity(){
         "public"
     );
 
-
     building(
         "에너지정책원",
         -52,
@@ -3055,7 +2558,6 @@ function buildCity(){
         32,
         "public"
     );
-
 
     building(
         "산업혁신청",
@@ -3067,7 +2569,6 @@ function buildCity(){
         "public"
     );
 
-
     building(
         "기업지원센터",
         54,
@@ -3078,7 +2579,6 @@ function buildCity(){
         "public"
     );
 
-
     building(
         "의료·생활SOC",
         5,
@@ -3088,7 +2588,6 @@ function buildCity(){
         16,
         "public"
     );
-
 
     building(
         "문화공원 복합센터",
@@ -3101,9 +2600,7 @@ function buildCity(){
     );
 
 
-    /* -----------------------------------------------
-       대학 / 연구
-    ------------------------------------------------ */
+    /* research */
 
     building(
         "지역R&D센터",
@@ -3114,7 +2611,6 @@ function buildCity(){
         24,
         "research"
     );
-
 
     building(
         "대학·인재캠퍼스",
@@ -3127,9 +2623,7 @@ function buildCity(){
     );
 
 
-    /* -----------------------------------------------
-       산업
-    ------------------------------------------------ */
+    /* industry */
 
     building(
         "에너지 앵커기업",
@@ -3140,7 +2634,6 @@ function buildCity(){
         20,
         "industry"
     );
-
 
     building(
         "첨단제조단지",
@@ -3153,9 +2646,7 @@ function buildCity(){
     );
 
 
-    /* -----------------------------------------------
-       주거
-    ------------------------------------------------ */
+    /* residential */
 
     building(
         "주거 A",
@@ -3167,7 +2658,6 @@ function buildCity(){
         "res"
     );
 
-
     building(
         "주거 B",
         125,
@@ -3178,7 +2668,6 @@ function buildCity(){
         "res"
     );
 
-
     building(
         "주거 C",
         100,
@@ -3188,7 +2677,6 @@ function buildCity(){
         48,
         "res"
     );
-
 
     building(
         "상업지구",
@@ -3201,9 +2689,7 @@ function buildCity(){
     );
 
 
-    /* -----------------------------------------------
-       표지판
-    ------------------------------------------------ */
+    /* signs */
 
     sign(
         0,
@@ -3211,20 +2697,17 @@ function buildCity(){
         "METRO HUB"
     );
 
-
     sign(
         45,
         28,
         "R&D CAMPUS"
     );
 
-
     sign(
         50,
         -72,
         "COMMERCIAL"
     );
-
 
     sign(
         -48,
@@ -3233,9 +2716,7 @@ function buildCity(){
     );
 
 
-    /* -----------------------------------------------
-       자동차
-    ------------------------------------------------ */
+    /* cars */
 
     for(
         let i=0;
@@ -3249,7 +2730,6 @@ function buildCity(){
             2 /
             24;
 
-
         car(
             Math.cos(a)*80,
             Math.sin(a)*80,
@@ -3260,9 +2740,7 @@ function buildCity(){
     }
 
 
-    /* -----------------------------------------------
-       사람
-    ------------------------------------------------ */
+    /* people */
 
     for(
         let i=0;
@@ -3278,9 +2756,7 @@ function buildCity(){
     }
 
 
-    /* -----------------------------------------------
-       가로등
-    ------------------------------------------------ */
+    /* street lamps */
 
     for(
         let x=-135;
@@ -3303,7 +2779,6 @@ function buildCity(){
                 mats.dark
             );
 
-
             cyl(
                 city,
                 x,
@@ -3313,29 +2788,28 @@ function buildCity(){
                 .15,
 
                 new THREE.MeshStandardMaterial({
-
                     color:0xf4e7ba,
-
                     emissive:0x665d3c,
-
                     emissiveIntensity:.4
-
                 })
-
             );
 
         }
 
     }
 
+
+    /*
+    ★ 정책변수 반영
+    */
+
+    applyVisualPolicy();
+
 }
 
 
-buildCity();
-
-
 /* =========================================================
-   ★ 슬라이더 값 업데이트
+   SLIDER OUTPUT
 ========================================================= */
 
 function updateOutputs(){
@@ -3362,356 +2836,385 @@ function updateOutputs(){
 
 
 /* =========================================================
-   ★ 상생연계지수
+   정책변수 실시간 연결
+========================================================= */
+
+document
+    .querySelectorAll(
+        'input[type="range"]'
+    )
+    .forEach(
+        element => {
+
+            element.addEventListener(
+                "input",
+                () => {
+
+                    updateOutputs();
+
+                    calc();
+
+                }
+            );
+
+        }
+    );
+
+
+updateOutputs();
+
+
+/* =========================================================
+   ★ 상생연계지수 계산
 ========================================================= */
 
 function calculateCoexistence(){
 
     const I =
-        Number(
-            $("inst").value
-        );
-
+        +$("inst").value;
 
     const N =
-        Number(
-            $("ind").value
-        );
-
+        +$("ind").value;
 
     const U =
-        Number(
-            $("uni").value
-        );
-
+        +$("uni").value;
 
     const L =
-        Number(
-            $("live").value
-        );
-
+        +$("live").value;
 
     const T =
-        Number(
-            $("trans").value
+        +$("trans").value;
+
+
+    /*
+    기업 수는 실제 클러스터 기준
+    216개를 100점으로 환산
+    */
+
+    const F =
+        +$("firm").value;
+
+
+    const Fscore =
+        Math.min(
+            100,
+            Math.max(
+                0,
+                F/216*100
+            )
         );
 
 
     /*
-     * 기업 수는 20~150이므로
-     * 0~100 지표로 변환
-     */
+    전체 정책 시너지
+    */
 
-    const F =
-        THREE.MathUtils.clamp(
-            (
-                Number(
-                    $("firm").value
-                ) /
-                150
-            )*100,
+    const synergy =
+        (
+            I*.12 +
+            N*.22 +
+            U*.20 +
+            L*.14 +
+            T*.12 +
+            Fscore*.20
+        );
+
+
+    const synergyPct =
+        Math.max(
             0,
-            100
+            Math.min(
+                100,
+                synergy
+            )
         );
 
 
     /* =====================================================
-       1-1
-       산학연 공동 R&D
+       1-1 기술·지식 공유
     ===================================================== */
 
-    const researchCostBase =
-        24.067;
-
-
-    const researcherBase =
-        20.358;
-
-
-    const researchPolicy =
-        (
-            N*.25 +
-            U*.40 +
-            I*.15 +
-            F*.20
-        );
-
-
-    const s11a =
-        THREE.MathUtils.clamp(
-            researchCostBase +
-            researchPolicy*.56,
-            0,
-            100
+    const s11 =
+        Math.min(
+            100,
+            Math.max(
+                0,
+                24.067 +
+                synergyPct*.56
+            )
         );
 
 
     const s11b =
-        THREE.MathUtils.clamp(
-            researcherBase +
-            researchPolicy*.62,
-            0,
-            100
+        Math.min(
+            100,
+            Math.max(
+                0,
+                20.358 +
+                synergyPct*.62
+            )
         );
 
 
     const c11 =
         (
-            (
-                s11a +
-                s11b
-            ) /
-            2
-        ) *
-        .40;
+            (s11+s11b)/2
+        )
+        /100
+        *40;
 
 
     /* =====================================================
-       1-2
-       특허 및 IP 이전
+       1-2 IP 이전
     ===================================================== */
 
-    const ipBase =
+    const raw12 =
         73.9567;
 
 
-    const ipPolicy =
+    const factor12 =
         (
             I*.45 +
             U*.35 +
             N*.20
-        );
-
-
-    const ipScore =
-        THREE.MathUtils.clamp(
-            ipBase *
-            (
-                .55 +
-                .45 *
-                ipPolicy /
-                100
-            ),
-            0,
-            100
-        );
+        )
+        /100;
 
 
     const c12 =
-        ipScore*.30;
+        Math.min(
+            30,
+            Math.max(
+                0,
+
+                raw12 *
+
+                (
+                    .55 +
+                    .45 *
+                    factor12
+                )
+                /100
+                *30
+            )
+        );
 
 
     /* =====================================================
-       2-1
-       공공 인프라 / 데이터
+       2-1 혁신 인프라
     ===================================================== */
 
-    const infrastructureBase =
+    const raw21 =
         70.1;
 
 
-    const infrastructurePolicy =
+    const factor21 =
         (
             U*.30 +
             T*.35 +
             N*.20 +
-            F*.15
-        );
-
-
-    const infrastructureScore =
-        THREE.MathUtils.clamp(
-            infrastructureBase *
-            (
-                .55 +
-                .45 *
-                infrastructurePolicy /
-                100
-            ),
-            0,
-            100
-        );
+            Fscore*.15
+        )
+        /100;
 
 
     const c21 =
-        infrastructureScore*.35;
+        Math.min(
+            35,
+            Math.max(
+                0,
+
+                raw21 *
+
+                (
+                    .55 +
+                    .45 *
+                    factor21
+                )
+                /100
+                *35
+            )
+        );
 
 
     /* =====================================================
-       2-2
-       기술상용화
+       2-2 기술사업화
     ===================================================== */
 
-    const commercializationBase =
+    const raw22 =
         2.9851;
 
 
-    const commercializationPolicy =
+    const commercialFactor =
         (
             N*.40 +
             U*.30 +
-            F*.20 +
+            Fscore*.20 +
             I*.10
-        );
-
-
-    const commercializationScore =
-        THREE.MathUtils.clamp(
-            (
-                commercializationBase +
-                commercializationPolicy*.85
-            ),
-            0,
-            100
-        );
+        )
+        /100;
 
 
     const c22 =
-        commercializationScore*.25;
+        Math.min(
+            25,
+            Math.max(
+                0,
+
+                25 *
+                (
+                    .15 +
+                    .85 *
+                    commercialFactor
+                )
+            )
+        );
 
 
     /* =====================================================
-       3-1
-       딥테크 창업
+       3-1 기술창업
     ===================================================== */
 
-    const startupBase =
+    const raw31 =
         22.2222;
 
 
-    const startupPolicy =
+    const startupFactor =
         (
-            F*.40 +
+            Fscore*.40 +
             N*.30 +
             U*.30
-        );
-
-
-    const startupScore =
-        THREE.MathUtils.clamp(
-            startupBase *
-            (
-                .35 +
-                .65 *
-                startupPolicy /
-                100
-            ),
-            0,
-            100
-        );
+        )
+        /100;
 
 
     const c31 =
-        startupScore*.30;
+        Math.min(
+            30,
+            Math.max(
+                0,
+
+                30 *
+                (
+                    raw31/100
+                )
+                *
+                (
+                    .35 +
+                    .65 *
+                    startupFactor
+                )
+            )
+        );
 
 
     /* =====================================================
-       3-2
-       투자 / 엑셀러레이팅
+       3-2 투자·육성
     ===================================================== */
 
-    const supportBase =
-        (
-            30 /
-            216
-        );
+    /*
+    30억원 / 216개
+    = 약 0.1389억원/기업
+    */
+
+    const supportPerFirm =
+        3000/216;
 
 
-    const supportPolicy =
-        (
-            F*.30 +
-            N*.30 +
-            U*.25 +
-            I*.15
-        );
+    /*
+    후속 R&D
+    6억원 / 30억원 × 100
+    = 20%
+    */
 
-
-    const supportScore =
-        THREE.MathUtils.clamp(
-            (
-                .35 +
-                .65 *
-                supportPolicy /
-                100
-            ) *
-            100,
-            0,
-            100
-        );
-
-
-    const followupRND =
+    const followup =
         20;
 
 
-    const c32 =
+    const ventureFactor =
+        (
+            Fscore*.30 +
+            N*.30 +
+            U*.25 +
+            I*.15
+        )
+        /100;
+
+
+    const supportFactor =
         (
             (
-                supportScore*.5 +
-                followupRND*.5
-            ) /
-            100
-        ) *
-        30;
+                supportPerFirm /
+                13.8889
+            )*.5
+            +
+            (
+                followup /
+                100
+            )*.5
+        );
+
+
+    const c32 =
+        Math.min(
+            30,
+            Math.max(
+                0,
+
+                30 *
+
+                (
+                    .35 +
+                    .65 *
+                    ventureFactor
+                )
+
+                *
+
+                supportFactor
+
+            )
+        );
 
 
     /* =====================================================
-       4-1
-       산학연 기술 소그룹 CoP
+       4-1 융합 거버넌스
     ===================================================== */
 
-    const copPolicy =
+    /*
+    산학협력 교류회 정성평가
+    = 60 / 60
+    */
+
+    const governanceFactor =
         (
             N*.30 +
             U*.30 +
             I*.20 +
-            F*.20
-        );
-
-
-    /*
-     * 정량 40%
-     * 정성 60%
-     *
-     * 기존 사례 정성평가 60/60
-     */
-
-    const quantitative =
-        THREE.MathUtils.clamp(
-            copPolicy,
-            0,
-            100
-        );
-
-
-    const qualitative =
-        60 +
-        (
-            copPolicy -
-            60
-        )*.15;
-
-
-    const qualitativeScore =
-        THREE.MathUtils.clamp(
-            qualitative,
-            0,
-            100
-        );
-
-
-    const copScore =
-        quantitative*.40 +
-        qualitativeScore*.60;
+            Fscore*.20
+        )
+        /100;
 
 
     const c41 =
-        copScore*.60;
+        Math.min(
+            60,
+            Math.max(
+                0,
+
+                60 *
+                (
+                    .40 +
+                    .60 *
+                    governanceFactor
+                )
+
+            )
+        );
 
 
     /* =====================================================
-       최종
-       40 + 30 + 35 + 25 + 30 + 30 + 60 = 250
+       최종 250점
     ===================================================== */
 
     const total =
@@ -3724,47 +3227,34 @@ function calculateCoexistence(){
         c41;
 
 
-    /* =====================================================
-       화면 출력
-    ===================================================== */
-
     $("c11").textContent =
         c11.toFixed(1);
-
 
     $("c12").textContent =
         c12.toFixed(1);
 
-
     $("c21").textContent =
         c21.toFixed(1);
-
 
     $("c22").textContent =
         c22.toFixed(1);
 
-
     $("c31").textContent =
         c31.toFixed(1);
-
 
     $("c32").textContent =
         c32.toFixed(1);
 
-
     $("c41").textContent =
         c41.toFixed(1);
-
 
     $("coexistence").textContent =
         total.toFixed(1);
 
-
     $("coexistenceBar").style.width =
-        (
-            total /
-            250 *
-            100
+        Math.min(
+            100,
+            total/250*100
         ) + "%";
 
 
@@ -3809,7 +3299,7 @@ function calculateCoexistence(){
 
 
 /* =========================================================
-   ★ 전망 계산
+   ★ 2046 전망
 ========================================================= */
 
 let currentYear =
@@ -3819,39 +3309,22 @@ let currentYear =
 function calc(){
 
     const I =
-        Number(
-            $("inst").value
-        );
-
+        +$("inst").value;
 
     const N =
-        Number(
-            $("ind").value
-        );
-
+        +$("ind").value;
 
     const U =
-        Number(
-            $("uni").value
-        );
-
+        +$("uni").value;
 
     const L =
-        Number(
-            $("live").value
-        );
-
+        +$("live").value;
 
     const T =
-        Number(
-            $("trans").value
-        );
-
+        +$("trans").value;
 
     const F =
-        Number(
-            $("firm").value
-        );
+        +$("firm").value;
 
 
     const base =
@@ -3871,10 +3344,11 @@ function calc(){
             L*.18 +
             T*.16 +
             (
-                F /
-                150 *
-                100
-            )*.08
+                Math.min(
+                    100,
+                    F/216*100
+                )
+            )*.13
         );
 
 
@@ -3885,8 +3359,8 @@ function calc(){
                 1 +
                 years *
                 (
-                    .008 +
-                    q/12000
+                    .0035 +
+                    q/18000
                 )
             )
         );
@@ -3899,9 +3373,9 @@ function calc(){
                 1 +
                 years *
                 (
-                    .018 +
-                    N/5000 +
-                    U/7000
+                    .008 +
+                    N/9000 +
+                    U/12000
                 )
             )
         );
@@ -3917,7 +3391,7 @@ function calc(){
         );
 
 
-    const vacancy =
+    const vac =
         Math.max(
             3,
             Math.round(
@@ -3929,7 +3403,7 @@ function calc(){
         );
 
 
-    const sustainability =
+    const score =
         Math.min(
             100,
             Math.round(
@@ -3952,15 +3426,15 @@ function calc(){
 
 
     $("vac").textContent =
-        vacancy + "%";
+        vac + "%";
 
 
     $("score").style.width =
-        sustainability + "%";
+        score + "%";
 
 
     $("scoreT").textContent =
-        sustainability;
+        score;
 
 
     $("year").textContent =
@@ -4013,175 +3487,11 @@ function calc(){
 
 
 /* =========================================================
-   ★★★★★
-   슬라이더 이벤트
+   연도 이동
 ========================================================= */
 
-/*
- * 여기서부터가 이번에 새로 제대로 잡은 부분.
- *
- * input 이벤트가 발생할 때마다
- *
- * 슬라이더
- * ↓
- * 숫자
- * ↓
- * 상생연계지수
- * ↓
- * 2046 전망
- *
- * 이 순서로 즉시 업데이트됨.
- */
-
-const sliders =
-    document.querySelectorAll(
-        'aside input[type="range"]'
-    );
-
-
-sliders.forEach(
-    slider => {
-
-
-        slider.addEventListener(
-            "input",
-            event => {
-
-                event.stopPropagation();
-
-
-                updateOutputs();
-
-
-                calc();
-
-            }
-        );
-
-
-        slider.addEventListener(
-            "change",
-            event => {
-
-                event.stopPropagation();
-
-
-                updateOutputs();
-
-
-                calc();
-
-            }
-        );
-
-
-        /*
-         * iPad에서 터치가 확실하게
-         * range input에 전달되도록 함
-         */
-
-        slider.addEventListener(
-            "pointerdown",
-            event => {
-
-                event.stopPropagation();
-
-            },
-            true
-        );
-
-
-        slider.addEventListener(
-            "pointermove",
-            event => {
-
-                event.stopPropagation();
-
-            },
-            true
-        );
-
-    }
-);
-
-
-/* =========================================================
-   UI 영역과 3D 영역 분리
-========================================================= */
-
-const aside =
-    document.querySelector(
-        "aside"
-    );
-
-
-aside.addEventListener(
-    "pointerdown",
-    event => {
-
-        event.stopPropagation();
-
-    },
-    true
-);
-
-
-aside.addEventListener(
-    "pointermove",
-    event => {
-
-        event.stopPropagation();
-
-    },
-    true
-);
-
-
-aside.addEventListener(
-    "pointerup",
-    event => {
-
-        event.stopPropagation();
-
-    },
-    true
-);
-
-
-aside.addEventListener(
-    "wheel",
-    event => {
-
-        /*
-         * 왼쪽 패널에서는
-         * 3D 확대/축소를 절대 실행하지 않음
-         */
-
-        event.stopPropagation();
-
-    },
-    {
-        capture:true,
-        passive:true
-    }
-);
-
-
-/* =========================================================
-   초기 UI
-========================================================= */
-
-updateOutputs();
-
-calc();
-
-
-/* =========================================================
-   연도
-========================================================= */
-
-function advanceYear(
-    amount
+function advance(
+    n
 ){
 
     currentYear =
@@ -4189,8 +3499,7 @@ function advanceYear(
             2046,
             Math.max(
                 2026,
-                currentYear +
-                amount
+                currentYear+n
             )
         );
 
@@ -4200,28 +3509,15 @@ function advanceYear(
 }
 
 
-$("minus").addEventListener(
-    "click",
-    () => {
-
-        advanceYear(-1);
-
-    }
-);
+$("minus").onclick =
+    () => advance(-1);
 
 
-$("plus").addEventListener(
-    "click",
-    () => {
-
-        advanceYear(1);
-
-    }
-);
+$("plus").onclick =
+    () => advance(1);
 
 
-$("run").addEventListener(
-    "click",
+$("run").onclick =
     () => {
 
         currentYear =
@@ -4229,17 +3525,102 @@ $("run").addEventListener(
 
         calc();
 
-    }
-);
+    };
 
 
 /* =========================================================
    도시 설계 반영
 ========================================================= */
 
-$("apply").addEventListener(
-    "click",
+$("apply").onclick =
     () => {
+
+        buildCity();
+
+        calc();
+
+    };
+
+
+/* =========================================================
+   시나리오 자동 적용
+========================================================= */
+
+$("scenario").addEventListener(
+    "change",
+    () => {
+
+        const scenario =
+            $("scenario").value;
+
+
+        if(
+            scenario === "optimal"
+        ){
+
+            $("inst").value = 80;
+            $("ind").value = 80;
+            $("uni").value = 75;
+            $("live").value = 85;
+            $("trans").value = 80;
+            $("firm").value = 216;
+
+        }
+
+        else if(
+            scenario === "industry"
+        ){
+
+            $("inst").value = 85;
+            $("ind").value = 95;
+            $("uni").value = 80;
+            $("live").value = 60;
+            $("trans").value = 70;
+            $("firm").value = 300;
+
+        }
+
+        else if(
+            scenario === "living"
+        ){
+
+            $("inst").value = 70;
+            $("ind").value = 60;
+            $("uni").value = 65;
+            $("live").value = 95;
+            $("trans").value = 85;
+            $("firm").value = 180;
+
+        }
+
+        else if(
+            scenario === "talent"
+        ){
+
+            $("inst").value = 75;
+            $("ind").value = 70;
+            $("uni").value = 98;
+            $("live").value = 80;
+            $("trans").value = 80;
+            $("firm").value = 220;
+
+        }
+
+        else if(
+            scenario === "compare"
+        ){
+
+            $("inst").value = 75;
+            $("ind").value = 50;
+            $("uni").value = 45;
+            $("live").value = 45;
+            $("trans").value = 45;
+            $("firm").value = 120;
+
+        }
+
+
+        updateOutputs();
 
         buildCity();
 
@@ -4253,12 +3634,19 @@ $("apply").addEventListener(
    초기화
 ========================================================= */
 
-$("resetBtn").addEventListener(
-    "click",
+$("resetBtn").onclick =
     () => {
 
         currentYear =
             2026;
+
+
+        $("scenario").value =
+            "optimal";
+
+
+        $("form").value =
+            "poly";
 
 
         $("inst").value =
@@ -4282,7 +3670,7 @@ $("resetBtn").addEventListener(
 
 
         $("firm").value =
-            80;
+            216;
 
 
         updateOutputs();
@@ -4291,16 +3679,36 @@ $("resetBtn").addEventListener(
 
         calc();
 
-    }
-);
+
+        if(walking){
+
+            walking =
+                false;
+
+            $("mode").textContent =
+                "관찰 모드";
+
+            $("crosshair").style.display =
+                "none";
+
+            $("joystick").style.display =
+                "none";
+
+            $("walkBtn").textContent =
+                "🚶 도시 진입";
+
+        }
+
+        updateOrbit();
+
+    };
 
 
 /* =========================================================
-   ★ 도시 진입
+   도시 진입
 ========================================================= */
 
-$("walkBtn").addEventListener(
-    "click",
+$("walkBtn").onclick =
     () => {
 
         walking =
@@ -4312,8 +3720,9 @@ $("walkBtn").addEventListener(
         ){
 
             /*
-             * 사람 눈높이
-             */
+            사람 눈높이
+            */
+
             camera.position.set(
                 0,
                 7,
@@ -4322,29 +3731,20 @@ $("walkBtn").addEventListener(
 
 
             /*
-             * 핵심:
-             * X = 0
-             * Z = 0
-             *
-             * 절대로 기울어진 상태로
-             * 시작하지 않음.
-             */
+            똑바로 서 있는 1인칭 시점
+            */
 
             camera.rotation.order =
                 "YXZ";
 
-
             camera.rotation.x =
                 0;
-
 
             camera.rotation.y =
                 Math.PI;
 
-
             camera.rotation.z =
                 0;
-
 
             camera.up.set(
                 0,
@@ -4368,10 +3768,6 @@ $("walkBtn").addEventListener(
             $("walkBtn").textContent =
                 "🛰️ 조감도로 돌아가기";
 
-
-            $("hint").textContent =
-                "드래그: 시선 이동 · WASD: 이동 · 조이스틱: 이동";
-
         }
 
         else{
@@ -4392,16 +3788,11 @@ $("walkBtn").addEventListener(
                 "🚶 도시 진입";
 
 
-            $("hint").textContent =
-                "조감도: 드래그로 시점 회전 · 휠로 확대/축소";
-
-
             updateOrbit();
 
         }
 
-    }
-);
+    };
 
 
 /* =========================================================
@@ -4431,7 +3822,7 @@ window.addEventListener(
 
 
 /* =========================================================
-   1인칭 시선
+   1인칭 시점 회전
 ========================================================= */
 
 let lookPointer =
@@ -4505,66 +3896,29 @@ renderer.domElement.addEventListener(
             event.clientY;
 
 
-        /*
-         * 좌우 회전
-         */
-
         camera.rotation.y -=
-            dx*.0035;
+            dx*.004;
 
-
-        /*
-         * 위아래 회전
-         */
 
         camera.rotation.x -=
-            dy*.0025;
+            dy*.003;
 
-
-        /*
-         * 하늘/바닥까지 뒤집히지 않도록 제한
-         */
 
         camera.rotation.x =
-            THREE.MathUtils.clamp(
-                camera.rotation.x,
-                -1.20,
-                1.20
+            Math.max(
+                -1.25,
+                Math.min(
+                    1.25,
+                    camera.rotation.x
+                )
             );
 
-
-        /*
-         * Z축 기울기는 항상 0
-         * → 사람이 똑바로 서 있음
-         */
-
-        camera.rotation.z =
-            0;
-
     }
 );
 
 
-renderer.domElement.addEventListener(
+window.addEventListener(
     "pointerup",
-    event => {
-
-        if(
-            lookPointer ===
-            event.pointerId
-        ){
-
-            lookPointer =
-                null;
-
-        }
-
-    }
-);
-
-
-renderer.domElement.addEventListener(
-    "pointercancel",
     () => {
 
         lookPointer =
@@ -4581,10 +3935,8 @@ renderer.domElement.addEventListener(
 const joystick =
     $("joystick");
 
-
 const stick =
     $("stick");
-
 
 let joystickActive =
     false;
@@ -4596,15 +3948,15 @@ function updateJoystick(
 
     const rect =
         joystick
-            .getBoundingClientRect();
+        .getBoundingClientRect();
 
 
-    const centerX =
+    const cx =
         rect.left +
         rect.width/2;
 
 
-    const centerY =
+    const cy =
         rect.top +
         rect.height/2;
 
@@ -4612,15 +3964,17 @@ function updateJoystick(
     let x =
         (
             event.clientX -
-            centerX
-        ) / 42;
+            cx
+        ) /
+        42;
 
 
     let y =
         (
             event.clientY -
-            centerY
-        ) / 42;
+            cy
+        ) /
+        42;
 
 
     const length =
@@ -4694,34 +4048,47 @@ joystick.addEventListener(
 );
 
 
-function resetJoystick(){
-
-    joystickActive =
-        false;
-
-
-    joy =
-        {
-            x:0,
-            y:0
-        };
-
-
-    stick.style.transform =
-        "";
-
-}
-
-
 joystick.addEventListener(
     "pointerup",
-    resetJoystick
+    () => {
+
+        joystickActive =
+            false;
+
+
+        joy =
+            {
+                x:0,
+                y:0
+            };
+
+
+        stick.style.transform =
+            "";
+
+    }
 );
 
 
 joystick.addEventListener(
     "pointercancel",
-    resetJoystick
+    () => {
+
+        joystickActive =
+            false;
+
+
+        joy =
+            {
+                x:0,
+                y:0
+            };
+
+
+        stick.style.transform =
+            "";
+
+    }
 );
 
 
@@ -4761,8 +4128,7 @@ renderer.domElement.addEventListener(
                         event.clientY -
                         rect.top
                     ) /
-                    rect.height
-                    *
+                    rect.height *
                     2 -
                     1
                 )
@@ -4792,9 +4158,10 @@ renderer.domElement.addEventListener(
 
             const d =
                 hit.object
-                    .parent
-                    ?.userData ||
-                hit.object.userData;
+                .parent
+                ?.userData ||
+                hit.object
+                .userData;
 
 
             if(
@@ -4824,7 +4191,7 @@ function resize(){
 
     const rect =
         $("viewport")
-            .getBoundingClientRect();
+        .getBoundingClientRect();
 
 
     const width =
@@ -4842,8 +4209,7 @@ function resize(){
 
 
     camera.aspect =
-        width /
-        height;
+        width/height;
 
 
     camera.updateProjectionMatrix();
@@ -4868,7 +4234,7 @@ resize();
 
 
 /* =========================================================
-   로딩 제거
+   LOADING 종료
 ========================================================= */
 
 $("loading").style.display =
@@ -4897,91 +4263,61 @@ function animate(){
         );
 
 
-    /* =====================================================
-       1인칭 이동
-    ===================================================== */
-
     if(
         walking
     ){
 
         /*
-         * W / 위
-         */
+        W/S 또는 위/아래
+        */
 
-        let forward = 0;
+        const forward =
 
+            (
+                keys.KeyW ||
+                keys.ArrowUp
 
-        if(
-            keys.KeyW ||
-            keys.ArrowUp
-        ){
+                ? -1
 
-            forward += 1;
+                :
 
-        }
+                keys.KeyS ||
+                keys.ArrowDown
 
-
-        if(
-            keys.KeyS ||
-            keys.ArrowDown
-        ){
-
-            forward -= 1;
-
-        }
+                ? 1
+                : 0
+            )
+            +
+            joy.y;
 
 
         /*
-         * 조이스틱 Y
-         */
+        A/D 또는 좌/우
+        */
 
-        forward +=
-            -joy.y;
+        const sideways =
 
+            (
+                keys.KeyD ||
+                keys.ArrowRight
 
-        /*
-         * A / D
-         */
+                ? 1
 
-        let sideways = 0;
+                :
 
+                keys.KeyA ||
+                keys.ArrowLeft
 
-        if(
-            keys.KeyD ||
-            keys.ArrowRight
-        ){
-
-            sideways += 1;
-
-        }
-
-
-        if(
-            keys.KeyA ||
-            keys.ArrowLeft
-        ){
-
-            sideways -= 1;
-
-        }
-
-
-        sideways +=
+                ? -1
+                : 0
+            )
+            +
             joy.x;
 
-
-        /*
-         * 이동 속도
-         */
 
         const speed =
             22*dt;
 
-
-        /*
-         * 현재 바라보는 방향
-         */
 
         const direction =
             new THREE.Vector3();
@@ -4996,30 +4332,15 @@ function animate(){
             0;
 
 
-        if(
-            direction.lengthSq() >
-            0
-        ){
+        direction.normalize();
 
-            direction.normalize();
-
-        }
-
-
-        /*
-         * 앞뒤 이동
-         */
 
         camera.position
             .addScaledVector(
                 direction,
-                forward*speed
+                -forward*speed
             );
 
-
-        /*
-         * 좌우 이동
-         */
 
         const side =
             new THREE.Vector3();
@@ -5031,14 +4352,7 @@ function animate(){
         );
 
 
-        if(
-            side.lengthSq() >
-            0
-        ){
-
-            side.normalize();
-
-        }
+        side.normalize();
 
 
         camera.position
@@ -5047,18 +4361,6 @@ function animate(){
                 sideways*speed
             );
 
-
-        /*
-         * 사람 눈높이 고정
-         */
-
-        camera.position.y =
-            7;
-
-
-        /*
-         * 도시 밖으로 못 나감
-         */
 
         camera.position.x =
             THREE.MathUtils.clamp(
@@ -5076,12 +4378,14 @@ function animate(){
             );
 
 
-        /*
-         * ★ 절대 기울어지지 않음
-         */
+        camera.position.y =
+            7;
 
-        camera.rotation.z =
-            0;
+    }
+
+    else{
+
+        updateOrbit();
 
     }
 
@@ -5097,8 +4401,13 @@ function animate(){
 animate();
 
 
+/* =========================================================
+   최초 계산
+========================================================= */
+
+calc();
+
 </script>
 
 </body>
-
 </html>
